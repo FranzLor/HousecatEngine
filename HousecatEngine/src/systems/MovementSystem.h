@@ -28,10 +28,10 @@ public:
 				int paddingTop = -5;
 				int paddingBottom = -5;
 
-				paddingLeft *= transform.scale.x;
-				paddingRight *= transform.scale.x;
-				paddingTop *= transform.scale.y;
-				paddingBottom *= transform.scale.y;
+				paddingLeft *= static_cast<int>(transform.scale.x);
+				paddingRight *= static_cast<int>(transform.scale.x);
+				paddingTop *= static_cast<int>(transform.scale.y);
+				paddingBottom *= static_cast<int>(transform.scale.y);
 
 				//update position within boundaries
 				transform.position.x = std::max(static_cast<float>(paddingLeft), std::min(transform.position.x, static_cast<float>(Game::mapWidth - paddingRight)));

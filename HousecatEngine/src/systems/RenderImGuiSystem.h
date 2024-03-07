@@ -143,7 +143,8 @@ public:
 				enemy.AddComponent<AnimationComponent>(numFrames, frameSpeed, isLooped);
 
 				//reset input values after creation
-				posX = posY = rotation = 0;
+				posX = posY = 0;
+				rotation = 0.0;
 				scaleX = scaleY = 1;
 
 				width = 32;
