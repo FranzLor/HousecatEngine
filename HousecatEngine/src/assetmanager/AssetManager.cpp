@@ -1,6 +1,6 @@
 #include "AssetManager.h"
 #include "../logger/Logger.h"
- 
+
 #include <SDL_image.h>
 
 AssetManager::AssetManager() {
@@ -8,6 +8,7 @@ AssetManager::AssetManager() {
 }
 
 AssetManager::~AssetManager() {
+	ClearAssets();
 	Logger::Lifecycle("AssetManager Destructor Called!");
 }
 
@@ -23,11 +24,24 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& assetID
 	textures.emplace(assetID, texture);
 }
 
-void AssetManager::ClearTexture() {
+void AssetManager::ClearAssets() {
 	for (auto texture : textures) {
 		//makes sure to deallocate texture!
 		SDL_DestroyTexture(texture.second);
 	}
 	//only clears map
 	textures.clear();
+
+	for (auto font : fonts) {
+		TTF_CloseFont(font.second);
+	}
+	fonts.clear();
+}
+
+TTF_Font* AssetManager::GetFont(const std::string& assetID) {
+	return fonts[assetID];
+}
+
+void AssetManager::AddFont(const std::string& assetID, const std::string& filePath, int fontSize) {
+	fonts.emplace(assetID, TTF_OpenFont(filePath.c_str(), fontSize));
 }
