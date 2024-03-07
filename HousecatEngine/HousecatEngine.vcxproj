@@ -420,6 +420,7 @@
     <ClInclude Include="src\systems\MovementSystem.h" />
     <ClInclude Include="src\systems\RenderColliderSystem.h" />
     <ClInclude Include="src\systems\RenderHealthSystem.h" />
+    <ClInclude Include="src\systems\RenderImGuiSystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
     <ClInclude Include="src\systems\RenderTextSystem.h" />
   </ItemGroup>
