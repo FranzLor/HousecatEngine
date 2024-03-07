@@ -1,7 +1,13 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_sdlrenderer2.h>
+
 #include <glm/glm.hpp>
+
 #include <fstream>
 #include <memory>
 

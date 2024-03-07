@@ -3,7 +3,9 @@
 
 
 #include <SDL_ttf.h>
-#include <imgui/imgui_sdl.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_sdlrenderer2.h>
 
 int Source::windowSourceWidth;
 int Source::windowSourceHeight;
@@ -71,8 +73,10 @@ void Source::Initialize() {
 	SDL_SetWindowFullscreen(windowSource, SDL_FALSE);
 	isRunning = true;
 
+	IMGUI_CHECKVERSION();
 	sourceImGuiContext = ImGui::CreateContext();
-	ImGuiSDL::Initialize(rendererSource, windowSourceWidth, windowSourceHeight);
+	ImGui_ImplSDL2_InitForSDLRenderer(windowSource, rendererSource);
+	ImGui_ImplSDLRenderer2_Init(rendererSource);
 
 	//TODO? Add custom font montserrat | roboto
 }
@@ -134,8 +138,10 @@ void Source::Render() {
 
 	ImGui::SetCurrentContext(sourceImGuiContext);
 
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
-	//ImGui::ShowDemoWindow();
+
 	ImGuiWindowFlags windowFlags = (
 		ImGuiWindowFlags_NoTitleBar,
 		ImGuiWindowFlags_NoResize,
@@ -175,9 +181,8 @@ void Source::Render() {
 	ImGui::End();
 
 	ImGui::Render();
-	ImGuiSDL::Render(ImGui::GetDrawData());
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
-	ImGui::EndFrame();
 	SDL_RenderPresent(rendererSource);
 
 }
@@ -193,8 +198,10 @@ void Source::Run() {
 }
 
 void Source::Destroy() {
-	ImGuiSDL::Deinitialize();
+	ImGui_ImplSDLRenderer2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+
 	SDL_DestroyRenderer(rendererSource);
 	SDL_DestroyWindow(windowSource);
 	SDL_Quit();

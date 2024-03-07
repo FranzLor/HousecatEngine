@@ -4,7 +4,9 @@
 #include "../logger/Logger.h"
 
 #include <SDL_ttf.h>
-#include <imgui/imgui_sdl.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_sdlrenderer2.h>
 
 int Editor::windowEditorWidth;
 int Editor::windowEditorHeight;
@@ -56,8 +58,10 @@ void Editor::Initialize() {
 	SDL_SetWindowFullscreen(windowEditor, SDL_FALSE);
 	isRunning = true;
 
+	IMGUI_CHECKVERSION();
 	editorImGuiContext = ImGui::CreateContext();
-	ImGuiSDL::Initialize(rendererEditor, windowEditorWidth, windowEditorHeight);
+	ImGui_ImplSDL2_InitForSDLRenderer(windowEditor, rendererEditor);
+	ImGui_ImplSDLRenderer2_Init(rendererEditor);
 }
 
 
@@ -113,11 +117,17 @@ void Editor::Render() {
 	SDL_RenderClear(rendererEditor);
 	SDL_SetRenderDrawColor(rendererEditor, 10, 10, 10, 255);
 
-	ImGui::SetCurrentContext(editorImGuiContext);
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+
+	ImGui::SetCurrentContext(editorImGuiContext);
+
 	ImGui::ShowDemoWindow();
+
 	ImGui::Render();
-	ImGuiSDL::Render(ImGui::GetDrawData());
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
+
 	ImGui::EndFrame();
 
 	SDL_RenderPresent(rendererEditor);
@@ -133,6 +143,10 @@ void Editor::Run() {
 }
 
 void Editor::Destroy() {
+	ImGui_ImplSDLRenderer2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	SDL_DestroyRenderer(rendererEditor);
 	SDL_DestroyWindow(windowEditor);
 	SDL_Quit();

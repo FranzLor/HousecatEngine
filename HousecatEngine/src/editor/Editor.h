@@ -3,7 +3,9 @@
 #include "../input/GlobalInputHandler.h"
 
 #include <SDL.h>
-#include <imgui/imgui_impl_sdl.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_sdlrenderer2.h>
 
 const int EDITOR_FPS = 144;
 const int EDITOR_MILLISECS_PER_FRAME = 1000 / EDITOR_FPS;
