@@ -398,6 +398,7 @@
     <ClInclude Include="src\components\MovementStateComponent.h" />
     <ClInclude Include="src\components\RigidBodyComponent.h" />
     <ClInclude Include="src\components\SpriteComponent.h" />
+    <ClInclude Include="src\components\TextDisplayComponent.h" />
     <ClInclude Include="src\components\TransformComponent.h" />
     <ClInclude Include="src\components\UserControlComponent.h" />
     <ClInclude Include="src\ecs\ECS.h" />
@@ -418,7 +419,9 @@
     <ClInclude Include="src\systems\KeyboardInputSystem.h" />
     <ClInclude Include="src\systems\MovementSystem.h" />
     <ClInclude Include="src\systems\RenderColliderSystem.h" />
+    <ClInclude Include="src\systems\RenderHealthSystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
+    <ClInclude Include="src\systems\RenderTextSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Housecat.aps" />

@@ -38,7 +38,7 @@ protected:
 
 //give unique ID to component type
 template <typename T>
-class Component: public IComponent {
+class Component : public IComponent {
 public:
 	static int GetID() {
 		static auto ID = nextID++;
@@ -75,14 +75,14 @@ public:
 	bool operator==(const Entity& other) const {
 		return ID == other.ID;
 	}
-	bool operator!=(const Entity & other) const {
+	bool operator!=(const Entity& other) const {
 		return ID != other.ID;
 	}
 	bool operator >(const Entity& other) const {
-		return ID > other.ID; 
+		return ID > other.ID;
 	}
 	bool operator <(const Entity& other) const {
-		return ID < other.ID; 
+		return ID < other.ID;
 	}
 	Entity& operator=(const Entity& other) = default;
 
@@ -147,7 +147,7 @@ public:
 };
 
 template <typename T>
-class Pool: public IPool {
+class Pool : public IPool {
 private:
 	int size;
 	std::vector<T> data;
@@ -201,7 +201,7 @@ public:
 			entityIDToIndex.emplace(entityID, index);
 			indexToEntityID.emplace(index, entityID);
 
-			if (index >= data.capacity()) {
+			if (static_cast<size_t>(index) >= data.capacity()) {
 				data.resize(size * 2);
 			}
 			data[index] = object;
@@ -230,14 +230,14 @@ public:
 			Remove(entityID);
 		}
 	}
-	
+
 	//TODO
 	//error handling: entityID[entityID] ?
 	T& Get(int entityID) {
 		int index = entityIDToIndex[entityID];
 		return static_cast<T&>(data[index]);
 	}
-	
+
 	//no err
 	T& operator [](unsigned int index) {
 		return data[index];
@@ -412,7 +412,7 @@ TComponent& Housecat::GetComponent(Entity entity) const {
 	const auto componentID = Component<TComponent>::GetID();
 	const auto entityID = entity.GetID();
 	auto componentPool = std::static_pointer_cast<Pool<TComponent>>(componentPools[componentID]);
-	
+
 	return componentPool->Get(entityID);
 }
 
