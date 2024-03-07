@@ -27,6 +27,8 @@
 #include "../components/MovementStateComponent.h"
 #include "../components/CameraComponent.h"
 #include "../components/DamageAreaComponent.h"
+#include "../components/TextDisplayComponent.h"
+
 
 #include "../systems/MovementSystem.h"
 #include "../systems/RenderSystem.h"
@@ -36,7 +38,8 @@
 #include "../systems/DamageSystem.h"
 #include "../systems/KeyboardInputSystem.h"
 #include "../systems/CameraMovementSystem.h"
-
+#include "../systems/RenderTextSystem.h"
+#include "../systems/RenderHealthSystem.h"
 
 
 int Game::windowWidth;
@@ -151,7 +154,8 @@ void Game::LoadLevel(int level) {
 	housecat->AddSystem<DamageSystem>();
 	housecat->AddSystem<KeyboardInputSystem>();
 	housecat->AddSystem<CameraMovementSystem>();
-	
+	housecat->AddSystem<RenderTextSystem>();
+	housecat->AddSystem<RenderHealthSystem>();
 
 	//TOD: lua + sol
 	//replace in script file
@@ -161,7 +165,6 @@ void Game::LoadLevel(int level) {
 	assetManager->AddTexture(rendererGame, "npc", "./assets/textures/cat_animate_2.png");
 
 	assetManager->AddTexture(rendererGame, "cat_run", "./assets/textures/cat_run.png");
-	//assetManager->AddTexture(rendererGame, "cat2", "./assets/textures/cat_ex.png");
 
 	assetManager->AddTexture(rendererGame, "ghost", "./assets/textures/ghost.png");
 
@@ -170,6 +173,9 @@ void Game::LoadLevel(int level) {
 	assetManager->AddTexture(rendererGame, "fire", "./assets/textures/fire_sprite.png");
 
 	assetManager->AddTexture(rendererGame, "map", "./assets/tilemaps/terrain_tile.png");
+
+	assetManager->AddFont("roboto", "./assets/fonts/roboto.regular.ttf", 18);
+	assetManager->AddFont("montserrat", "./assets/fonts/montserrat.bold.ttf", 20);
 
 	//load tilemap test
 	int tileSize = 32;
@@ -220,6 +226,8 @@ void Game::LoadLevel(int level) {
 	Entity chest = housecat->CreateEntity();
 
 	Entity fire = housecat->CreateEntity();
+
+	Entity healthLabel = housecat->CreateEntity();
 
 	//TODO: lua
 	//COMPONENTS - add components to entities
@@ -294,6 +302,9 @@ void Game::LoadLevel(int level) {
 	chest.AddComponent<SpriteComponent>("chest", 37, 32, 1);
 	chest.AddComponent<BoxColliderComponent>(37, 32);
 
+	SDL_Color RED = { 255, 0, 0 };
+	healthLabel.AddComponent<TextDisplayComponent>("montserrat", glm::vec2(5, 5), true, "Housecat", RED);
+
 	//TESTING
 	//cat1.RemoveComponent<TransformComponent>();
 	//cat1.RemoveComponent<RigidBodyComponent>();
@@ -345,6 +356,8 @@ void Game::Render() {
 	if (isDebugging) {
 		housecat->GetSystem<RenderColliderSystem>().Update(rendererGame, camera);
 	}
+	housecat->GetSystem<RenderTextSystem>().Update(rendererGame, assetManager, camera);
+	housecat->GetSystem<RenderHealthSystem>().Update(rendererGame, assetManager, camera);
 
 	SDL_RenderPresent(rendererGame);
 }
