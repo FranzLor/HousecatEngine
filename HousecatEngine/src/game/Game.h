@@ -2,6 +2,8 @@
 
 #include <SDL.h>
 
+#include <imgui/imgui.h>
+
 #include "../ecs/ECS.h"
 
 #include "../assetmanager/AssetManager.h"
@@ -18,11 +20,16 @@ private:
 
 	Entity* playerEntity;
 
-	//main
+	//Main Game window
 	SDL_Window* window;
 	SDL_Renderer* rendererGame;
 
+	//Game camera
 	SDL_Rect camera;
+
+	//ImGui context
+	ImGuiContext* gameContext;
+
 
 	//managers
 	std::unique_ptr<Housecat> housecat;

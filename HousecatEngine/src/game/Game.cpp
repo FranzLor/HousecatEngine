@@ -40,6 +40,7 @@
 #include "../systems/CameraMovementSystem.h"
 #include "../systems/RenderTextSystem.h"
 #include "../systems/RenderHealthSystem.h"
+#include "../systems/RenderImGuiSystem.h"
 
 
 int Game::windowWidth;
@@ -47,8 +48,16 @@ int Game::windowHeight;
 int Game::mapWidth;
 int Game::mapHeight;
 
-Game::Game() : isRunning(false), isDebugging(false), window(nullptr), rendererGame(nullptr),
-	housecat(std::make_unique<Housecat>()), assetManager(std::make_unique<AssetManager>()),
+Game::Game()
+	: isRunning(false),
+	isDebugging(false),
+	playerEntity(nullptr),
+	window(nullptr),
+	rendererGame(nullptr),
+	camera({ 0, 0, 0, 0 }),
+	gameContext(nullptr),
+	housecat(std::make_unique<Housecat>()),
+	assetManager(std::make_unique<AssetManager>()),
 	eventManager(std::make_unique<EventManager>()) {
 
 	Logger::Lifecycle("Main Game Constructor Called!");
@@ -95,10 +104,19 @@ void Game::Initialize() {
 		return;
 	}
 
+	//Camera init
 	camera.x = 0;
 	camera.y = 0;
 	camera.w = windowWidth;
 	camera.h = windowHeight;
+
+	//ImGui init
+	IMGUI_CHECKVERSION();
+
+	gameContext = ImGui::CreateContext();
+
+	ImGui_ImplSDL2_InitForSDLRenderer(window, rendererGame);
+	ImGui_ImplSDLRenderer2_Init(rendererGame);
 
 	SDL_SetWindowFullscreen(window, SDL_FALSE);
 	isRunning = true;
@@ -109,7 +127,17 @@ void Game::Initialize() {
 void Game::Input() {
 	SDL_Event sdlGameEvent;
 	while (SDL_PollEvent(&sdlGameEvent)) {
-		//TODO: process ImGui mouse inputs
+		//handle ImGui w/ SDL input
+		ImGui_ImplSDL2_ProcessEvent(&sdlGameEvent);
+		ImGuiIO& IO = ImGui::GetIO();
+
+		int mouseX, mouseY;
+		const int buttons = SDL_GetMouseState(&mouseX, &mouseY);
+
+		IO.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
+		IO.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
+		IO.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
+
 		switch (sdlGameEvent.type) {
 			case SDL_QUIT:
 				isRunning = false;
@@ -156,6 +184,7 @@ void Game::LoadLevel(int level) {
 	housecat->AddSystem<CameraMovementSystem>();
 	housecat->AddSystem<RenderTextSystem>();
 	housecat->AddSystem<RenderHealthSystem>();
+	housecat->AddSystem<RenderImGuiSystem>();
 
 	//TOD: lua + sol
 	//replace in script file
@@ -351,13 +380,27 @@ void Game::Render() {
 	SDL_SetRenderDrawColor(rendererGame, 50, 50, 50, 255);
 	SDL_RenderClear(rendererGame);
 
+	ImGui::SetCurrentContext(gameContext);
+
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
 	//SYSTEMS - calls update rendering
 	housecat->GetSystem<RenderSystem>().Update(rendererGame, assetManager, camera);
+	//[TAB] key for debugging
 	if (isDebugging) {
 		housecat->GetSystem<RenderColliderSystem>().Update(rendererGame, camera);
+
+		housecat->GetSystem<RenderImGuiSystem>().Update(housecat, camera);
 	}
 	housecat->GetSystem<RenderTextSystem>().Update(rendererGame, assetManager, camera);
 	housecat->GetSystem<RenderHealthSystem>().Update(rendererGame, assetManager, camera);
+	ImGui::EndFrame();
+
+	//render ImGui
+	ImGui::Render();
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_RenderPresent(rendererGame);
 }
@@ -373,6 +416,10 @@ void Game::Run() {
 }
 
 void Game::Destroy() {
+	ImGui_ImplSDLRenderer2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	SDL_DestroyRenderer(rendererGame);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
