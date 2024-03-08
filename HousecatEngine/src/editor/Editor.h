@@ -1,13 +1,14 @@
 #pragma once
 
+#include "../input/GlobalInputHandler.h"
+
 #include <SDL.h>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
 #include <imgui/imgui_impl_sdlrenderer2.h>
 
-#include "./utilities/SDLUtility.h"
-
-#include "../assetmanager/AssetManager.h"
+const int EDITOR_FPS = 144;
+const int EDITOR_MILLISECS_PER_FRAME = 1000 / EDITOR_FPS;
 
 class Editor {
 private:
@@ -15,29 +16,10 @@ private:
 
 	int millisecsPreviousFrame;
 
-	//SDL_Window* windowEditor;
-	//SDL_Renderer* rendererEditor;
-	EditorWindow editorWindow;
-	EditorRenderer editorRenderer;
+	SDL_Window* windowEditor;
+	SDL_Renderer* rendererEditor;
 
-	//ImGui
 	ImGuiContext* editorImGuiContext;
-
-	//AssetManager ptr
-	AssetManagerPtr assetManager;
-
-	//TODO
-	//mouse
-	//camera
-	//events?
-
-	//editor window
-	static const int windowBar = 25;
-	static const int windowEditorWidth = 1920;
-	static const int windowEditorHeight = 1080 - windowBar;
-
-	const int EDITOR_FPS = 144;
-	const int EDITOR_MILLISECS_PER_FRAME = 1000 / EDITOR_FPS;
 
 public:
 	Editor();
@@ -45,6 +27,7 @@ public:
 
 	void Initialize();
 	void Run();
+	//void Setup();
 	void ProcessInput();
 	void Update();
 	void Render();
@@ -52,6 +35,11 @@ public:
 
 	bool IsRunning() const { return isRunning; }
 	void SetRunning(bool running) { isRunning = running; }
+
+	auto GetWindowID();
+
+	static int windowEditorWidth;
+	static int windowEditorHeight;
 
 };
 
