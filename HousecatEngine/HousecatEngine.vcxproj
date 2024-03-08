@@ -133,6 +133,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\editor\ui\EditorUIRendering.h" />
+    <ClInclude Include="src\editor\ui\EditorUIManager.h" />
+    <ClInclude Include="src\editor\editmanager\EditManager.h" />
     <ClInclude Include="libs\glm\common.hpp" />
     <ClInclude Include="libs\glm\detail\compute_common.hpp" />
     <ClInclude Include="libs\glm\detail\compute_vector_relational.hpp" />
@@ -403,6 +406,8 @@
     <ClInclude Include="src\components\UserControlComponent.h" />
     <ClInclude Include="src\ecs\ECS.h" />
     <ClInclude Include="src\editor\Editor.h" />
+    <ClInclude Include="src\editor\ui\TileAttributes.h" />
+    <ClInclude Include="src\editor\utilities\SDLUtility.h" />
     <ClInclude Include="src\eventmanager\EventManager.h" />
     <ClInclude Include="src\events\CollisionEvent.h" />
     <ClInclude Include="src\events\Event.h" />
@@ -575,6 +580,10 @@
     <None Include="SDL2_ttf.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor\ui\EditorUIRendering.cpp" />
+    <ClCompile Include="src\editor\ui\EditorCanvas.h" />
+    <ClCompile Include="src\editor\ui\EditorUIManager.cpp" />
+    <ClCompile Include="src\editor\editmanager\EditManager.cpp" />
     <ClCompile Include="libs\glm\detail\glm.cpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_demo.cpp" />
