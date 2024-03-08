@@ -1,14 +1,16 @@
 #pragma once
 
-#include <map>
 #include <SDL.h>
 #include <SDL_ttf.h>
+
+#include <map>
 #include <string>
+#include <memory>
 
 class AssetManager {
 private:
 	std::map<std::string, SDL_Texture*> textures;
-
+	std::unique_ptr<AssetManager> AssetManagerPtr;
 	std::map<std::string, TTF_Font*> fonts;
 
 	//TODO
@@ -28,3 +30,6 @@ public:
 	void AddFont(const std::string& assetID, const std::string& filePath, int fontSize);
 
 };
+
+//editor method ptr
+typedef std::unique_ptr<AssetManager> AssetManagerPtr;
