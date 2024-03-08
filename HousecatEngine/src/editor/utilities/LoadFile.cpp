@@ -1,10 +1,10 @@
 #include "LoadFile.h"
 
-void LoadFileSaveProject() {
+void LoadFile::SaveProject() {
 
 }
 
-void LoadFileLoadProject() {
+void LoadFile::LoadProject() {
 
 }
 
