@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\editor\utilities\LoadFile.h" />
+    <ClInclude Include="src\editor\utilities\FileManagement.h" />
     <ClInclude Include="src\editor\ui\EditorUIRendering.h" />
     <ClInclude Include="src\editor\ui\EditorUIManager.h" />
     <ClInclude Include="src\editor\editmanager\EditManager.h" />
@@ -580,6 +582,8 @@
     <None Include="SDL2_ttf.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor\utilities\LoadFile.cpp" />
+    <ClCompile Include="src\editor\utilities\FileManagement.cpp" />
     <ClCompile Include="src\editor\ui\EditorUIRendering.cpp" />
     <ClCompile Include="src\editor\ui\EditorCanvas.h" />
     <ClCompile Include="src\editor\ui\EditorUIManager.cpp" />
