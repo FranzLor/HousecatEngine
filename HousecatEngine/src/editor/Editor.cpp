@@ -12,6 +12,9 @@
 Editor::Editor()
 	: isRunning(false),
 	millisecsPreviousFrame(0),
+	zoom(0.0f),
+	mouseTile(),
+	camera(),
 	editorWindow(nullptr),
 	editorRenderer(nullptr),
 	editorImGuiContext(nullptr) {
@@ -67,6 +70,10 @@ void Editor::Initialize() {
 	SDL_SetWindowFullscreen(editorWindow.get(), SDL_FALSE);
 	isRunning = true;
 
+	//mouse
+	//x, y, w, h
+	mouseTile = { 0, 0, 1, 1 };
+
 	IMGUI_CHECKVERSION();
 	//TODO
 	//AssetManager Init here
@@ -76,6 +83,9 @@ void Editor::Initialize() {
 	editorImGuiContext = ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForSDLRenderer(editorWindow.get(), editorRenderer.get());
 	ImGui_ImplSDLRenderer2_Init(editorRenderer.get());
+
+	//TODO
+	assetManager = std::make_unique<AssetManager>();
 
 }
 
@@ -87,24 +97,26 @@ void Editor::ProcessInput() {
 	while (SDL_PollEvent(&sdlEditorEvent)) {
 		//handle ImGui SDL input
 		ImGui_ImplSDL2_ProcessEvent(&sdlEditorEvent);
-		ImGuiIO& io = ImGui::GetIO();
+		ImGuiIO& IO = ImGui::GetIO();
 
 		//mouse buttons
 		int mouseX, mouseY;
 		const int buttons = SDL_GetMouseState(&mouseX, &mouseY);
 
-		io.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
-		io.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
-		io.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
-		io.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
+		IO.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
+		IO.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
+		IO.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
+		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
 
 		switch (sdlEditorEvent.type) {
 		case SDL_QUIT:
 			isRunning = false;
 			break;
 		case SDL_MOUSEWHEEL:
-			//ImGui canvas mousewheel feat
-			//zoom
+			if (!IO.WantCaptureMouse) {
+				//TDOOD
+				//zoom -> event
+			}
 			break;
 		case SDL_KEYDOWN:
 			if (sdlEditorEvent.key.keysym.sym == SDLK_ESCAPE) {
@@ -154,6 +166,17 @@ void Editor::Render() {
 	ImGui::EndFrame();
 
 	SDL_RenderPresent(editorRenderer.get());
+}
+
+void Editor::CameraController(SDL_Event& event) {
+	//TODO
+	//sdl event -> mousewheel zoom
+}
+
+void Editor::KeyboardCameraController() {
+	//todo
+	//sdl event -> keydown
+	//switch case keys
 }
 
 void Editor::Run() {
