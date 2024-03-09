@@ -11,9 +11,22 @@
 
 class Editor {
 private:
+	//editor window
+	static const int windowBar = 25;
+	static const int windowEditorWidth = 1920;
+	static const int windowEditorHeight = 1080 - windowBar;
+
+	const int EDITOR_FPS = 144;
+	const int EDITOR_MILLISECS_PER_FRAME = 1000 / EDITOR_FPS;
+	int millisecsPreviousFrame;
+
 	bool isRunning;
 
-	int millisecsPreviousFrame;
+	float zoom;
+
+	SDL_Rect mouseTile;
+
+	SDL_Rect camera;
 
 	//SDL_Window* windowEditor;
 	//SDL_Renderer* rendererEditor;
@@ -31,13 +44,8 @@ private:
 	//camera
 	//events?
 
-	//editor window
-	static const int windowBar = 25;
-	static const int windowEditorWidth = 1920;
-	static const int windowEditorHeight = 1080 - windowBar;
-
-	const int EDITOR_FPS = 144;
-	const int EDITOR_MILLISECS_PER_FRAME = 1000 / EDITOR_FPS;
+	void CameraController(SDL_Event& event);
+	void KeyboardCameraController();
 
 public:
 	Editor();

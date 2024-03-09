@@ -2,8 +2,12 @@
 
 #include <memory>
 
+#include "../utilities/SDLUtility.h"
 
-class EditorUIRendering {
+#include "../../ecs/ECS.h"
+#include "../../assetmanager/AssetManager.h"
+
+class EditorUIRendering: public System {
 private:
 	int canvasWidth;
 	int canvasHeight;
@@ -11,20 +15,28 @@ private:
 	int canvasPreviousHeight;
 
 	int tileSize;
+	int tilePrevSize;
+
+	bool createdTiles;
+	bool removedTiles;
 
 	int gridX;
 	int gridY;
+	bool gridSnap;
 
 	std::shared_ptr<class EditorCanvas> canvas;
-	std::shared_ptr<class ImGuiFunctions> imguiFunctions;
+	std::shared_ptr<class EditorUIManager> editorUIManager;
+	std::shared_ptr<class Mouse> mouse;
+	std::unique_ptr<class EditManager> editManager;
 
+	const bool MouseOutOfBounds() const;
 public:
 	EditorUIRendering();
 	~EditorUIRendering();
 
-	void Update(SDL_Renderer& renderer);
+	void Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, const float& zoom, const float& dT);
 
-	void RenderGrid(SDL_Renderer& renderer);
+	void RenderGrid(SDL_Renderer& renderer, SDL_Rect& camera, const float& zoom);
 
 	void CreateNewCanvas();
 
