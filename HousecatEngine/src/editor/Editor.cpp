@@ -1,13 +1,17 @@
-#include "Editor.h"
-
-#include "../logger/Logger.h"
-
 #include <SDL_ttf.h>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
 #include <imgui/imgui_impl_sdlrenderer2.h>
 
+#include "Editor.h"
 #include "ui/EditorUIRendering.h"
+
+#include "../logger/Logger.h"
+
+#include "../systems/RenderSystem.h"
+#include "../systems/RenderColliderSystem.h"
+#include "../systems/AnimationSystem.h"
 
 Editor::Editor()
 	: isRunning(false),
@@ -86,7 +90,16 @@ void Editor::Initialize() {
 
 	//TODO
 	assetManager = std::make_unique<AssetManager>();
+	//textures
+	//assetManager->AddTexture(editorRenderer.get(), "x", "x");
 
+	//SYSTEMS
+	//call Housecat to add systems for editor
+	auto& housecat = Housecat::GetInstance();
+	housecat.AddSystem<RenderSystem>();
+	housecat.AddSystem<EditorUIRendering>();
+	housecat.AddSystem<RenderColliderSystem>();
+	housecat.AddSystem<AnimationSystem>();
 }
 
 
@@ -140,9 +153,15 @@ void Editor::Update() {
 	millisecsPreviousFrame = SDL_GetTicks();
 
 	//TODO
-	//Housecat manager update
-	//Grab render gui elements
-	//exit?
+	Housecat::GetInstance().Update();
+
+	//TODO
+	//exit
+	/*if (Housecat::GetInstance().GetSystem<ImGuiRendering>().Exit()) {
+		isRunning = false;
+	}*/
+
+	//TODO
 }
 
 
@@ -150,7 +169,13 @@ void Editor::Render() {
 	SDL_SetRenderDrawColor(editorRenderer.get(), 10, 10, 10, 255);
 	SDL_RenderClear(editorRenderer.get());
 
-	//render GUI
+	//render editor
+	Housecat::GetInstance().GetSystem<EditorUIRendering>().RenderGrid(editorRenderer, camera, zoom);
+	Housecat::GetInstance().GetSystem<RenderSystem>().Update(editorRenderer.get(), assetManager, camera);
+
+	//TODO
+	//render collider
+	//render animation
 
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();

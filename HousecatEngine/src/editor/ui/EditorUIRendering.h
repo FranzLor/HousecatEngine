@@ -36,7 +36,7 @@ public:
 
 	void Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, const float& zoom, const float& dT);
 
-	void RenderGrid(SDL_Renderer& renderer, SDL_Rect& camera, const float& zoom);
+	void RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom);
 
 	void CreateNewCanvas();
 
