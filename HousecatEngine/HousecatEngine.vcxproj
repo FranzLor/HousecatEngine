@@ -409,6 +409,7 @@
     <ClInclude Include="src\ecs\ECS.h" />
     <ClInclude Include="src\editor\Editor.h" />
     <ClInclude Include="src\editor\ui\TileAttributes.h" />
+    <ClInclude Include="src\editor\utilities\mouse\Mouse.h" />
     <ClInclude Include="src\editor\utilities\SDLUtility.h" />
     <ClInclude Include="src\eventmanager\EventManager.h" />
     <ClInclude Include="src\events\CollisionEvent.h" />
@@ -599,6 +600,7 @@
     <ClCompile Include="src\assetmanager\AssetManager.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\editor\Editor.cpp" />
+    <ClCompile Include="src\editor\utilities\mouse\Mouse.cpp" />
     <ClCompile Include="src\eventmanager\EventManager.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\input\GlobalInputHandler.cpp" />
