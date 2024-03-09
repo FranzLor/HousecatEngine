@@ -133,7 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\editor\utilities\EditCanasSize.h" />
+    <ClInclude Include="src\editor\utilities\EditCanvasSize.h" />
     <ClInclude Include="src\editor\utilities\EditTile.h" />
     <ClInclude Include="src\editor\utilities\LoadFile.h" />
     <ClInclude Include="src\editor\utilities\FileManagement.h" />
