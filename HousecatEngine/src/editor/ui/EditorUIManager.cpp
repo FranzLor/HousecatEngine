@@ -6,7 +6,7 @@
 #include "../utilities/SDLUtility.h"
 #include "../editmanager/EditManager.h"
 
-EditorUIManager::EditorUIManager()
+EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
 //int tileWidth, tileHeight, scaleX, scaleY, layer, tileOffset, srcRectX, srcRectY
 	: tileAttributes{ 16, 16, 1, 1, 0, {0, 0}, 0, 0 },
 	tilePrevAttributes{ 16, 16, 1, 1, 0, {0, 0}, 0, 0 },
@@ -20,6 +20,7 @@ EditorUIManager::EditorUIManager()
 	assetID(""),
 	tilesets(),
 	tilesetsTarget(),
+	mouse(mouse),
 	editManager(std::make_unique<EditManager>()) {
 
 	//Logger::Lifecycle("ImGuiFunctions Constructor Called!");
@@ -50,6 +51,10 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 			Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
 
 			//TODO 
+			//file management
+		}
+		if (ImGui::MenuItem("Save As", "CTRL+SHIFT+S")) {
+			//TODO
 			//file management
 		}
 		if (ImGui::MenuItem("Exit", "ALT+F4")) {
@@ -93,14 +98,16 @@ void EditorUIManager::ShowViewMenu() {
 	}
 }
 
-void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager) {
-	if (ImGui::BeginMenu("Add Tileset")) {
+void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse) {
+	//MENU project interact
+	if (ImGui::BeginMenu("Add Map")) {
+		//TODO
+	}
+	if (ImGui::BeginMenu("Import Tileset")) {
 		//TODO
 		//file management
 
-
 	}
-	ImGui::EndMenu();
 }
 
 //TODO
@@ -119,12 +126,68 @@ void EditorUIManager::Save(EditorRenderer& renderer, const AssetManagerPtr& asse
 
 //TODO
 //tileset management
-void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager) {
+void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
+	if (ImGui::Begin("Tileset"), isImageLoaded) {
+		//resize on mouse scroll
+		float scrollX = ImGui::GetScrollX();
+		float scrollY = ImGui::GetScrollY();
+		int imageWidth = textureWidth * 2;
+		int imageHeight = textureHeight;
 
+		ImGui::Image(assetManager->GetTexture(assetID), ImVec2(imageWidth, imageHeight));
+
+		int mousePosX = static_cast<int>(ImGui::GetMousePos().x - ImGui::GetWindowPos().x + scrollX);
+		int mousePosY = static_cast<int>(ImGui::GetMousePos().y - ImGui::GetWindowPos().y + scrollY);
+
+		int tileCol = imageWidth / (mouseRect.x * 2);
+		int tileRow = imageHeight / (mouseRect.y * 2);
+
+		//store highlighted tiles
+		auto highlightTiles = ImGui::GetWindowDrawList();
+
+		//render tileset textures
+		for (int c = 0; c < tileCol; c++) {
+			for (int r = 0; r < tileRow; r++) {
+				// Calculate tile boundaries
+				int tileAX = (imageWidth / tileCol) * c;
+				int tileAY = (imageHeight / tileRow) * r;
+				int tileBX = tileAX + (imageWidth / tileCol);
+				int tileBY = tileAX + (imageHeight / tileRow);
+
+				//wihtin tile area
+				if (mousePosX >= tileAX && mousePosX <= tileBX && mousePosY >= tileAY && mousePosY <= tileBY) {
+					//highlight blueish
+					highlightTiles->AddRectFilled(ImVec2(tileAX, tileAY), ImVec2(tileBX, tileBY), IM_COL32(0, 0, 255, 100));
+
+					if (ImGui::IsMouseClicked(0)) {
+						tileAttributes.srcRectX = c * (int)mouseRect.x * 2;
+						tileAttributes.srcRectY = r * (int)mouseRect.y * 2;
+					}
+				}
+			}
+		}
+	}
 }
 
-void EditorUIManager::SetTileset(const AssetManagerPtr& assetManager) {
+void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse) {
+	//tile attributes interact
+	if (ImGui::BeginMenu("Tilesets")) {
+		//multiple tilesets
+	}
+	if (ImGui::BeginMenu("Transform")) {
+		//scale
+	}
+	if (ImGui::BeginMenu("Sprite")) {
+		//mouse x mouse y
 
+	}
+}
+
+void EditorUIManager::TilesetLayers(const AssetManagerPtr& assetManager) {
+	//layers interact
+	if (ImGui::BeginMenu("Layer")) {
+
+	}
 }
 
 

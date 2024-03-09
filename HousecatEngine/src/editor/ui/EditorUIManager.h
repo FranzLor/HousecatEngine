@@ -9,6 +9,7 @@
 
 #include "../utilities/SDLUtility.h"
 #include "../editmanager/EditManager.h"
+#include "../utilities/mouse/Mouse.h"
 
 #include "../../ecs/ECS.h"
 #include "../../assetmanager/AssetManager.h"
@@ -22,6 +23,7 @@ private:
 	int tileHeight;
 	int textureWidth;
 	int textureHeight;
+	bool isImageLoaded;
 
 	//edit
 	bool Undo;
@@ -37,9 +39,10 @@ private:
 
 	std::unique_ptr<class EditManager> editManager;
 
+	std::shared_ptr<class Mouse> mouse;
 
 public:
-	EditorUIManager();
+	EditorUIManager(class std::shared_ptr<Mouse>& mouse);
 	~EditorUIManager();
 
 	//TODO
@@ -54,7 +57,7 @@ public:
 
 	void ShowViewMenu();
 
-	void ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager);
+	void ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse);
 
 	//TODO
 	//file management
@@ -66,9 +69,11 @@ public:
 
 	//TODO
 	//tileset management
-	void TileAttributes(const AssetManagerPtr& assetManager);
+	void TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect);
 
-	void SetTileset(const AssetManagerPtr& assetManager);
+	void TilesetLayers(const AssetManagerPtr& assetManager);
+
+	void TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse);
 
 	//TODO
 	//shortcut management
