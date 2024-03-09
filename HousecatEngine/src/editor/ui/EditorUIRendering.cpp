@@ -121,7 +121,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 }
 
-void EditorUIRendering::RenderGrid(SDL_Renderer& renderer, SDL_Rect& camera, const float& zoom) {
+void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {
 	//render
 	//for tiles y
 	//for tiles x
