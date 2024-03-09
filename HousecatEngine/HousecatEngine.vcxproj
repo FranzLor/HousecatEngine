@@ -136,7 +136,7 @@
     <ClInclude Include="src\editor\utilities\EditCanvasSize.h" />
     <ClInclude Include="src\editor\utilities\EditTile.h" />
     <ClInclude Include="src\editor\utilities\LoadFile.h" />
-    <ClInclude Include="src\editor\utilities\FileManagement.h" />
+    <ClInclude Include="src\editor\utilities\FileDialogue.h" />
     <ClInclude Include="src\editor\ui\EditorUIRendering.h" />
     <ClInclude Include="src\editor\ui\EditorUIManager.h" />
     <ClInclude Include="src\editor\utilities\editmanager\EditManager.h" />
@@ -588,7 +588,7 @@
     <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp" />
     <ClCompile Include="src\editor\utilities\EditTile.cpp" />
     <ClCompile Include="src\editor\utilities\LoadFile.cpp" />
-    <ClCompile Include="src\editor\utilities\FileManagement.cpp" />
+    <ClCompile Include="src\editor\utilities\FileDialogue.cpp" />
     <ClCompile Include="src\editor\ui\EditorUIRendering.cpp" />
     <ClCompile Include="src\editor\ui\EditorCanvas.h" />
     <ClCompile Include="src\editor\ui\EditorUIManager.cpp" />

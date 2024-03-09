@@ -1,8 +1,8 @@
 #include <vector>
 
-#include "FileManagement.h"
+#include "FileDialogue.h"
 
-std::string FileManagement::OpenFile(const char* filterPattern, HWND windowHandle) {
+std::string FileDialogue::OpenFile(const char* filterPattern, HWND windowHandle) {
 	//dynamic allo for longer paths
 	std::vector<char> selectedFilePath(MAX_PATH);
 	//zero init the struct
@@ -27,7 +27,7 @@ std::string FileManagement::OpenFile(const char* filterPattern, HWND windowHandl
 	return std::string();
 }
 
-std::string FileManagement::SaveFile(const char* filterPath, HWND windowHandle) {
+std::string FileDialogue::SaveFile(const char* filterPath, HWND windowHandle) {
 	std::vector<char> filePath(MAX_PATH);
 	OPENFILENAMEA saveFileDialogStruct = { 0 };
 

@@ -5,10 +5,10 @@
 #include <fstream>
 #include <commdlg.h>
 
-class FileManagement {
+class FileDialogue {
 public:
-	FileManagement() = default;
-	~FileManagement() = default;
+	FileDialogue() = default;
+	~FileDialogue() = default;
 
 	static std::string OpenFile(const char* filterPattern, HWND windowHandle);
 
