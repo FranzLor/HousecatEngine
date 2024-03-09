@@ -49,6 +49,8 @@ public:
 	//ImGui
 	void InitImGui();
 
+	void Setup();
+
 	//TODO
 	//project management
 	void ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize);

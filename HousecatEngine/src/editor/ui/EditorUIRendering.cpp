@@ -11,16 +11,29 @@
 
 
 EditorUIRendering::EditorUIRendering()
-	: canvasWidth(0),
-	canvasHeight(0),
+	: canvasWidth(960),
+	canvasHeight(640),
+	canvasPreviousWidth(canvasWidth),
+	canvasPreviousHeight(canvasHeight),
 	tileSize(32),
+	tilePrevSize(tileSize),
+	createdTiles(false),
+	removedTiles(false),
 	gridX(0),
-	gridY(0) {
+	gridY(0),
+	gridSnap(false) {
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
+	mouse = std::make_shared<Mouse>();
+	editorUIManager = std::make_shared<EditorUIManager>(mouse);
+	editManager = std::make_unique<EditManager>();
 
-	canvasPreviousWidth = 0;
-	canvasPreviousHeight = 0;
+	//call ImGui setup
+	editorUIManager->InitImGui();
+	editorUIManager->Setup();
+
+	canvasPreviousWidth = canvasWidth;
+	canvasPreviousHeight = canvasHeight;
 
 	Logger::Lifecycle("ImGuiRendering Constructor Called!");
 }
@@ -30,23 +43,21 @@ EditorUIRendering::~EditorUIRendering() {
 }
 
 
-void EditorUIRendering::Update(SDL_Renderer& renderer) {
+void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, const float& zoom, const float& dT) {
 	ImGui::NewFrame();
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-			//show file menu
-			//call ShowFileMenu
-			//file management
+			editorUIManager->ShowFileMenu(renderer, assetManager, canvas, tileSize);
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Edit")) {
 			//show edit menu
 			if (ImGui::MenuItem("Undo", "CTRL + Z")) {
-				//call Undo();
+				editManager->Undo();
 			}
 			if (ImGui::MenuItem("Redo", "CTRL + Y")) {
-				//call Redo();
+				editManager->Redo();
 			}
 			ImGui::EndMenu();
 		}
@@ -110,7 +121,7 @@ void EditorUIRendering::Update(SDL_Renderer& renderer) {
 
 }
 
-void EditorUIRendering::RenderGrid(SDL_Renderer& renderer) {
+void EditorUIRendering::RenderGrid(SDL_Renderer& renderer, SDL_Rect& camera, const float& zoom) {
 	//render
 	//for tiles y
 	//for tiles x
