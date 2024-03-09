@@ -139,7 +139,7 @@
     <ClInclude Include="src\editor\utilities\FileManagement.h" />
     <ClInclude Include="src\editor\ui\EditorUIRendering.h" />
     <ClInclude Include="src\editor\ui\EditorUIManager.h" />
-    <ClInclude Include="src\editor\editmanager\EditManager.h" />
+    <ClInclude Include="src\editor\utilities\editmanager\EditManager.h" />
     <ClInclude Include="libs\glm\common.hpp" />
     <ClInclude Include="libs\glm\detail\compute_common.hpp" />
     <ClInclude Include="libs\glm\detail\compute_vector_relational.hpp" />
@@ -592,7 +592,7 @@
     <ClCompile Include="src\editor\ui\EditorUIRendering.cpp" />
     <ClCompile Include="src\editor\ui\EditorCanvas.h" />
     <ClCompile Include="src\editor\ui\EditorUIManager.cpp" />
-    <ClCompile Include="src\editor\editmanager\EditManager.cpp" />
+    <ClCompile Include="src\editor\utilities\editmanager\EditManager.cpp" />
     <ClCompile Include="libs\glm\detail\glm.cpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_demo.cpp" />
