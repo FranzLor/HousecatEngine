@@ -322,6 +322,12 @@ public:
 
 	void Update();
 
+	//singleton pattern
+	//for Editor
+	static Housecat& GetInstance();
+	Housecat(const Housecat&) = delete;
+	Housecat& operator=(const Housecat&) = delete;
+
 	//Component management
 	template <typename TComponent> bool HasComponent(Entity entity) const;
 	template <typename TComponent> TComponent& GetComponent(Entity entity) const;

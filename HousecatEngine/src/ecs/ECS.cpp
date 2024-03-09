@@ -231,6 +231,11 @@ void Housecat::Update() {
 	entitiesToKill.clear();
 }
 
+Housecat& Housecat::GetInstance() {
+	static Housecat instance;
+	return instance;
+}
+
 //TODO
 //adding entity Kill(), Tag()
 //use housecat for management
