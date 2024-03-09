@@ -37,65 +37,66 @@ void EditorUIManager::InitImGui() {
 	//ImGui
 }
 
+void EditorUIManager::Setup() {
+	//TODO
+	//ImGui
+}
+
 //TODO
 //menu bar management
 void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize) {
-	if (ImGui::BeginMenu("File")) {
-		if (ImGui::MenuItem("New Project", "CTRL+N")) {
-			NewProject();
-		}
-		if (ImGui::MenuItem("Open Project", "CTRL+O")) {
-			OpenProject(renderer, assetManager, canvas, tileSize);
-		}
-		if (ImGui::MenuItem("Save", "CTRL+S")) {
-			Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
+	//MENU file interact
+	if (ImGui::MenuItem("New Project", "CTRL+N")) {
+		NewProject();
+	}
+	if (ImGui::MenuItem("Open Project", "CTRL+O")) {
+		OpenProject(renderer, assetManager, canvas, tileSize);
+	}
+	if (ImGui::MenuItem("Save", "CTRL+S")) {
+		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
 
-			//TODO 
-			//file management
-		}
-		if (ImGui::MenuItem("Save As", "CTRL+SHIFT+S")) {
-			//TODO
-			//file management
-		}
-		if (ImGui::MenuItem("Exit", "ALT+F4")) {
-			//EXIT
-		}
-		ImGui::EndMenu();
+		//TODO 
+		//file management
+	}
+	if (ImGui::MenuItem("Save As", "CTRL+SHIFT+S")) {
+		//TODO
+		//file management
+	}
+	if (ImGui::MenuItem("Exit", "ALT+F4")) {
+		//EXIT
 	}
 }
 
 void EditorUIManager::ShowEditMenu() {
-	if (ImGui::BeginMenu("Edit")) {
-		if (ImGui::MenuItem("Undo", "CTRL+Z")) {
-			//Undo = true;
-		}
-		if (ImGui::MenuItem("Redo", "CTRL+Y")) {
-			//Redo = true;
-		}
-		ImGui::EndMenu();
+	//MENU edit interact
+	if (ImGui::MenuItem("Undo", "CTRL+Z")) {
+		//Undo = true;
 	}
+	if (ImGui::MenuItem("Redo", "CTRL+Y")) {
+		//Redo = true;
+	}
+	ImGui::EndMenu();
 }
 
 void EditorUIManager::ShowViewMenu() {
-	if (ImGui::BeginMenu("View")) {
-		if (ImGui::MenuItem("Show Grid", "CTRL+G")) {
-			//TODO
-			//grid management
-		}
-		if (ImGui::MenuItem("Grid Snapping")) {
-			//TODO
-
-		}
-		if (ImGui::MenuItem("Zoom In")) {
-			//TODO
-
-		}
-		if (ImGui::MenuItem("Zoom Out")) {
-			//TODO
-
-		}
-		ImGui::EndMenu();
+	//MENU view interact
+	if (ImGui::MenuItem("Show Grid", "CTRL+G")) {
+		//TODO
+		//grid management
 	}
+	if (ImGui::MenuItem("Grid Snapping")) {
+		//TODO
+
+	}
+	if (ImGui::MenuItem("Zoom In")) {
+		//TODO
+
+	}
+	if (ImGui::MenuItem("Zoom Out")) {
+		//TODO
+
+	}
+
 }
 
 void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse) {
