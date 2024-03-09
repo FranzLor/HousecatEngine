@@ -283,11 +283,9 @@ private:
 	//lists freed entity IDs
 	std::deque<int> freedIDs;
 
-	//singleton pattern
-	//used by Editor
-	static Housecat& GetInstance();
-	Housecat(const Housecat&) = delete;
-	Housecat& operator=(const Housecat&) = delete;
+	//TODO?
+	//std::shared_ptr<Housecat> housecat;
+
 
 
 public:
