@@ -133,12 +133,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\editor\utilities\EditCanasSize.h" />
-    <ClInclude Include="src\editor\utilities\LoadFile.h" />
-    <ClInclude Include="src\editor\utilities\FileManagement.h" />
+    <ClInclude Include="src\editor\utilities\EditCanvasSize.h" />
+    <ClInclude Include="src\editor\utilities\EditTile.h" />
+    <ClInclude Include="src\editor\utilities\MapManagement.h" />
+    <ClInclude Include="src\editor\utilities\ProjectManagement.h" />
+    <ClInclude Include="src\editor\utilities\FileDialogue.h" />
     <ClInclude Include="src\editor\ui\EditorUIRendering.h" />
     <ClInclude Include="src\editor\ui\EditorUIManager.h" />
-    <ClInclude Include="src\editor\editmanager\EditManager.h" />
+    <ClInclude Include="src\editor\utilities\editmanager\EditManager.h" />
     <ClInclude Include="libs\glm\common.hpp" />
     <ClInclude Include="libs\glm\detail\compute_common.hpp" />
     <ClInclude Include="libs\glm\detail\compute_vector_relational.hpp" />
@@ -585,12 +587,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp" />
-    <ClCompile Include="src\editor\utilities\LoadFile.cpp" />
-    <ClCompile Include="src\editor\utilities\FileManagement.cpp" />
+    <ClCompile Include="src\editor\utilities\EditTile.cpp" />
+    <ClCompile Include="src\editor\utilities\MapManagement.cpp" />
+    <ClCompile Include="src\editor\utilities\ProjectManagement.cpp" />
+    <ClCompile Include="src\editor\utilities\FileDialogue.cpp" />
     <ClCompile Include="src\editor\ui\EditorUIRendering.cpp" />
     <ClCompile Include="src\editor\ui\EditorCanvas.h" />
     <ClCompile Include="src\editor\ui\EditorUIManager.cpp" />
-    <ClCompile Include="src\editor\editmanager\EditManager.cpp" />
+    <ClCompile Include="src\editor\utilities\editmanager\EditManager.cpp" />
     <ClCompile Include="libs\glm\detail\glm.cpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_demo.cpp" />

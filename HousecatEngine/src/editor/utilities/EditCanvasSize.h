@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../editmanager/EditManager.h"
+#include "../utilities/editmanager/EditManager.h"
 #include "../ui/EditorCanvas.h"
 
 

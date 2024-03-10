@@ -1,4 +1,4 @@
-#include "EditCanasSize.h"
+#include "EditCanvasSize.h"
 
 #include "../ui/EditorCanvas.h"
 

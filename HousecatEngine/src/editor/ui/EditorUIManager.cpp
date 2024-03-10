@@ -4,7 +4,7 @@
 #include "EditorUIManager.h"
 
 #include "../utilities/SDLUtility.h"
-#include "../editmanager/EditManager.h"
+#include "../utilities/editmanager/EditManager.h"
 
 EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
 //int tileWidth, tileHeight, scaleX, scaleY, layer, tileOffset, srcRectX, srcRectY
@@ -14,6 +14,7 @@ EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
 	tileHeight(16),
 	textureWidth(0),
 	textureHeight(0),
+	isImageLoaded(false),
 	Undo(false),
 	Redo(false),
 	file(""),

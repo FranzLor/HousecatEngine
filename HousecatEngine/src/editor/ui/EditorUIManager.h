@@ -8,7 +8,7 @@
 #include "EditorCanvas.h"
 
 #include "../utilities/SDLUtility.h"
-#include "../editmanager/EditManager.h"
+#include "../utilities/editmanager/EditManager.h"
 #include "../utilities/mouse/Mouse.h"
 
 #include "../../ecs/ECS.h"
