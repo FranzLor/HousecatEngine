@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="src\editor\utilities\EditCanvasSize.h" />
     <ClInclude Include="src\editor\utilities\EditTile.h" />
+    <ClInclude Include="src\editor\utilities\MapManagement.h" />
     <ClInclude Include="src\editor\utilities\ProjectManagement.h" />
     <ClInclude Include="src\editor\utilities\LoadFile.h" />
     <ClInclude Include="src\editor\utilities\FileDialogue.h" />
@@ -588,6 +589,7 @@
   <ItemGroup>
     <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp" />
     <ClCompile Include="src\editor\utilities\EditTile.cpp" />
+    <ClCompile Include="src\editor\utilities\MapManagement.cpp" />
     <ClCompile Include="src\editor\utilities\ProjectManagement.cpp" />
     <ClCompile Include="src\editor\utilities\LoadFile.cpp" />
     <ClCompile Include="src\editor\utilities\FileDialogue.cpp" />
