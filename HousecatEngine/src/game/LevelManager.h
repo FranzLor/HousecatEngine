@@ -12,5 +12,5 @@ public:
 	LevelManager();
 	~LevelManager();
 
-	void LoadLevel();
+	void LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Renderer* rendererGame, const std::unique_ptr<AssetManager>& assetManager, int level);
 };
