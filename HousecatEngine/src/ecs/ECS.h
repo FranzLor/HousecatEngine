@@ -68,9 +68,9 @@ public:
 
 	//tagging groupping entity management
 	void Tag(const std::string& tag);
-	bool HasTag(const std::string& tag);
+	bool HasTag(const std::string& tag) const;
 	void Group(const std::string& group);
-	bool HasGroup(const std::string& group);
+	bool HasGroup(const std::string& group) const;
 
 	bool operator==(const Entity& other) const {
 		return ID == other.ID;
@@ -350,7 +350,7 @@ public:
 //----------------------------------------//
 template <typename TComponent, typename ...TArgs>
 bool Entity::HasComponent() const {
-	return housecat->RemoveComponent<TComponent>(*this);
+	return housecat->HasComponent<TComponent>(*this);
 }
 
 template <typename TComponent>
