@@ -58,7 +58,8 @@ Game::Game()
 	gameContext(nullptr),
 	housecat(std::make_unique<Housecat>()),
 	assetManager(std::make_unique<AssetManager>()),
-	eventManager(std::make_unique<EventManager>()) {
+	eventManager(std::make_unique<EventManager>()),
+	levelManager(std::make_unique<LevelManager>()) {
 
 	Logger::Lifecycle("Main Game Constructor Called!");
 }
@@ -184,7 +185,8 @@ void Game::Setup() {
 	housecat->AddSystem<RenderHealthSystem>();
 	housecat->AddSystem<RenderImGuiSystem>();
 
-	levelManager->LoadLevel(housecat, rendererGame, assetManager, 1);
+	lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::os);
+	levelManager->LoadLevel(housecat, rendererGame, assetManager, lua, 1);
 }
 
 
