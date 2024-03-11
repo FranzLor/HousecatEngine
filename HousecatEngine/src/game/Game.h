@@ -4,6 +4,10 @@
 
 #include <imgui/imgui.h>
 
+#include <sol/sol.hpp>
+
+#include "LevelManager.h"
+
 #include "../ecs/ECS.h"
 
 #include "../assetmanager/AssetManager.h"
@@ -30,11 +34,14 @@ private:
 	//ImGui context
 	ImGuiContext* gameContext;
 
+	//SOL for lua
+	sol::state lua;
 
 	//managers
 	std::unique_ptr<Housecat> housecat;
 	std::unique_ptr<AssetManager> assetManager;
 	std::unique_ptr<EventManager> eventManager;
+	std::unique_ptr<LevelManager> levelManager;
 
 public:
 	Game();

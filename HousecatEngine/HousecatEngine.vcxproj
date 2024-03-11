@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\SDL2\include;C:\GitHub\HousecatEngine\HousecatEngine\libs;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDL2\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\SDL2\lib\x86;C:\GitHub\HousecatEngine\HousecatEngine\libs\lua;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -85,7 +85,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;liblua53.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\LevelManager.h" />
     <ClInclude Include="src\editor\utilities\EditCanvasSize.h" />
     <ClInclude Include="src\editor\utilities\EditTile.h" />
     <ClInclude Include="src\editor\utilities\MapManagement.h" />
@@ -436,6 +437,7 @@
     <ClInclude Include="src\systems\RenderTextSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\scripts\Level1Test.lua" />
     <None Include="Housecat.aps" />
     <None Include="imgui.ini" />
     <None Include="libavif-16.dll" />
@@ -586,6 +588,7 @@
     <None Include="SDL2_ttf.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\LevelManager.cpp" />
     <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp" />
     <ClCompile Include="src\editor\utilities\EditTile.cpp" />
     <ClCompile Include="src\editor\utilities\MapManagement.cpp" />
