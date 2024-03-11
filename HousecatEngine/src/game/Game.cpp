@@ -276,37 +276,37 @@ void Game::LoadLevel(int level) {
 	player.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(20.0, 24.0));
 	player.AddComponent<CameraComponent>();
 
-	cat1.Group("cats");
+	cat1.Group("npc");
 	cat1.AddComponent<TransformComponent>(glm::vec2(150, 250), glm::vec2(4.0, 4.0), 0.0);
 	cat1.AddComponent<RigidBodyComponent>(glm::vec2(20.0, 0.0));
 	cat1.AddComponent<AnimationComponent>(4, 5, true);
 	cat1.AddComponent<MovementStateComponent>(true);
 	cat1.AddComponent<SpriteComponent>("npc", 32, 32, 3);
-	//cat1.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(20.0, 24.0));
+	cat1.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(20.0, 24.0));
 
-	cat2.Group("cats");
+	cat2.Group("npc");
 	cat2.AddComponent<TransformComponent>(glm::vec2(90, 295), glm::vec2(2.0, 2.0), 0.0);
 	cat2.AddComponent<AnimationComponent>(4, 8, true);
 	cat2.AddComponent<MovementStateComponent>(true);
 	cat2.AddComponent<RigidBodyComponent>(glm::vec2(20.0, 0.0));
 	cat2.AddComponent<SpriteComponent>("npc", 32, 32, 2);
-	//cat2.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(10.0, 16.0));
+	cat2.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(10.0, 16.0));
 
-	cat3.Group("cats");
+	cat3.Group("npc");
 	cat3.AddComponent<TransformComponent>(glm::vec2(160, 270), glm::vec2(2.0, 2.0), 0.0);
 	cat3.AddComponent<AnimationComponent>(4, 8, true);
 	cat3.AddComponent<MovementStateComponent>(true);
 	cat3.AddComponent<RigidBodyComponent>(glm::vec2(20.0, 0.0));
 	cat3.AddComponent<SpriteComponent>("npc", 32, 32, 2);
-	//cat3.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(10.0, 16.0));
+	cat3.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(10.0, 16.0));
 	
-	cat4.Group("cats");
+	cat4.Group("npc");
 	cat4.AddComponent<TransformComponent>(glm::vec2(140, 315), glm::vec2(2.0, 2.0), 0.0);
 	cat4.AddComponent<AnimationComponent>(4, 8, true);
 	cat4.AddComponent<MovementStateComponent>(true);
 	cat4.AddComponent<RigidBodyComponent>(glm::vec2(20.0, 0.0));
 	cat4.AddComponent<SpriteComponent>("npc", 32, 32, 4);
-	//cat4.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(10.0, 16.0));
+	cat4.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(10.0, 16.0));
 
 
 	ghost.Group("enemy");
@@ -329,7 +329,7 @@ void Game::LoadLevel(int level) {
 
 
 	chestR.Group("barriers");
-	chestR.AddComponent<TransformComponent>(glm::vec2(600, 280), glm::vec2(3.0, 3.0), 0.0);
+	chestR.AddComponent<TransformComponent>(glm::vec2(400, 280), glm::vec2(3.0, 3.0), 0.0);
 	chestR.AddComponent<SpriteComponent>("chest", 37, 32, 5);
 	chestR.AddComponent<BoxColliderComponent>(37, 32);
 
@@ -370,6 +370,7 @@ void Game::Update() {
 	//event listeners
 	housecat->GetSystem<DamageSystem>().ListenToEvents(eventManager);
 	housecat->GetSystem<KeyboardInputSystem>().ListenToEvents(eventManager);
+	housecat->GetSystem<MovementSystem>().ListenToEvents(eventManager);
 
 	//update Manager for all entities to be created/killed
 	//(FIXED)
