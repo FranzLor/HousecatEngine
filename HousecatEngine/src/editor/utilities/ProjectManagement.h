@@ -6,13 +6,14 @@
 #include <sol/sol.hpp>
 
 #include "SDLUtility.h"
+#include "MapManagement.h"
 
 #include "../ui/EditorCanvas.h"
 #include "../../assetmanager/AssetManager.h"
 
 class ProjectManagement {
 private:
-
+	std::unique_ptr<MapManagement> mapManagement;
 public:
 	ProjectManagement();
 	~ProjectManagement();
