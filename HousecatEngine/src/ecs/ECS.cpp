@@ -28,7 +28,7 @@ void Entity::Tag(const std::string& tag) {
 	housecat->AddTag(*this, tag);
 }
 
-bool Entity::HasTag(const std::string& tag) {
+bool Entity::HasTag(const std::string& tag) const {
 	return housecat->HasTag(*this, tag);
 }
 
@@ -36,7 +36,7 @@ void Entity::Group(const std::string& group) {
 	housecat->AddGroup(*this, group);
 }
 
-bool Entity::HasGroup(const std::string& group) {
+bool Entity::HasGroup(const std::string& group) const {
 	return housecat->HasGroup(*this, group);
 }
 
