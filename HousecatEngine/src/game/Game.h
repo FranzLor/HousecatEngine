@@ -62,7 +62,6 @@ public:
 	void Initialize();
 
 	void Run();
-	void LoadLevel(int level);
 	void Setup();
 	void Input();
 	void Update();

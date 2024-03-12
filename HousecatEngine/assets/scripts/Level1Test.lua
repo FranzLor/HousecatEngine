@@ -14,7 +14,7 @@ Level = {
         { type = "texture", id = "player", file = "./assets/textures/cat_sprite_2.png" },
         { type = "texture", id = "ghost", file = "./assets/textures/ghost.png" },
 
-        { type = "texture", id = "map", file = "./assets/tilemaps/tilemap.png" },
+        { type = "texture", id = "tilemap-texture", file = "./assets/tilemaps/terrain_tile.png" },
 
         { type = "font", id = "roboto", file = "./assets/fonts/roboto.regular.ttf", font_size = 18 },
         { type = "font", id = "montserrat", file = "./assets/fonts/montserrat.bold.ttf", font_size = 20 }
@@ -24,8 +24,8 @@ Level = {
     --              MAP CONFIG for game               --
     ----------------------------------------------------
     tilemap = {
-        mapFile = "./assets/tilemaps/map_test.map",
-        textureID = "map",
+        mapFilePath = "./assets/tilemaps/map_test.map",
+        textureID = "tilemap-texture",
         tileSize = 32,
         tileScale = 2.0,
         tileCols = 40,
@@ -84,10 +84,10 @@ Level = {
                 },
 
                 health = {
-                    health = 100
+                    healthPercent = 100
                 },
 
-                camera_follow = {
+                camera = {
                     follow = true
                 }
             }
@@ -130,7 +130,7 @@ Level = {
                 },
 
                 health = {
-                    health = 100
+                    healthPercent = 100
                 },
 
                 damageArea = {
@@ -141,4 +141,4 @@ Level = {
             }
         }
     }
-}
+} 
