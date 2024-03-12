@@ -60,20 +60,15 @@ public:
 		
 			//prevent player form moving outside map
 			if (entity.HasTag("player")) {
-				//adjust padding for map (-5 on edge)
-				int paddingLeft = -5;
-				int paddingRight = -5;
-				int paddingTop = -5;
-				int paddingBottom = -5;
+				//min and max boundaries around map
+				float effectiveMinX = static_cast<float>(Game::paddingLeft);
+				float effectiveMaxX = static_cast<float>(Game::mapWidth - Game::paddingRight);
+				float effectiveMinY = static_cast<float>(Game::paddingTop);
+				float effectiveMaxY = static_cast<float>(Game::mapWidth - Game::paddingBottom);
 
-				paddingLeft *= static_cast<int>(transform.scale.x);
-				paddingRight *= static_cast<int>(transform.scale.x);
-				paddingTop *= static_cast<int>(transform.scale.y);
-				paddingBottom *= static_cast<int>(transform.scale.y);
-
-				//update position within boundaries
-				transform.position.x = std::max(static_cast<float>(paddingLeft), std::min(transform.position.x, static_cast<float>(Game::mapWidth - paddingRight)));
-				transform.position.y = std::max(static_cast<float>(paddingTop), std::min(transform.position.y, static_cast<float>(Game::mapHeight - paddingBottom)));
+				//keep player inside padding
+				transform.position.x = std::max(effectiveMinX, std::min(transform.position.x, effectiveMaxX));
+				transform.position.y = std::max(effectiveMinY, std::min(transform.position.y, effectiveMaxY));
 			}
 
 			//checks if outside the map boundaries, buffer margin forgives 200 px W/H

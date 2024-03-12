@@ -18,20 +18,23 @@ public:
 		for (auto entity : GetSystemEntities()) {
 			auto& transform = entity.GetComponent<TransformComponent>();
 
+			//center on entity + camera does not go beyond map
 			if (transform.position.x + (camera.w / 2) < static_cast<float>(Game::mapWidth)) {
-				camera.x = static_cast<int>(transform.position.x - (Game::windowWidth / 2));
-
+				camera.x = static_cast<int>(transform.position.x - Game::windowWidth / 2);
 			}
 			if (transform.position.y + (camera.h / 2) < static_cast<float>(Game::mapHeight)) {
-				camera.y = static_cast<int>(transform.position.y - (Game::windowHeight / 2));
-
+				camera.y = static_cast<int>(transform.position.y - Game::windowHeight / 2);
 			}
-			camera.x = camera.x < 0 ? 0 : camera.x;
-			camera.y = camera.y < 0 ? 0 : camera.y;
 
-			camera.x = camera.x > camera.w ? camera.w : camera.x;
-			camera.y = camera.y > camera.h ? camera.h : camera.y;
+			//clamp the camera pos so it stays within the map
+			//if padding removed
+			camera.x = std::max(0, camera.x);
+			camera.y = std::max(0, camera.y);
 
+			camera.x = std::min(camera.x, Game::mapWidth - camera.w);
+			camera.y = std::min(camera.y, Game::mapHeight - camera.h);
 		}
+
 	}
 };
+

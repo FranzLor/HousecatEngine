@@ -45,8 +45,15 @@
 
 int Game::windowWidth;
 int Game::windowHeight;
+
+//map control
 int Game::mapWidth;
 int Game::mapHeight;
+//padding for player contraint in map
+int Game::paddingLeft = 10;
+int Game::paddingRight = 130;
+int Game::paddingTop = 10;
+int Game::paddingBottom = 130;
 
 Game::Game()
 	: isRunning(false),

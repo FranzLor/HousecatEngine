@@ -28,8 +28,8 @@ Level = {
         textureID = "tilemap-texture",
         tileSize = 32,
         tileScale = 2.0,
-        tileCols = 40,
-        tileRows = 40,
+        tileCols = 35,
+        tileRows = 35
     },
 
     ----------------------------------------------------
@@ -42,10 +42,10 @@ Level = {
             tag = "player",
             components = {
                 userControl = {
-                    up = { x = 0, y = -90 },
-                    right = { x = 90, y = 0 },
-                    down = { x = 0, y = 90 },
-                    left = { x = -90, y = 0 }
+                    up = { x = 0, y = -500 },
+                    right = { x = 500, y = 0 },
+                    down = { x = 0, y = 500 },
+                    left = { x = -500, y = 0 }
                 },
 
                 transform = {

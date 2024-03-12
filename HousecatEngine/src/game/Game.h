@@ -55,6 +55,11 @@ public:
 	static int mapWidth;
 	static int mapHeight;
 
+	static int paddingLeft;
+	static int paddingRight;
+	static int paddingTop;
+	static int paddingBottom;
+
 	Entity* GetPlayerEntity() {
 		return playerEntity;
 	}
