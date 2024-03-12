@@ -95,6 +95,7 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 			tile.AddComponent<TransformComponent>(glm::vec2(x * (tileScale * tileSize), y * (tileScale * tileSize)), glm::vec2(tileScale, tileScale), 0.0);
 			tile.AddComponent<SpriteComponent>(textureID, tileSize, tileSize, 0, false, srcRectX, srcRectY);
 
+
 		}
 	}
 	mapFile.close();
