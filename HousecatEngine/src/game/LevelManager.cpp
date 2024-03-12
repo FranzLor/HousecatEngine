@@ -35,6 +35,229 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 
 	lua.script_file("./assets/scripts/Level1Test.lua");
 
+	sol::table levelData = lua["Level"];
+
+	sol::table assets = levelData["assets"];
+
+	//loop and read through lua data tables
+	int i = 0;
+	while (true) {
+		sol::optional<sol::table> hasAsset = assets[i];
+		if (hasAsset == sol::nullopt) {
+			break;
+		}
+		sol::table asset = assets[i];
+		std::string assetType = asset["type"];
+		if (assetType == "texture") {
+			assetManager->AddTexture(rendererGame, asset["id"], asset["file"]);
+		}
+		if (assetType == "font") {
+			assetManager->AddFont(asset["id"], asset["file"], asset["font_size"]);
+		}
+		i++;
+	}
+
+
+
+
+	/////////////////////////////////////////////////////
+
+
+
+
+
+	sol::table map = levelData["tilemap"];
+
+	std::string mapFilePath = map["mapFilePath"];
+	std::string textureID = map["textureID"];
+
+	int tileSize = map["tileSize"];
+	double tileScale = map["tileScale"];
+	int tileCols = map["tileCols"];
+	int tileRows = map["tileRows"];
+
+	std::fstream mapFile;
+
+	mapFile.open(mapFilePath);
+	for (int y = 0; y < tileRows; y++) {
+		for (int x = 0; x < tileCols; x++) {
+			char ch;
+			mapFile.get(ch);
+			int srcRectY = std::atoi(&ch) * tileSize;
+
+			mapFile.get(ch);
+			int srcRectX = std::atoi(&ch) * tileSize;
+			mapFile.ignore();
+			mapFile.ignore();
+
+			Entity tile = housecat->CreateEntity();
+			tile.Group("tilemap");
+			tile.AddComponent<TransformComponent>(glm::vec2(x * (tileScale * tileSize), y * (tileScale * tileSize)), glm::vec2(tileScale, tileScale), 0.0);
+			tile.AddComponent<SpriteComponent>(textureID, tileSize, tileSize, 0, false, srcRectX, srcRectY);
+
+		}
+	}
+	mapFile.close();
+
+	Game::mapWidth = static_cast<int>(tileCols * tileSize * tileScale);
+	Game::mapHeight = static_cast<int>(tileRows * tileSize * tileScale);
+
+
+
+	/////////////////////////////////////////////////////
+
+
+
+
+	sol::table entities = levelData["entities"];
+	i = 0;
+	while (true) {
+		sol::optional<sol::table> hasEntity = entities[i];
+		if (hasEntity == sol::nullopt) {
+			break;
+		}
+
+		sol::table entity = entities[i];
+
+		Entity newEntity = housecat->CreateEntity();
+
+		//tag
+		sol::optional<std::string> tag = entity["tag"];
+		if (tag != sol::nullopt) {
+			newEntity.Tag(entity["tag"]);
+		}
+
+		//group
+		sol::optional<std::string> group = entity["group"];
+		if (group != sol::nullopt) {
+			newEntity.Group(entity["group"]);
+		}
+
+		//components
+		sol::optional<sol::table> hasComponents = entity["components"];
+		if (hasComponents != sol::nullopt) {
+			//usercontrol
+			sol::optional<sol::table> userController = entity["components"]["userControl"];
+			if (userController != sol::nullopt) {
+				newEntity.AddComponent<UserControlComponent>(
+					glm::vec2(
+						entity["components"]["userControl"]["up"]["x"],
+						entity["components"]["userControl"]["up"]["y"]
+					),
+					glm::vec2(
+						entity["components"]["userControl"]["right"]["x"],
+						entity["components"]["userControl"]["right"]["y"]
+					),
+					glm::vec2(
+						entity["components"]["userControl"]["down"]["x"],
+						entity["components"]["userControl"]["down"]["y"]
+					),
+					glm::vec2(
+						entity["components"]["userControl"]["left"]["x"],
+						entity["components"]["userControl"]["left"]["y"]
+					)
+				);
+			}
+
+			//transform
+			sol::optional<sol::table> transform = entity["components"]["transform"];
+			if (transform != sol::nullopt) {
+				newEntity.AddComponent<TransformComponent>(
+					glm::vec2(
+						entity["components"]["transform"]["position"]["x"],
+						entity["components"]["transform"]["position"]["y"]
+					),
+					glm::vec2(
+						entity["components"]["transform"]["scale"]["x"].get_or(1.0),
+						entity["components"]["transform"]["scale"]["y"].get_or(1.0)
+					),
+					entity["components"]["transform"]["rotation"].get_or(0.0)
+				);
+			}
+
+			//sprite
+			sol::optional<sol::table> sprite = entity["components"]["sprite"];
+			if (sprite != sol::nullopt) {
+				newEntity.AddComponent<SpriteComponent>(
+					entity["components"]["sprite"]["textureID"],
+					entity["components"]["sprite"]["width"],
+					entity["components"]["sprite"]["height"],
+					entity["components"]["sprite"]["zIndex"].get_or(1),
+					entity["components"]["sprite"]["fixed"].get_or(false),
+					entity["components"]["sprite"]["srcRectX"].get_or(0),
+					entity["components"]["sprite"]["srcRectY"].get_or(0)
+				);
+			}
+
+			//rigidbody
+			sol::optional<sol::table> rigidbody = entity["components"]["rigidbody"];
+			if (rigidbody != sol::nullopt) {
+				newEntity.AddComponent<RigidBodyComponent>(
+					glm::vec2(
+						entity["components"]["rigidbody"]["velocity"]["x"].get_or(0.0),
+						entity["components"]["rigidbody"]["velocity"]["y"].get_or(0.0)
+					)
+				);
+			}
+
+			//animation
+			sol::optional<sol::table> animation = entity["components"]["animation"];
+			if (animation != sol::nullopt) {
+				newEntity.AddComponent<AnimationComponent>(
+					entity["components"]["animation"]["numFrames"].get_or(1),
+					entity["components"]["animation"]["frameSpeed"].get_or(1),
+					entity["components"]["animation"]["looped"].get_or(true)
+				);
+			}
+
+			//movementstate
+			sol::optional<sol::table> movement = entity["components"]["movementState"];
+			if (movement != sol::nullopt) {
+				newEntity.AddComponent<MovementStateComponent>(
+					entity["components"]["movementState"]["isMoving"].get_or(false)
+				);
+			}
+
+			//boxcollider
+			sol::optional<sol::table> collider = entity["components"]["boxcollider"];
+			if (collider != sol::nullopt) {
+				newEntity.AddComponent<BoxColliderComponent>(
+					entity["components"]["boxcollider"]["width"],
+					entity["components"]["boxcollider"]["height"],
+					glm::vec2(
+						entity["components"]["boxcollider"]["offset"]["x"].get_or(0),
+						entity["components"]["boxcollider"]["offset"]["y"].get_or(0)
+					)
+				);
+			}
+
+			//health
+			sol::optional<sol::table> health = entity["components"]["health"];
+			if (health != sol::nullopt) {
+				newEntity.AddComponent<HealthComponent>(
+					static_cast<int>(entity["components"]["health"]["healthPercent"].get_or(100))
+				);
+			}
+
+			//camera
+			sol::optional<sol::table> cameraFollow = entity["components"]["camera"];
+			if (cameraFollow != sol::nullopt) {
+				newEntity.AddComponent<CameraComponent>();
+			}
+
+			//damageArea
+			sol::optional<sol::table> damageArea = entity["components"]["damageArea"];
+			if (damageArea != sol::nullopt) {
+				newEntity.AddComponent<DamageAreaComponent>(
+					entity["components"]["damageArea"]["isFriendly"].get_or(false),
+					entity["components"]["damageArea"]["hitDamage"].get_or(1),
+					entity["components"]["damageArea"]["damageDelay"].get_or(1.0)
+				);
+			}
+		}
+		i++;
+	}
+}
 
 
 
@@ -42,8 +265,7 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 //----------------------------------------------------//
 //              TESTING for ref                       //
 //----------------------------------------------------//
-	//
-	////ASSETS - add textures to game
+	//ASSETS - add textures to game
 	//assetManager->AddTexture(rendererGame, "player", "./assets/textures/cat_sprite_2.png");
 
 	//assetManager->AddTexture(rendererGame, "npc", "./assets/textures/cat_animate_2.png");
@@ -195,4 +417,3 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 
 	//SDL_Color red = { 255, 0, 0 };
 	//healthLabel.AddComponent<TextDisplayComponent>("montserrat", glm::vec2(5, 5), true, "Housecat", red);
-}
