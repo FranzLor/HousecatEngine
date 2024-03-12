@@ -61,10 +61,10 @@ public:
 			//prevent player form moving outside map
 			if (entity.HasTag("player")) {
 				//min and max boundaries around map
-				float effectiveMinX = Game::paddingLeft;
-				float effectiveMaxX = Game::mapWidth - Game::paddingRight;
-				float effectiveMinY = Game::paddingTop;
-				float effectiveMaxY = Game::mapHeight - Game::paddingBottom;
+				float effectiveMinX = static_cast<float>(Game::paddingLeft);
+				float effectiveMaxX = static_cast<float>(Game::mapWidth - Game::paddingRight);
+				float effectiveMinY = static_cast<float>(Game::paddingTop);
+				float effectiveMaxY = static_cast<float>(Game::mapWidth - Game::paddingBottom);
 
 				//keep player inside padding
 				transform.position.x = std::max(effectiveMinX, std::min(transform.position.x, effectiveMaxX));
