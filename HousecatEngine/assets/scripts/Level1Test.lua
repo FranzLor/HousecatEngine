@@ -12,7 +12,17 @@ Level = {
         [0] =
         --TODO
         { type = "texture", id = "player", file = "./assets/textures/cat_sprite_2.png" },
+        { type = "texture", id = "npc", file = "./assets/textures/cat_sprite.png" },
+
+
         { type = "texture", id = "ghost", file = "./assets/textures/ghost.png" },
+        { type = "texture", id = "slime", file = "./assets/textures/slime.png" },
+
+
+        { type = "texture", id = "treeA", file = "./assets/textures/treeA.png" },
+        { type = "texture", id = "treeB", file = "./assets/textures/treeB.png" },
+        { type = "texture", id = "treeC", file = "./assets/textures/treeC.png" },
+
 
         { type = "texture", id = "tilemap-texture", file = "./assets/tilemaps/terrain_tile.png" },
 
@@ -139,6 +149,82 @@ Level = {
 	                damageDelay = 1.0
                 }
             }
+        },
+
+        --ENEMY
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 800, y = 400 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 4
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                health = {
+                    healthPercent = 100
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        --TREE A
+        {
+            group = "tree",
+            components = {
+                transform = {
+                    position = { x = 1000, y = 300 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "treeA",
+                    width = 64,
+                    height = 96,
+                    zIndex = 7
+                },
+
+                boxcollider = {
+                    width = 64,
+                    height = 96,
+                    offset = { x = 0.0, y = 0.0 }
+                }
+
+            }
         }
+
+
     }
 } 
