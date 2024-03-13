@@ -58,6 +58,7 @@ int Game::paddingBottom = 120;
 Game::Game()
 	: isRunning(false),
 	isDebugging(false),
+	isDebugRendering(false),
 	playerEntity(nullptr),
 	window(nullptr),
 	rendererGame(nullptr),
@@ -241,9 +242,15 @@ void Game::Render() {
 	housecat->GetSystem<RenderSystem>().Update(rendererGame, assetManager, camera);
 	//[TAB] key for debugging
 	if (isDebugging) {
-		housecat->GetSystem<RenderColliderSystem>().Update(rendererGame, camera);
+		auto& renderColliderSystem = housecat->GetSystem<RenderColliderSystem>();
+		if (renderColliderSystem.GetRenderingState()) {
+			renderColliderSystem.Update(rendererGame, camera);
+			renderColliderSystem.RenderDebugGrid(rendererGame, camera, 32 * 2, 32 * 2, windowWidth, windowHeight);
+		}
 
 		housecat->GetSystem<RenderImGuiSystem>().Update(housecat, camera);
+
+
 	}
 	housecat->GetSystem<RenderTextSystem>().Update(rendererGame, assetManager, camera);
 	housecat->GetSystem<RenderHealthSystem>().Update(rendererGame, assetManager, camera);
