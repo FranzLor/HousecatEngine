@@ -8,8 +8,11 @@
 #include "../components/TransformComponent.h"
 
 class RenderColliderSystem : public System {
+private:
+	bool isRendering = false;
 public:
 	RenderColliderSystem() {
+		bool isRendering = false;
 		RequireComponent<BoxColliderComponent>();
 		RequireComponent<TransformComponent>();
 	}
@@ -58,5 +61,13 @@ public:
 			int screenY = y - camera.y;
 			SDL_RenderDrawLine(renderer, 0, screenY, windowWidth, screenY);
 		}
+	}
+
+	void ToggleRenderingState() {
+		isRendering = !isRendering;
+	}
+
+	bool GetRenderingState() const {
+		return isRendering;
 	}
 };

@@ -23,9 +23,15 @@ class RenderImGuiSystem : public System {
 public:
 	RenderImGuiSystem() = default;
 
-
-
 	void Update(const std::unique_ptr<Housecat>& housecat, const SDL_Rect& camera) {
+
+		ImGui::Begin("Rendering Colliders");
+		//debug rendering
+		if (ImGui::Button("Toggle Debug Rendering")) {
+			housecat->GetSystem<RenderColliderSystem>().ToggleRenderingState();
+		}
+		ImGui::End();
+
 
 		if (ImGui::Begin("Spawn Enemies")) {
 			//static variables for enemy
