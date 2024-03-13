@@ -242,8 +242,11 @@ void Game::Render() {
 	//[TAB] key for debugging
 	if (isDebugging) {
 		housecat->GetSystem<RenderColliderSystem>().Update(rendererGame, camera);
+		housecat->GetSystem<RenderColliderSystem>().RenderDebugGrid(rendererGame, camera, 32 * 2, 32 * 2, windowWidth, windowHeight);
 
 		housecat->GetSystem<RenderImGuiSystem>().Update(housecat, camera);
+
+
 	}
 	housecat->GetSystem<RenderTextSystem>().Update(rendererGame, assetManager, camera);
 	housecat->GetSystem<RenderHealthSystem>().Update(rendererGame, assetManager, camera);
