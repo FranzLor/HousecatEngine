@@ -53,8 +53,12 @@ public:
 
 	static int windowWidth;
 	static int windowHeight;
+
 	static int mapWidth;
 	static int mapHeight;
+
+	static int tileSize;
+	static double tileScale;
 
 	static int paddingLeft;
 	static int paddingRight;

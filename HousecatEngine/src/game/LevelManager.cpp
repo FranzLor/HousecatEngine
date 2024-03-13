@@ -1,4 +1,6 @@
 #include <fstream>
+#include <string>
+#include <sstream>
 
 #include "Game.h"
 
@@ -65,9 +67,7 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 
 
 
-
 	sol::table map = levelData["tilemap"];
-
 	std::string mapFilePath = map["mapFilePath"];
 	std::string textureID = map["textureID"];
 
@@ -75,33 +75,47 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 	double tileScale = map["tileScale"];
 	int tileCols = map["tileCols"];
 	int tileRows = map["tileRows"];
+	//for tileset
+	const int tilePerRow = map["tilePerRow"];
 
-	std::fstream mapFile;
+	std::fstream mapFile(mapFilePath);
+	std::string line;
+	//counter row
+	int y = 0;
 
-	mapFile.open(mapFilePath);
-	for (int y = 0; y < tileRows; y++) {
-		for (int x = 0; x < tileCols; x++) {
-			char ch;
-			mapFile.get(ch);
-			int srcRectY = std::atoi(&ch) * tileSize;
+	CollisionMap::collisionMap.resize(tileRows, std::vector<bool>(tileCols, false));
 
-			mapFile.get(ch);
-			int srcRectX = std::atoi(&ch) * tileSize;
-			mapFile.ignore();
-			mapFile.ignore();
+	while (std::getline(mapFile, line) && y < tileRows) {
+		std::istringstream lineStream(line);
+		std::string tileCode;
+
+		//counter col
+		int x = 0;
+		while (std::getline(lineStream, tileCode, ',') && x < tileCols) {
+			int tileType = std::stoi(tileCode);
+
+			int srcRectX = (tileType % tilePerRow) * tileSize;
+			int srcRectY = (tileType / tilePerRow) * tileSize;
 
 			Entity tile = housecat->CreateEntity();
 			tile.Group("tilemap");
 			tile.AddComponent<TransformComponent>(glm::vec2(x * (tileScale * tileSize), y * (tileScale * tileSize)), glm::vec2(tileScale, tileScale), 0.0);
 			tile.AddComponent<SpriteComponent>(textureID, tileSize, tileSize, 0, false, srcRectX, srcRectY);
 
-
+			//define nonwalkable tiles
+			if (tileCode == "55") {
+				CollisionMap::collisionMap[y][x] = true;
+			}
+			x++;
 		}
+		y++;
 	}
 	mapFile.close();
 
 	Game::mapWidth = static_cast<int>(tileCols * tileSize * tileScale);
 	Game::mapHeight = static_cast<int>(tileRows * tileSize * tileScale);
+	Game::tileSize = tileSize; 
+	Game::tileScale = tileScale;
 
 	//NOTE
 

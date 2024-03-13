@@ -888,9 +888,6 @@
     <ClInclude Include="src\editor\utilities\SDLUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\editor\editmanager\EditManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\editor\ui\EditorUIManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -900,13 +897,31 @@
     <ClInclude Include="src\editor\ui\EditorUIRendering.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\editor\utilities\LoadFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\editor\utilities\FileManagement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\editor\utilities\mouse\Mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\LevelManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\EditCanvasSize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\EditTile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\MapManagement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\ProjectManagement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\FileDialogue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\editmanager\EditManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\CollisionMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1323,6 +1338,9 @@
     <None Include="SDL2_image.dll" />
     <None Include="SDL2_mixer.dll" />
     <None Include="SDL2_ttf.dll" />
+    <None Include="assets\scripts\Level1Test.lua" />
+    <None Include="assets\tilemaps\Map1.map" />
+    <None Include="assets\tilemaps\Map1Test.map" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libs\glm\detail\glm.cpp">
@@ -1376,9 +1394,6 @@
     <ClCompile Include="libs\imgui\imgui_tables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor\editmanager\EditManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\editor\ui\EditorUIManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1388,13 +1403,31 @@
     <ClCompile Include="src\editor\ui\EditorUIRendering.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor\utilities\LoadFile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\editor\utilities\FileManagement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\editor\utilities\mouse\Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\LevelManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\EditTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\MapManagement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\ProjectManagement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\FileDialogue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\editmanager\EditManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\CollisionMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

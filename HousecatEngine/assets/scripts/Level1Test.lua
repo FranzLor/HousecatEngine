@@ -34,12 +34,14 @@ Level = {
     --              MAP CONFIG for game               --
     ----------------------------------------------------
     tilemap = {
-        mapFilePath = "./assets/tilemaps/Map1.map",
+        mapFilePath = "./assets/tilemaps/Map1Test.map",
         textureID = "tilemap-texture",
         tileSize = 32,
         tileScale = 2.0,
         tileCols = 35,
-        tileRows = 40
+        tileRows = 40,
+        --tileset
+        tilePerRow = 10
     },
 
     ----------------------------------------------------
@@ -59,7 +61,7 @@ Level = {
                 },
 
                 transform = {
-                    position = { x = 180, y = 500 },
+                    position = { x = 180, y = 300 },
                     scale = { x = 4.0, y = 4.0 },
                     rotation = 0.0,
                 },

@@ -9,6 +9,8 @@
 #include "../components/RigidBodyComponent.h"
 #include "../components/SpriteComponent.h"
 
+#include "../game/CollisionMap.h"
+
 class MovementSystem: public System {
 public:
 	MovementSystem() {
@@ -53,22 +55,37 @@ public:
 	void Update(double deltaTime) {
 		for (auto entity : GetSystemEntities()) {
 			auto& transform = entity.GetComponent<TransformComponent>();
-			const auto& rigidbody = entity.GetComponent<RigidBodyComponent>();
+			auto& rigidbody = entity.GetComponent<RigidBodyComponent>(); // Removed const to modify if needed
 
-			transform.position.x += static_cast<float>(rigidbody.velocity.x * deltaTime);
-			transform.position.y += static_cast<float>(rigidbody.velocity.y * deltaTime);
-		
-			//prevent player form moving outside map
+			glm::vec2 initPosition = transform.position + glm::vec2(rigidbody.velocity.x * deltaTime, rigidbody.velocity.y * deltaTime);
+
+			//prevent moving outside map bound
 			if (entity.HasTag("player")) {
-				//min and max boundaries around map
 				float effectiveMinX = static_cast<float>(Game::paddingLeft);
 				float effectiveMaxX = static_cast<float>(Game::mapWidth - Game::paddingRight);
 				float effectiveMinY = static_cast<float>(Game::paddingTop);
 				float effectiveMaxY = static_cast<float>(Game::mapHeight - Game::paddingBottom);
 
-				//keep player inside padding
-				transform.position.x = std::max(effectiveMinX, std::min(transform.position.x, effectiveMaxX));
-				transform.position.y = std::max(effectiveMinY, std::min(transform.position.y, effectiveMaxY));
+				initPosition.x = std::max(effectiveMinX, std::min(initPosition.x, effectiveMaxX));
+				initPosition.y = std::max(effectiveMinY, std::min(initPosition.y, effectiveMaxY));
+			}
+
+			//calc the next pos tile indices, check if walkable
+			int nextTileX = static_cast<int>(initPosition.x / (Game::tileSize * Game::tileScale));
+			int nextTileY = static_cast<int>(initPosition.y / (Game::tileSize * Game::tileScale));
+
+			bool canMoveX = CollisionMap::WalkableTiles(nextTileX, static_cast<int>(transform.position.y / (Game::tileSize * Game::tileScale)));
+			bool canMoveY = CollisionMap::WalkableTiles(static_cast<int>(transform.position.x / (Game::tileSize * Game::tileScale)), nextTileY);
+
+			//movement
+			if (canMoveX && canMoveY) {
+				transform.position = initPosition;
+			}
+			else if (canMoveX) {
+				transform.position.x = initPosition.x;
+			}
+			else if (canMoveY) {
+				transform.position.y = initPosition.y;
 			}
 
 			//checks if outside the map boundaries, buffer margin forgives 200 px W/H
@@ -78,12 +95,13 @@ public:
 				transform.position.x < -cullingMargin ||
 				transform.position.y > Game::mapHeight + cullingMargin ||
 				transform.position.y < -cullingMargin
-				);
+			);
 
 			if (!entity.HasTag("player") && isEntityOutsideMap) {
 				entity.Kill();
 			}
 		}
+	
 	}
 
 };

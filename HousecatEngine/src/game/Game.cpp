@@ -49,6 +49,11 @@ int Game::windowHeight;
 //map control
 int Game::mapWidth;
 int Game::mapHeight;
+
+//tile 
+int Game::tileSize;
+double Game::tileScale;
+
 //padding for player contraint in map
 int Game::paddingLeft = 5;
 int Game::paddingRight = 120;
