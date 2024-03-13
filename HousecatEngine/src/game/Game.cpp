@@ -56,9 +56,9 @@ double Game::tileScale;
 
 //padding for player contraint in map
 int Game::paddingLeft = 5;
-int Game::paddingRight = 120;
+int Game::paddingRight = 0;
 int Game::paddingTop = 5;
-int Game::paddingBottom = 120;
+int Game::paddingBottom = 0;
 
 Game::Game()
 	: isRunning(false),
