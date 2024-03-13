@@ -438,6 +438,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\scripts\Level1Test.lua" />
+    <None Include="assets\tilemaps\Map1.map" />
     <None Include="Housecat.aps" />
     <None Include="imgui.ini" />
     <None Include="libavif-16.dll" />

@@ -103,6 +103,11 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 	Game::mapWidth = static_cast<int>(tileCols * tileSize * tileScale);
 	Game::mapHeight = static_cast<int>(tileRows * tileSize * tileScale);
 
+	//NOTE
+
+	//mapwidth: 2240px
+	//mapheight: 2560px
+
 
 
 	/////////////////////////////////////////////////////
