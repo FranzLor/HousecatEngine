@@ -24,12 +24,12 @@ Level = {
     --              MAP CONFIG for game               --
     ----------------------------------------------------
     tilemap = {
-        mapFilePath = "./assets/tilemaps/map_test.map",
+        mapFilePath = "./assets/tilemaps/Map1.map",
         textureID = "tilemap-texture",
         tileSize = 32,
         tileScale = 2.0,
         tileCols = 35,
-        tileRows = 35
+        tileRows = 40
     },
 
     ----------------------------------------------------

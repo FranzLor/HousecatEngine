@@ -64,7 +64,7 @@ public:
 				float effectiveMinX = static_cast<float>(Game::paddingLeft);
 				float effectiveMaxX = static_cast<float>(Game::mapWidth - Game::paddingRight);
 				float effectiveMinY = static_cast<float>(Game::paddingTop);
-				float effectiveMaxY = static_cast<float>(Game::mapWidth - Game::paddingBottom);
+				float effectiveMaxY = static_cast<float>(Game::mapHeight - Game::paddingBottom);
 
 				//keep player inside padding
 				transform.position.x = std::max(effectiveMinX, std::min(transform.position.x, effectiveMaxX));

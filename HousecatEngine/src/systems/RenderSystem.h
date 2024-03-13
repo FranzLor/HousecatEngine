@@ -52,7 +52,7 @@ public:
 		//sort by z index
 		std::sort(renderableEntities.begin(), renderableEntities.end(), [](const RenderableEntity& a, const RenderableEntity& b) {
 			return a.spriteComponent.zIndex < b.spriteComponent.zIndex;
-			});
+		});
 
 		for (auto entity : renderableEntities) {
 			const auto& transform = entity.transformComponent;
