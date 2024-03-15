@@ -137,10 +137,11 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 
 	if (music) {
 		sol::table musics = *music;
-		std::string musicFilePath = music["musicFilePath"];
-		std::string assetID = music["assetID"];
-		int volume = music["volume"].get_or(50);
-		int loop = music["loop"].get_or(-1);
+
+		std::string musicFilePath = musics["musicFilePath"];
+		std::string assetID = musics["assetID"];
+		int volume = musics["volume"].get_or(50);
+		int loop = musics["loop"].get_or(-1);
 
 		assetManager->SetVolume(volume);
 		assetManager->PlayMusic(assetID, loop);
