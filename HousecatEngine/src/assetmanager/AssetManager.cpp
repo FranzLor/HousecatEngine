@@ -24,6 +24,58 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& assetID
 	textures.emplace(assetID, texture);
 }
 
+
+
+
+TTF_Font* AssetManager::GetFont(const std::string& assetID) {
+	return fonts[assetID];
+}
+
+void AssetManager::AddFont(const std::string& assetID, const std::string& filePath, int fontSize) {
+	fonts.emplace(assetID, TTF_OpenFont(filePath.c_str(), fontSize));
+}
+
+
+
+
+Mix_Music* AssetManager::GetMusic(const std::string& assetID) {
+	return musics[assetID];
+}
+
+void AssetManager::AddMusic(const std::string& assetID, const std::string& filePath) {
+	Mix_Music* music = Mix_LoadMUS(filePath.c_str());
+
+	if (!music) {
+		Logger::Error("Error Loading Music: " + std::string(Mix_GetError()));
+	}
+	musics.emplace(assetID, music);
+}
+
+void AssetManager::SetVolume(int volume) {
+	Mix_VolumeMusic(volume);
+}
+
+void AssetManager::PlayMusic(const std::string& assetID, int loop) {
+	Mix_Music* music = musics[assetID];
+	if (music) {
+		Mix_PlayMusic(music, loop);
+	}
+	else {
+		Logger::Error("Error Playing Music: " + std::string(Mix_GetError()));
+	}
+}
+
+void AssetManager::PauseMusic() {
+	Mix_PauseMusic();
+}
+
+void AssetManager::StopMusic() {
+	Mix_HaltMusic();
+}
+
+
+
+
 void AssetManager::ClearAssets() {
 	for (auto texture : textures) {
 		//makes sure to deallocate texture!
@@ -36,12 +88,4 @@ void AssetManager::ClearAssets() {
 		TTF_CloseFont(font.second);
 	}
 	fonts.clear();
-}
-
-TTF_Font* AssetManager::GetFont(const std::string& assetID) {
-	return fonts[assetID];
-}
-
-void AssetManager::AddFont(const std::string& assetID, const std::string& filePath, int fontSize) {
-	fonts.emplace(assetID, TTF_OpenFont(filePath.c_str(), fontSize));
 }
