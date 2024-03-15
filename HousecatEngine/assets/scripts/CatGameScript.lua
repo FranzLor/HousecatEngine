@@ -31,7 +31,8 @@ Level = {
 
 
         { type = "music", id = "soundtrack", file = "./assets/sounds/soundtrack.wav" },
-        { type = "sound", id = "meow", file = "./assets/sounds/meow.wav" }
+        { type = "sound", id = "meow", file = "./assets/sounds/meow.wav" },
+        { type = "sound", id = "damage", file = "./assets/sounds/damage.wav" }
     },
 
 
