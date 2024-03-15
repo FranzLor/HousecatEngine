@@ -17,7 +17,7 @@ private:
 	std::map<std::string, TTF_Font*> fonts;
 
 	std::map<std::string, Mix_Music*> musics;
-
+	std::map<std::string, Mix_Chunk*> sounds;
 
 public:
 	AssetManager();
@@ -35,6 +35,9 @@ public:
 	void PlayMusic(const std::string& assetID, int loop);
 	void PauseMusic();
 	void StopMusic();
+
+	Mix_Chunk* GetSound(const std::string& assetID);
+	void AddSound(const std::string& assetID, const std::string& filePath);
 
 	void ClearAssets();
 
