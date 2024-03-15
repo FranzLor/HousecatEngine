@@ -33,12 +33,14 @@ public:
 	}
 
 	void KeyPressed(KeyPressedEvent& event) {
-		PlaySoundForEvent(event);
+		if (event.keyPressedSymbol == SDLK_SPACE) {
+			PlaySoundForEvent(event);
+		}
 	}
 
 	void PlaySoundForEvent(const KeyPressedEvent& event) {
 		for (auto& entity : GetSystemEntities()) {
-			if (entity.HasTag("player") && event.keyPressedSymbol == SDLK_SPACE) {
+			if (entity.HasTag("player")) {
 				auto& SFX = entity.GetComponent<SFXComponent>();
 				PlaySFX(entity, SFX.soundID);
 			}
@@ -51,11 +53,9 @@ public:
 		}
 
 		auto& SFX = entity.GetComponent<SFXComponent>();
-		Mix_Chunk* sound = assetManager->GetSound(soundID);
-		if (sound) {
-			Mix_VolumeChunk(sound, SFX.volume);
-			Mix_PlayChannel(SFX.channel, sound, SFX.loop ? -1 : 0);
-		}
+		assetManager->PlaySound(soundID, SFX.volume, SFX.loop ? -1: 0);
+
+		
 	}
 
 	void StopSFX(StopSFXEvent& event) {

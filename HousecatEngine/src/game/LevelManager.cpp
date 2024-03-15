@@ -60,6 +60,9 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 		if (assetType == "music") {
 			assetManager->AddMusic(asset["id"], asset["file"]);
 		}
+		if (assetType == "sound") {
+			assetManager->AddSound(asset["id"], asset["file"]);
+		}
 		i++;
 	}
 

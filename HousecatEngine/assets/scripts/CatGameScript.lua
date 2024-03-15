@@ -31,7 +31,7 @@ Level = {
 
 
         { type = "music", id = "soundtrack", file = "./assets/sounds/soundtrack.wav" },
-        { type = "sfx", id = "meow", file = "./assets/sounds/meow.wav" }
+        { type = "sound", id = "meow", file = "./assets/sounds/meow.wav" }
     },
 
 
@@ -59,7 +59,7 @@ Level = {
     musics = {
         musicFilePath = "./assets/sounds/soundtrack.wav",
         assetID = "soundtrack",
-        volume = 8,
+        volume = 5,
         loop = -1
     },
 
@@ -126,9 +126,10 @@ Level = {
                 },
 
                 sfx = {
-                    soundID = "meow",
-                    volume = 8,
-                    loop = -1
+                    sfxID = "meow",
+                    volume = 100,
+                    loop = 0,
+
                 }
             }
         },

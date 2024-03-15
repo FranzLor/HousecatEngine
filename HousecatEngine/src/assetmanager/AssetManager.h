@@ -38,6 +38,7 @@ public:
 
 	Mix_Chunk* GetSound(const std::string& assetID);
 	void AddSound(const std::string& assetID, const std::string& filePath);
+	void PlaySound(const std::string& assetID, int volume, int loop);
 
 	void ClearAssets();
 

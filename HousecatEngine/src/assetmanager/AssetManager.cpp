@@ -104,6 +104,18 @@ void AssetManager::AddSound(const std::string& assetID, const std::string& fileP
 	}
 	sounds.emplace(assetID, sfx);
 }
+void AssetManager::PlaySound(const std::string& assetID, int volume, int loop) {
+	Mix_Chunk* sfx = sounds[assetID];
+	if (sfx) {
+		int channel = Mix_PlayChannel(-1, sfx, loop);
+		if (channel != -1) {
+			Mix_Volume(channel, volume);
+		}
+	}
+	else {
+		Logger::Error("Error Playing Sound: " + std::string(Mix_GetError()));
+	}
+}
 
 
 
