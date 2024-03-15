@@ -21,6 +21,15 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& assetID
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 	SDL_FreeSurface(surface);
 
+	if (!surface) {
+		Logger::Error("Error Loading Surface: " + std::string(SDL_GetError()));
+		return;
+	}
+	else if (!texture) {
+		Logger::Error("Error Loading Texture: " + std::string(SDL_GetError()));
+		return;
+	}
+
 	textures.emplace(assetID, texture);
 }
 
@@ -33,7 +42,13 @@ TTF_Font* AssetManager::GetFont(const std::string& assetID) {
 }
 
 void AssetManager::AddFont(const std::string& assetID, const std::string& filePath, int fontSize) {
-	fonts.emplace(assetID, TTF_OpenFont(filePath.c_str(), fontSize));
+	TTF_Font* font = TTF_OpenFont(filePath.c_str(), fontSize);
+	if (!font) {
+		Logger::Error("Error Loading Font: " + std::string(TTF_GetError()));
+		return;
+	}
+
+	fonts.emplace(assetID, font);
 }
 
 
