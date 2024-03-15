@@ -1341,6 +1341,7 @@
     <None Include="assets\scripts\Level1Test.lua" />
     <None Include="assets\tilemaps\Map1.map" />
     <None Include="assets\tilemaps\Map1Test.map" />
+    <None Include="assets\scripts\CatGameScript.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libs\glm\detail\glm.cpp">

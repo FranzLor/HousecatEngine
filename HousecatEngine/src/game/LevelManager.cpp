@@ -35,7 +35,7 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 		return;
 	}
 
-	lua.script_file("./assets/scripts/Level1Test.lua");
+	lua.script_file("./assets/scripts/CatGameScript.lua");
 
 	sol::table levelData = lua["Level"];
 

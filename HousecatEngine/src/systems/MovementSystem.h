@@ -56,6 +56,8 @@ public:
 		for (auto entity : GetSystemEntities()) {
 			auto& transform = entity.GetComponent<TransformComponent>();
 			auto& rigidbody = entity.GetComponent<RigidBodyComponent>();
+			//for player collision on collision map tiles
+			bool hasBoxCollider = entity.HasComponent<BoxColliderComponent>();
 
 			//calc init pos based on current velocity
 			glm::vec2 initPosition = transform.position + glm::vec2(rigidbody.velocity.x * deltaTime, rigidbody.velocity.y * deltaTime);
@@ -74,16 +76,24 @@ public:
 			int maxY = static_cast<int>((initPosition.y + transform.scale.y * Game::tileSize) / (Game::tileSize * Game::tileScale));
 
 			bool canMove = true;
-			for (int x = minX; x <= maxX && canMove; x++) {
-				for (int y = minY; y <= maxY && canMove; y++) {
-					if (!CollisionMap::WalkableTiles(x, y)) {
-						//nonwalkable
-						canMove = false;
+			if (hasBoxCollider) {
+				for (int x = minX; x <= maxX && canMove; x++) {
+					for (int y = minY; y <= maxY && canMove; y++) {
+						if (!CollisionMap::WalkableTiles(x, y)) {
+							//nonwalkable
+							canMove = false;
+						}
 					}
 				}
 			}
+			
 			if (canMove) {
 				transform.position = initPosition;
+			}
+			else if (entity.HasTag("player")) {
+				//player hits wall
+				rigidbody.velocity.x = 0;
+				rigidbody.velocity.y = 0;
 			}
 
 			//checks if outside the map boundaries, buffer margin forgives 200 px W/H
