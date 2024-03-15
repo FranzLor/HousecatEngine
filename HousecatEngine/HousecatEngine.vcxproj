@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\components\SFXComponent.h" />
     <ClInclude Include="src\game\CollisionMap.h" />
     <ClInclude Include="src\game\LevelManager.h" />
     <ClInclude Include="src\editor\utilities\EditCanvasSize.h" />
@@ -436,6 +437,7 @@
     <ClInclude Include="src\systems\RenderImGuiSystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
     <ClInclude Include="src\systems\RenderTextSystem.h" />
+    <ClInclude Include="src\systems\SoundSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\scripts\CatGameScript.lua" />
