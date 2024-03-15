@@ -109,4 +109,14 @@ void AssetManager::ClearAssets() {
 		TTF_CloseFont(font.second);
 	}
 	fonts.clear();
+
+	for (auto music : musics) {
+		Mix_FreeMusic(music.second);
+	}
+	musics.clear();
+
+	for (auto sfx : sounds) {
+		Mix_FreeChunk(sfx.second);
+	}
+	sounds.clear();
 }
