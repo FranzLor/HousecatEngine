@@ -53,9 +53,14 @@ public:
 		}
 
 		auto& SFX = entity.GetComponent<SFXComponent>();
-		assetManager->PlaySound(soundID, SFX.volume, SFX.loop ? -1: 0);
+		Uint32 currentTime = SDL_GetTicks();
 
-		
+		//convert ms to s
+		Uint32 delayInMS = static_cast<Uint32>(SFX.delay * 1000.0f);
+		if (currentTime > SFX.lastPlayed + delayInMS) {
+			SFX.lastPlayed = currentTime;
+			assetManager->PlaySound(soundID, SFX.volume, SFX.loop ? -1 : 0);
+		}
 	}
 
 	void StopSFX(StopSFXEvent& event) {

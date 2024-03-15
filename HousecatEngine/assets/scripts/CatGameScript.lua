@@ -129,6 +129,7 @@ Level = {
                     sfxID = "meow",
                     volume = 100,
                     loop = 0,
+                    delay = 5
 
                 }
             }

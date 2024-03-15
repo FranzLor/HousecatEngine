@@ -322,7 +322,8 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 				newEntity.AddComponent<SFXComponent>(
 					entity["components"]["sfx"]["sfxID"],
 					entity["components"]["sfx"]["volume"].get_or(50),
-					entity["components"]["sfx"]["loop"].get_or(0)
+					entity["components"]["sfx"]["loop"].get_or(0),
+					entity["components"]["sfx"]["delay"].get_or(2)
 				);
 			}
 		}
