@@ -30,7 +30,9 @@ Level = {
         { type = "font", id = "montserrat", file = "./assets/fonts/montserrat.bold.ttf", font_size = 20 },
 
 
-        { type = "music", id = "soundtrack", file = "./assets/sounds/soundtrack.wav" }
+        { type = "music", id = "soundtrack", file = "./assets/sounds/soundtrack.wav" },
+        { type = "sound", id = "meow", file = "./assets/sounds/meow.wav" },
+        { type = "sound", id = "damage", file = "./assets/sounds/damage.wav" }
     },
 
 
@@ -58,7 +60,7 @@ Level = {
     musics = {
         musicFilePath = "./assets/sounds/soundtrack.wav",
         assetID = "soundtrack",
-        volume = 8,
+        volume = 5,
         loop = -1
     },
 
@@ -122,6 +124,14 @@ Level = {
 
                 camera = {
                     follow = true
+                },
+
+                sfx = {
+                    sfxID = "meow",
+                    volume = 100,
+                    loop = 0,
+                    delay = 5
+
                 }
             }
         },

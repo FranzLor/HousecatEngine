@@ -42,6 +42,7 @@
 #include "../systems/RenderTextSystem.h"
 #include "../systems/RenderHealthSystem.h"
 #include "../systems/RenderImGuiSystem.h"
+#include "../systems/SoundSystem.h"
 
 
 int Game::windowWidth;
@@ -171,19 +172,18 @@ void Game::Input() {
 				eventManager->TriggerEvent<KeyReleasedEvent>(sdlGameEvent.key.keysym.sym);
 				break;
 			case SDL_KEYDOWN:
-				eventManager->TriggerEvent<KeyPressedEvent>(sdlGameEvent.key.keysym.sym);
 				if (sdlGameEvent.key.keysym.sym == SDLK_ESCAPE) {
 					isRunning = false;
 					
 				}
 				if (sdlGameEvent.key.keysym.sym == SDLK_TAB) {
 					isDebugging = !isDebugging;
+
 				}
+				eventManager->TriggerEvent<KeyPressedEvent>(sdlGameEvent.key.keysym.sym);
 				break;
 			
 		} 
-		//TODO: process eventmessager 
-		//EX: eventMessager->Event<KeyPressed>(pass event SDL sym);
 	}
 }
 
@@ -209,6 +209,8 @@ void Game::Setup() {
 	housecat->AddSystem<RenderHealthSystem>();
 	housecat->AddSystem<RenderImGuiSystem>();
 
+	housecat->AddSystem<SoundSystem>(eventManager, assetManager);
+
 	lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::os);
 	levelManager->LoadLevel(housecat, rendererGame, assetManager, lua, 1);
 }
@@ -231,6 +233,7 @@ void Game::Update() {
 	housecat->GetSystem<DamageSystem>().ListenToEvents(eventManager);
 	housecat->GetSystem<KeyboardInputSystem>().ListenToEvents(eventManager);
 	housecat->GetSystem<MovementSystem>().ListenToEvents(eventManager);
+	housecat->GetSystem<SoundSystem>().ListenToEvents(eventManager);
 
 	//update Manager for all entities to be created/killed
 	//(FIXED)

@@ -17,6 +17,7 @@
 #include "../components/CameraComponent.h"
 #include "../components/DamageAreaComponent.h"
 #include "../components/TextDisplayComponent.h"
+#include "../components/SFXComponent.h"
 
 LevelManager::LevelManager() {}
 
@@ -58,6 +59,9 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 		}
 		if (assetType == "music") {
 			assetManager->AddMusic(asset["id"], asset["file"]);
+		}
+		if (assetType == "sound") {
+			assetManager->AddSound(asset["id"], asset["file"]);
 		}
 		i++;
 	}
@@ -311,6 +315,17 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 					entity["components"]["damageArea"]["damageDelay"].get_or(1.0)
 				);
 			}
+
+			//SFX
+			sol::optional<sol::table> sfx = entity["components"]["sfx"];
+			if (sfx != sol::nullopt) {
+				newEntity.AddComponent<SFXComponent>(
+					entity["components"]["sfx"]["sfxID"],
+					entity["components"]["sfx"]["volume"].get_or(50),
+					entity["components"]["sfx"]["loop"].get_or(0),
+					entity["components"]["sfx"]["delay"].get_or(2)
+				);
+			}
 		}
 		i++;
 	}
@@ -410,7 +425,7 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 	//player.AddComponent<HealthComponent>(100);
 	//player.AddComponent<BoxColliderComponent>(22, 20, glm::vec2(20.0, 24.0));
 	//player.AddComponent<CameraComponent>();
-
+	
 	//cat1.Group("npc");
 	//cat1.AddComponent<TransformComponent>(glm::vec2(150, 250), glm::vec2(4.0, 4.0), 0.0);
 	//cat1.AddComponent<RigidBodyComponent>(glm::vec2(20.0, 0.0));
