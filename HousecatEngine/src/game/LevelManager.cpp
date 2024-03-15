@@ -133,17 +133,20 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 
 
 
+	sol::optional<sol::table> music = levelData["musics"];
 
+	if (music) {
+		sol::table musics = *music;
+		std::string musicFilePath = music["musicFilePath"];
+		std::string assetID = music["assetID"];
+		int volume = music["volume"].get_or(50);
+		int loop = music["loop"].get_or(-1);
 
-	sol::table music = levelData["musics"];
+		assetManager->SetVolume(volume);
+		assetManager->PlayMusic(assetID, loop);
+	}
 
-	std::string musicFilePath = music["musicFilePath"];
-	std::string assetID = music["assetID"];
-	int volume = music["volume"].get_or(50);
-	int loop = music["loop"].get_or(-1);
-
-	assetManager->SetVolume(volume);
-	assetManager->PlayMusic(assetID, loop);
+	
 
 
 
