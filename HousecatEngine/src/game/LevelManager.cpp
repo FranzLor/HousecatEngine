@@ -56,6 +56,9 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 		if (assetType == "font") {
 			assetManager->AddFont(asset["id"], asset["file"], asset["font_size"]);
 		}
+		if (assetType == "music") {
+			assetManager->AddMusic(asset["id"], asset["file"]);
+		}
 		i++;
 	}
 
@@ -125,6 +128,36 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 
 
 	/////////////////////////////////////////////////////
+
+
+
+
+
+
+
+	sol::table music = levelData["musics"];
+
+	std::string musicFilePath = music["musicFilePath"];
+	std::string assetID = music["assetID"];
+	int volume = music["volume"].get_or(50);
+	int loop = music["loop"].get_or(-1);
+
+	assetManager->SetVolume(volume);
+	assetManager->PlayMusic(assetID, loop);
+
+
+
+
+
+
+
+	/////////////////////////////////////////////////////
+
+
+
+
+
+
 
 
 
