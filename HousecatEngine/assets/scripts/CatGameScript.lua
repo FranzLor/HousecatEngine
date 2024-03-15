@@ -30,7 +30,8 @@ Level = {
         { type = "font", id = "montserrat", file = "./assets/fonts/montserrat.bold.ttf", font_size = 20 },
 
 
-        { type = "music", id = "soundtrack", file = "./assets/sounds/soundtrack.wav" }
+        { type = "music", id = "soundtrack", file = "./assets/sounds/soundtrack.wav" },
+        { type = "sfx", id = "meow", file = "./assets/sounds/meow.wav" }
     },
 
 
@@ -122,6 +123,12 @@ Level = {
 
                 camera = {
                     follow = true
+                },
+
+                sfx = {
+                    soundID = "meow",
+                    volume = 8,
+                    loop = -1
                 }
             }
         },

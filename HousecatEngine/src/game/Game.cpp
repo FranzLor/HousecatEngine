@@ -172,6 +172,7 @@ void Game::Input() {
 				break;
 			case SDL_KEYDOWN:
 				eventManager->TriggerEvent<KeyPressedEvent>(sdlGameEvent.key.keysym.sym);
+				eventManager->TriggerEvent<KeyPressedEvent>(SDLK_SPACE);
 				if (sdlGameEvent.key.keysym.sym == SDLK_ESCAPE) {
 					isRunning = false;
 					
@@ -179,6 +180,7 @@ void Game::Input() {
 				if (sdlGameEvent.key.keysym.sym == SDLK_TAB) {
 					isDebugging = !isDebugging;
 				}
+
 				break;
 			
 		} 

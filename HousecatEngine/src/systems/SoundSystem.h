@@ -8,51 +8,68 @@
 
 #include "../assetmanager/AssetManager.h"
 
+#include "../events/SFXEvent.h"
+
 #include "../components/SFXComponent.h"
+#include "../events/KeyPressedEvent.h"
 
 
 class SoundSystem : public System {
+private:
+	std::unique_ptr<EventManager>& eventManager;
+	std::unique_ptr<AssetManager>& assetManager;
+
 public:
-	SoundSystem() {
-		RequireComponent<SFXComponent>();
+	SoundSystem(std::unique_ptr<EventManager>& eventManager, std::unique_ptr<AssetManager>& assetManager)
+		: eventManager(eventManager), assetManager(assetManager) {
+
+        RequireComponent<SFXComponent>();
+
+        ListenToEvents(eventManager);
+    }
+
+	void ListenToEvents(const std::unique_ptr<EventManager>& eventManager) {
+		eventManager->ListenToEvent<KeyPressedEvent>(this, &SoundSystem::KeyPressed);
 	}
 
-	void PlaySFX(std::unique_ptr<AssetManager>& assetManager, Entity& entity, const std::string& soundID) {
+	void KeyPressed(KeyPressedEvent& event) {
+		PlaySoundForEvent(event);
+	}
+
+	void PlaySoundForEvent(const KeyPressedEvent& event) {
+		for (auto& entity : GetSystemEntities()) {
+			if (entity.HasTag("player") && event.keyPressedSymbol == SDLK_SPACE) {
+				auto& SFX = entity.GetComponent<SFXComponent>();
+				PlaySFX(entity, SFX.soundID);
+			}
+		}
+	}
+
+	void PlaySFX(Entity& entity, const std::string& soundID) {
+		if (!entity.HasComponent<SFXComponent>()) {
+			return;
+		}
+
 		auto& SFX = entity.GetComponent<SFXComponent>();
-		auto sounds = SFX.soundID.find(soundID);
-
-		if (sounds == SFX.soundID.end()) {
-			//sound id not found
-			return;
-		}
-
 		Mix_Chunk* sound = assetManager->GetSound(soundID);
-
-		if (sound == nullptr) {
-			//sound not found
-			return;
+		if (sound) {
+			Mix_VolumeChunk(sound, SFX.volume);
+			Mix_PlayChannel(SFX.channel, sound, SFX.loop ? -1 : 0);
 		}
+	}
 
-		Mix_VolumeChunk(sound, SFX.volume);
-		int channel = Mix_PlayChannel(SFX.channel, sound, SFX.loop ? -1 : 0);
-		if (channel == -1) {
-			//error playing sound
-			return;
-		}
+	void StopSFX(StopSFXEvent& event) {
+		Mix_HaltChannel(event.channel);
+	}
 
+	void AdjustVolume(AdjustVolumeEvent& event) {
+		Mix_Volume(event.channel, event.volume);
 	}
 
 
-	void Update(double deltaTime) {
-		for (auto entity : GetSystemEntities()) {
-			const auto SFX = entity.GetComponent<SFXComponent>();
 
-			//TODO
-			//button event?
-			//damage event
-			//collision event
+	void Update() {
 
-		}
 	}
 
 
