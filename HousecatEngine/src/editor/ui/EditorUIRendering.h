@@ -42,5 +42,8 @@ public:
 
 	void UpdateCanvas();
 
+	void ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera);
+
+
 };
 

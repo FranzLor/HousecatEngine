@@ -122,18 +122,86 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 }
 
 void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {
-	//render
-	//for tiles y
-	//for tiles x
+	//used for changing grid size with canvas
+	auto tilesX = (canvas->GetCanvasWidth() / tileSize);
+	auto tilesY = (canvas->GetCanvasHeight() / tileSize);
+
+	//grid lines
+	SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 255);
+
+	for (int i = 0; i < canvas->GetCanvasWidth(); i += tileSize) {
+		SDL_Rect line = { i - camera.x, -camera.y, 1, canvas->GetCanvasHeight() };
+		SDL_RenderFillRect(renderer.get(), &line);
+	}
+	for (int i = 0; i < canvas->GetCanvasHeight(); i += tileSize) {
+		SDL_Rect line = { -camera.x, i - camera.y, canvas->GetCanvasWidth(), 1 };
+		SDL_RenderFillRect(renderer.get(), &line);
+	}
+
+	//tile squares and collider
+	SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, 255);
+
+	for (int i = 0; i < tilesY; i++) {
+		for (int j = 0; j < tilesX; j++) {
+			SDL_Rect newRect = {
+				(std::floor(j * tileSize * zoom)) - camera.x,
+				(std::floor(i * tileSize * zoom)) - camera.y,
+				std::ceil(tileSize * zoom),
+				std::ceil(tileSize * zoom)
+			};
+
+			SDL_RenderFillRect(renderer.get(), &newRect);
+		}
+	}
 }
 
 
 void EditorUIRendering::CreateNewCanvas() {
-	//default val
+	//resetting canvas
+	tileSize = 32;
+	canvasWidth = 960;
+	canvasHeight = 640;
+	createdTiles = true;
+	gridSnap = false;
 
-	//destroy
+	for (auto& entity : GetSystemEntities()) {
+		entity.Kill();
+	}
+
+	editManager->Clear();
 }
 
 void EditorUIRendering::UpdateCanvas() {
-	//update val?
+	canvasWidth = canvas->GetCanvasWidth();
+	canvasHeight = canvas->GetCanvasHeight();
+}
+
+void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera) {
+	//show mouse on canvas
+	if (!mouse->MouseOutOfBounds() && (createdTiles)) {
+		gridX = static_cast<int>(mouse->GetMousePosition().x) / tileSize;
+		gridY = static_cast<int>(mouse->GetMousePosition().y) / tileSize;
+
+		ImGui::TextColored(ImVec4(0, 255, 255, 1), "Grid: %d, %d", gridX, gridY);
+		ImGui::Spacing();
+
+		if (gridSnap) {
+			ImGui::TextColored(ImVec4(0, 255, 255, 1), "Mouse Tile: %d, %d", tileSize * gridX, tileSize * gridY);
+		}
+		else {
+			ImGui::TextColored(ImVec4
+				(0, 255, 255, 1),
+				"Mouse Tile: %d, %d", 
+				static_cast<int>(mouse->GetMousePosition().x),
+				static_cast<int>(mouse->GetMousePosition().y)
+			);
+		}
+	}
+}
+
+const bool EditorUIRendering::MouseOutOfBounds() const {
+	if (mouse->GetMousePosition().x > canvasWidth - (tileSize / 3) || mouse->GetMousePosition().y > canvasHeight - (tileSize / 3)) {
+		return true;
+	}
+	return false;
 }

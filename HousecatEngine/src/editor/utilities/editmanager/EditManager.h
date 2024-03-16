@@ -51,6 +51,8 @@ public:
 	void Redo();
 	void ClearRedoStack();
 
+	void Clear();
+
 	//TODO?..
 };
 

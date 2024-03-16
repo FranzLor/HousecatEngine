@@ -35,10 +35,6 @@ private:
 	float zoom;
 	bool gridSnap;
 
-	//mouse bounds
-	bool isMouseOutOfBounds;
-	const bool MouseOutOfBounds() const;
-
 
 	//component management
 	TransformComponent appliedTransform;
@@ -62,6 +58,13 @@ private:
 public:
 	Mouse();
 	~Mouse() = default;
+
+	//mouse bounds
+	bool isMouseOutOfBounds;
+	const bool MouseOutOfBounds() const;
+	const glm::vec2& GetMousePosition() const {
+		return mousePosWindow;
+	}
 
 	//mouse 
 	void MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManger, SDL_Rect& camera, SDL_Rect& mouseTile);
