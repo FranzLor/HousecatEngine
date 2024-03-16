@@ -319,7 +319,7 @@ public:
 	void RemoveGroup(Entity entity);
 	bool HasGroup(Entity entity, const std::string& group) const;
 	std::vector<Entity> GetGroup(const std::string& group) const;
-
+	bool IsThereGroup(const std::string& group) const;
 	void Update();
 
 	//singleton pattern
