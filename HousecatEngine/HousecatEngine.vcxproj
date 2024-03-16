@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="src\components\SFXComponent.h" />
     <ClInclude Include="src\editor\utilities\AddTile.h" />
+    <ClInclude Include="src\editor\utilities\RemoveTile.h" />
     <ClInclude Include="src\events\SFXEvent.h" />
     <ClInclude Include="src\game\CollisionMap.h" />
     <ClInclude Include="src\game\LevelManager.h" />
@@ -597,6 +598,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\editor\utilities\AddTile.cpp" />
+    <ClCompile Include="src\editor\utilities\RemoveTile.cpp" />
     <ClCompile Include="src\game\CollisionMap.cpp" />
     <ClCompile Include="src\game\LevelManager.cpp" />
     <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp" />
