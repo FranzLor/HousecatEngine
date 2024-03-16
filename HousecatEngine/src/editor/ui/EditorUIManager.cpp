@@ -17,7 +17,7 @@ EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
 	isImageLoaded(false),
 	Undo(false),
 	Redo(false),
-	file(""),
+	fileName(""),
 	assetID(""),
 	tilesets(),
 	tilesetsTarget(),
@@ -34,8 +34,13 @@ EditorUIManager::~EditorUIManager() {
 //TODO
 //ImGui management
 void EditorUIManager::InitImGui() {
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+
+	//ImGuiIO& io = ImGui::GetIO(); (void)io;
+
 	//TODO
-	//ImGui
+	//KEYS
 }
 
 void EditorUIManager::Setup() {
@@ -62,6 +67,13 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 	if (ImGui::MenuItem("Save As", "CTRL+SHIFT+S")) {
 		//TODO
 		//file management
+		std::string file = fileDialog->SaveFile();
+
+		if (file != "") {
+			//change filename to dialog filename
+			fileName = file;
+			projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
+		}
 	}
 	if (ImGui::MenuItem("Exit", "ALT+F4")) {
 		//EXIT
@@ -76,7 +88,7 @@ void EditorUIManager::ShowEditMenu() {
 	if (ImGui::MenuItem("Redo", "CTRL+Y")) {
 		//Redo = true;
 	}
-	ImGui::EndMenu();
+
 }
 
 void EditorUIManager::ShowViewMenu() {
@@ -102,10 +114,10 @@ void EditorUIManager::ShowViewMenu() {
 
 void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse) {
 	//MENU project interact
-	if (ImGui::BeginMenu("Add Map")) {
+	if (ImGui::MenuItem("Add Map")) {
 		//TODO
 	}
-	if (ImGui::BeginMenu("Import Tileset")) {
+	if (ImGui::MenuItem("Import Tileset")) {
 		//TODO
 		//file management
 
@@ -168,18 +180,19 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 				}
 			}
 		}
+		ImGui::End();
 	}
 }
 
 void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse) {
 	//tile attributes interact
-	if (ImGui::BeginMenu("Tilesets")) {
+	if (ImGui::MenuItem("Tilesets")) {
 		//multiple tilesets
 	}
-	if (ImGui::BeginMenu("Transform")) {
+	if (ImGui::MenuItem("Transform")) {
 		//scale
 	}
-	if (ImGui::BeginMenu("Sprite")) {
+	if (ImGui::MenuItem("Sprite")) {
 		//mouse x mouse y
 
 	}
@@ -187,7 +200,7 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 
 void EditorUIManager::TilesetLayers(const AssetManagerPtr& assetManager) {
 	//layers interact
-	if (ImGui::BeginMenu("Layer")) {
+	if (ImGui::MenuItem("Layer")) {
 
 	}
 }

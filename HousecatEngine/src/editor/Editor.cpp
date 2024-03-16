@@ -177,18 +177,9 @@ void Editor::Render() {
 	//render collider
 	//render animation
 
-	ImGui_ImplSDLRenderer2_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();
 
-	ImGui::SetCurrentContext(editorImGuiContext);
+	Housecat::GetInstance().GetSystem<EditorUIRendering>().Update(editorRenderer, assetManager, camera, mouseTile, zoom, millisecsPreviousFrame);
 
-	ImGui::ShowDemoWindow();
-
-	ImGui::Render();
-	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
-
-	ImGui::EndFrame();
 
 	SDL_RenderPresent(editorRenderer.get());
 }

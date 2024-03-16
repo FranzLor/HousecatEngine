@@ -10,6 +10,8 @@
 #include "../utilities/SDLUtility.h"
 #include "../utilities/editmanager/EditManager.h"
 #include "../utilities/mouse/Mouse.h"
+#include "../utilities/FileDialogue.h"
+#include "../utilities/ProjectManagement.h"
 
 #include "../../ecs/ECS.h"
 #include "../../assetmanager/AssetManager.h"
@@ -30,14 +32,17 @@ private:
 	bool Redo;
 
 	//project
-	std::string file;
+	std::string fileName;
 	std::string assetID;
+	std::string imageName;
 
 	//tilesets
 	std::vector<std::string> tilesets;
 	std::vector<std::string> tilesetsTarget;
 
 	std::unique_ptr<class EditManager> editManager;
+	std::unique_ptr<class FileDialogue> fileDialog;
+	std::unique_ptr<class ProjectManagement> projectManagement;
 
 	std::shared_ptr<class Mouse> mouse;
 

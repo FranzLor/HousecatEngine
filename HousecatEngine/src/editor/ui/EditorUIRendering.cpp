@@ -8,6 +8,8 @@
 #include "EditorUIRendering.h"
 
 #include "../src/logger/Logger.h"
+#include <imgui/imgui_impl_sdlrenderer2.h>
+#include <imgui/imgui_impl_sdl2.h>
 
 
 EditorUIRendering::EditorUIRendering()
@@ -32,8 +34,8 @@ EditorUIRendering::EditorUIRendering()
 	editorUIManager->InitImGui();
 	editorUIManager->Setup();
 
-	canvasPreviousWidth = canvasWidth;
-	canvasPreviousHeight = canvasHeight;
+	canvasPreviousWidth = 960;
+	canvasPreviousHeight = 640;
 
 	Logger::Lifecycle("ImGuiRendering Constructor Called!");
 }
@@ -44,7 +46,11 @@ EditorUIRendering::~EditorUIRendering() {
 
 
 void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, const float& zoom, const float& dT) {
+	//start frame
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			editorUIManager->ShowFileMenu(renderer, assetManager, canvas, tileSize);
@@ -112,12 +118,17 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			//	  SetHeight
 			//	}
 			//}
+			ImGui::EndMenu();
 		}
 
 	}
 
 	ImGui::EndMainMenuBar();
 
+
+	//render imgui
+	ImGui::Render();
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
 }
 
