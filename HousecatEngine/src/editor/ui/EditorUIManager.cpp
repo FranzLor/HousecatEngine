@@ -117,9 +117,31 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 	if (ImGui::MenuItem("Change Map")) {
 		//TODO
 	}
-	if (ImGui::MenuItem("Change Tileset")) {
-		//TODO
-		//file management
+	if (ImGui::MenuItem("New Tileset")) {
+		FileDialogue fileDialog;
+		imageName = fileDialog.OpenFile();
+
+		if (imageName != "" || !imageName.empty()) {
+			std::filesystem::path path(imageName);
+			assetID = path.stem().string();
+
+			for (const auto& assets : tilesets) {
+				if (assets == assetID) {
+					return;
+				}
+			}
+
+			assetManager->AddEditorTexture(renderer, assetID, imageName);
+
+			if (SDL_QueryTexture(assetManager->ReturnEditorTexture(assetID).get(), NULL, NULL, &tileWidth, &tileHeight) != 0) {
+				isImageLoaded = false;
+			}
+			else {
+				isImageLoaded = true;
+				tilesets.push_back(assetID);
+				tilesetsTarget.push_back(imageName);
+			}
+		}
 
 	}
 }
