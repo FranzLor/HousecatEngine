@@ -23,6 +23,7 @@ private:
 	int gridX;
 	int gridY;
 	bool gridSnap;
+	bool gridShow;
 
 	std::shared_ptr<class EditorCanvas> canvas;
 	std::shared_ptr<class EditorUIManager> editorUIManager;

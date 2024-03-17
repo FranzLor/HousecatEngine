@@ -23,7 +23,8 @@ EditorUIRendering::EditorUIRendering()
 	removedTiles(false),
 	gridX(0),
 	gridY(0),
-	gridSnap(false) {
+	gridSnap(true),
+	gridShow(true) {
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
 	mouse = std::make_shared<Mouse>();
@@ -72,12 +73,16 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			//show view menu
 			//call View();
 
-			//if (ImGui::Checkbox("Show Grid", &grid) {
-			// 
-			//}
-			//if (ImGui::Checkbox("Snap to Grid", &grid) {
-			// 
-			//}
+			if (ImGui::Checkbox("Show Grid", &gridShow)) {
+			 
+			}
+			if (ImGui::Checkbox("Snap to Grid", &gridSnap)) {
+			 
+			}
+
+			ImGui::Spacing();
+			ImGui::Spacing();
+
 			if (ImGui::MenuItem("Zoom In", "CTRL + +")) {
 
 			}
@@ -91,33 +96,20 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		}
 
 		if (ImGui::BeginMenu("Project")) {
-			//show project menu
+			if (ImGui::MenuItem("New Map")) {
+				editorUIManager->ShowProjectMenu(renderer, assetManager);
 
-			//clamp
-			//if (ImGui::InputInt("Tile Size", &tileSize, x, x)) {
-			//	if (tileSize <= x) {
-			//		tileSize = x;
-			//}
+			}
 
-			//if (ImGui::InputInt("Canvas Width", &canvasWidth, &tileSize, &tileSize)) {
-			//	if width increase
+			ImGui::Spacing;
+			ImGui::Spacing;
 
-			//clamp
-			//	if (canvasWidth <= x) {
-			//    canvasWidth = x;
-			//	  SetWidth
-			//	}
-			//}
+			if (ImGui::MenuItem("New Tileset")) {
+				editorUIManager->ShowProjectMenu(renderer, assetManager);
 
-			//if (ImGui::InputInt("Canvas Height", &canvasHeight, &tileSize, &tileSize)) {
-			//	if width increase
+			}
 
-			//clamp
-			//	if (canvasHeight <= x) {
-			//    canvasHeight = x;
-			//	  SetHeight
-			//	}
-			//}
+			
 			ImGui::EndMenu();
 		}
 
@@ -125,6 +117,22 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 	ImGui::EndMainMenuBar();
 
+	//update mouse
+	mouse->UpdateMousePosition(camera);
+	mouse->MousePanCamera(renderer, camera, assetManager, dT);
+	mouse->UpdateZoom(zoom);
+	mouse->UpdateGridSize(tileSize);
+	mouse->SetGridSnap(gridSnap);
+
+	ImGuiIO& IO = ImGui::GetIO();
+	if (IO.WantCaptureMouse) {
+		mouse->MouseOverWindow(true);
+	}
+	else {
+		mouse->MouseOverWindow(false);
+	}
+
+	UpdateCanvas();
 
 	//render imgui
 	ImGui::Render();

@@ -112,12 +112,12 @@ void EditorUIManager::ShowViewMenu() {
 
 }
 
-void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse) {
+void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager) {
 	//MENU project interact
-	if (ImGui::MenuItem("Add Map")) {
+	if (ImGui::MenuItem("Change Map")) {
 		//TODO
 	}
-	if (ImGui::MenuItem("Import Tileset")) {
+	if (ImGui::MenuItem("Change Tileset")) {
 		//TODO
 		//file management
 

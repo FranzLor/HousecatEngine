@@ -19,6 +19,7 @@ private:
 	glm::vec2 mousePosTile;
 	glm::vec2 mousePrevPosTile;
 	glm::vec2 mousePosWindow;
+	bool isMouseOutOfBounds;
 
 	bool isLeftMouseButton;
 	bool isMiddleMouseButton;
@@ -59,12 +60,6 @@ public:
 	Mouse();
 	~Mouse() = default;
 
-	//mouse bounds
-	bool isMouseOutOfBounds;
-	const bool MouseOutOfBounds() const;
-	const glm::vec2& GetMousePosition() const {
-		return mousePosWindow;
-	}
 
 	//mouse 
 	void MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManger, SDL_Rect& camera, SDL_Rect& mouseTile);
@@ -75,10 +70,20 @@ public:
 
 	void MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const AssetManagerPtr& assetManager, const float& dT);
 
-	//components
-	void ApplyTransform(const int scaleX, const int scaley);
 
-	void ApplySprite(const std::string& assetID, const int width, const int height, const int layer, const int srcRectX, const int srcRectY);
+	//mouse bounds
+	const bool MouseOutOfBounds() const;
+
+	const glm::vec2& GetMousePosition() const {
+		return mousePosWindow;
+	}
+
+	void MouseOverWindow(bool isOver) {
+		isMouseOutOfBounds = isOver;
+	}
+
+
+
 
 	//mouse edit
 	inline const bool& TileAdded() const {
@@ -101,6 +106,32 @@ public:
 		tileRemoved = tile;
 
 	}
+
+
+	//update
+	inline void UpdateZoom(const float& mouseZoom) {
+		zoom = mouseZoom;
+	}
+
+	inline void UpdateGridSize(const int& gridSize) {
+		tileSize = gridSize;
+	}
+
+	
+
+	//grid
+	inline void SetGridSnap(bool snap) {
+		gridSnap = snap;
+	}
+
+
+
+	//components
+	void ApplyTransform(const int scaleX, const int scaley);
+
+	void ApplySprite(const std::string& assetID, const int width, const int height, const int layer, const int srcRectX, const int srcRectY);
+
+	
 
 	const TransformComponent& GetRemovedTransform() {
 		return removedTransform;

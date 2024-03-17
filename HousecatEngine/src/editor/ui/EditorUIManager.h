@@ -64,7 +64,7 @@ public:
 
 	void ShowViewMenu();
 
-	void ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse);
+	void ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager);
 
 	//TODO
 	//file management
