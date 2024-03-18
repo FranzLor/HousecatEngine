@@ -25,7 +25,7 @@ private:
 	int tileHeight;
 	int textureWidth;
 	int textureHeight;
-	bool isImageLoaded;
+	bool loadTileset;
 
 	//edit
 	bool Undo;
@@ -86,6 +86,12 @@ public:
 	//TODO
 	//shortcut management
 	void ApplyShortcuts();
+
+
+	//comopnents
+	bool CheckTransform();
+
+	bool CheckSprite();
 };
 
 
