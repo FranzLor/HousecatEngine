@@ -203,7 +203,7 @@ void LuaExporter::WriteKeyAndQuotedValue(TKey key, TValue value, std::fstream& f
 
 	Write(key, file);
 	Write(minimize ? "=" : " = ", file);
-	Write(Quote(value), file);
+	Write(MakeQuote(value), file);
 
 	if (!finalValue) {
 		Write(separator, file);

@@ -178,7 +178,8 @@ void Editor::Render() {
 	//render animation
 
 
-	Housecat::GetInstance().GetSystem<EditorUIRendering>().Update(editorRenderer, assetManager, camera, mouseTile, zoom, millisecsPreviousFrame);
+	Housecat::GetInstance().GetSystem<EditorUIRendering>().Update(editorRenderer, assetManager, camera, mouseTile,
+		event, zoom, millisecsPreviousFrame);
 
 
 	SDL_RenderPresent(editorRenderer.get());

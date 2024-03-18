@@ -75,6 +75,16 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 			projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
 		}
 	}
+
+	if (ImGui::MenuItem("Export to Lua Table")) {
+		std::string tileName = fileDialog->SaveFile();
+
+		if (fileName != "" || !fileName.empty()) {
+			luaFile = fileName;
+			projectManagement->SaveAsLua(luaFile, tilesets, tilesetsTarget, tileSize);
+		}
+	}
+
 	if (ImGui::MenuItem("Exit", "ALT+F4")) {
 		//EXIT
 	}
@@ -117,6 +127,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 	if (ImGui::MenuItem("Change Map")) {
 		//TODO
 	}
+
 	if (ImGui::MenuItem("New Tileset")) {
 		FileDialogue fileDialog;
 		imageName = fileDialog.OpenFile();
@@ -163,45 +174,69 @@ void EditorUIManager::Save(EditorRenderer& renderer, const AssetManagerPtr& asse
 //TODO
 //tileset management
 void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
-	if (ImGui::Begin("Tileset"), isImageLoaded) {
-		//resize on mouse scroll
-		float scrollX = ImGui::GetScrollX();
-		float scrollY = ImGui::GetScrollY();
-		int imageWidth = textureWidth * 2;
-		int imageHeight = textureHeight;
+	std::string currentTileset = "Tileset";
 
-		ImGui::Image(assetManager->GetTexture(assetID), ImVec2(imageWidth, imageHeight));
+	if (ImGui::Begin(currentTileset.c_str())) {
 
-		int mousePosX = static_cast<int>(ImGui::GetMousePos().x - ImGui::GetWindowPos().x + scrollX);
-		int mousePosY = static_cast<int>(ImGui::GetMousePos().y - ImGui::GetWindowPos().y + scrollY);
+		ImGui::Text("Scaling");
+		ImGui::SliderInt("Scale X", &tileAttributes.scaleX, 1, 10);
+		ImGui::SliderInt("Scale Y", &tileAttributes.scaleY, 1, 10);
 
-		int tileCol = imageWidth / (mouseRect.x * 2);
-		int tileRow = imageHeight / (mouseRect.y * 2);
 
-		//store highlighted tiles
-		auto highlightTiles = ImGui::GetWindowDrawList();
-
-		//render tileset textures
-		for (int c = 0; c < tileCol; c++) {
-			for (int r = 0; r < tileRow; r++) {
-				// Calculate tile boundaries
-				int tileAX = (imageWidth / tileCol) * c;
-				int tileAY = (imageHeight / tileRow) * r;
-				int tileBX = tileAX + (imageWidth / tileCol);
-				int tileBY = tileAX + (imageHeight / tileRow);
-
-				//wihtin tile area
-				if (mousePosX >= tileAX && mousePosX <= tileBX && mousePosY >= tileAY && mousePosY <= tileBY) {
-					//highlight blueish
-					highlightTiles->AddRectFilled(ImVec2(tileAX, tileAY), ImVec2(tileBX, tileBY), IM_COL32(0, 0, 255, 100));
-
-					if (ImGui::IsMouseClicked(0)) {
-						tileAttributes.srcRectX = c * (int)mouseRect.x * 2;
-						tileAttributes.srcRectY = r * (int)mouseRect.y * 2;
-					}
-				}
+		ImGui::Text("Sprite");
+		if (ImGui::InputInt("Tile X", &tileAttributes.mouseRectX, 8, 8)) {
+			tileAttributes.mouseRectX = (tileAttributes.mouseRectX / 8) * 8;
+			if (tileAttributes.mouseRectX <= 0) {
+				tileAttributes.mouseRectX = 0;
 			}
 		}
+		if (ImGui::InputInt("Tile Y", &tileAttributes.mouseRectY, 8, 8)) {
+			tileAttributes.mouseRectY = (tileAttributes.mouseRectY / 8) * 8;
+			if (tileAttributes.mouseRectY <= 0) {
+				tileAttributes.mouseRectY = 0;
+			}
+		}
+
+
+
+		////resize on mouse scroll
+		//float scrollX = ImGui::GetScrollX();
+		//float scrollY = ImGui::GetScrollY();
+		//int imageWidth = textureWidth * 2;
+		//int imageHeight = textureHeight;
+
+		//ImGui::Image(assetManager->GetTexture(assetID), ImVec2(imageWidth, imageHeight));
+
+		//int mousePosX = static_cast<int>(ImGui::GetMousePos().x - ImGui::GetWindowPos().x + scrollX);
+		//int mousePosY = static_cast<int>(ImGui::GetMousePos().y - ImGui::GetWindowPos().y + scrollY);
+
+		//int tileCol = imageWidth / (mouseRect.x * 2);
+		//int tileRow = imageHeight / (mouseRect.y * 2);
+
+		////store highlighted tiles
+		//auto highlightTiles = ImGui::GetWindowDrawList();
+
+		////render tileset textures
+		//for (int c = 0; c < tileCol; c++) {
+		//	for (int r = 0; r < tileRow; r++) {
+		//		// Calculate tile boundaries
+		//		int tileAX = (imageWidth / tileCol) * c;
+		//		int tileAY = (imageHeight / tileRow) * r;
+		//		int tileBX = tileAX + (imageWidth / tileCol);
+		//		int tileBY = tileAX + (imageHeight / tileRow);
+
+		//		//wihtin tile area
+		//		if (mousePosX >= tileAX && mousePosX <= tileBX && mousePosY >= tileAY && mousePosY <= tileBY) {
+		//			//highlight blueish
+		//			highlightTiles->AddRectFilled(ImVec2(tileAX, tileAY), ImVec2(tileBX, tileBY), IM_COL32(0, 0, 255, 100));
+
+		//			if (ImGui::IsMouseClicked(0)) {
+		//				tileAttributes.srcRectX = c * (int)mouseRect.x * 2;
+		//				tileAttributes.srcRectY = r * (int)mouseRect.y * 2;
+		//			}
+		//		}
+		//	}
+		//}
 		ImGui::End();
 	}
 }

@@ -10,6 +10,8 @@
 #include "../src/logger/Logger.h"
 #include <imgui/imgui_impl_sdlrenderer2.h>
 #include <imgui/imgui_impl_sdl2.h>
+#include "../utilities/AddTile.h"
+#include "../utilities/RemoveTile.h"
 
 
 EditorUIRendering::EditorUIRendering()
@@ -19,8 +21,8 @@ EditorUIRendering::EditorUIRendering()
 	canvasPreviousHeight(canvasHeight),
 	tileSize(32),
 	tilePrevSize(tileSize),
-	createdTiles(false),
-	removedTiles(false),
+	createTiles(false),
+	removedTile(false),
 	gridX(0),
 	gridY(0),
 	gridSnap(true),
@@ -46,7 +48,9 @@ EditorUIRendering::~EditorUIRendering() {
 }
 
 
-void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, const float& zoom, const float& dT) {
+void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, 
+	SDL_Event& event, const float& zoom, const float& dT) {
+
 	//start frame
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
@@ -96,26 +100,44 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		}
 
 		if (ImGui::BeginMenu("Project")) {
-			if (ImGui::MenuItem("New Map")) {
-				editorUIManager->ShowProjectMenu(renderer, assetManager);
-
-			}
+			editorUIManager->ShowProjectMenu(renderer, assetManager);
 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
 			if (ImGui::MenuItem("New Tileset")) {
-				editorUIManager->ShowProjectMenu(renderer, assetManager);
-
+				createTiles = true;
 			}
 
 			
 			ImGui::EndMenu();
 		}
 
+		ShowMouseLocation(mouseTile, camera);
 	}
 
 	ImGui::EndMainMenuBar();
+
+	if (createTiles) {
+		editorUIManager->TilesetWindow(assetManager, mouse->GetMousePosition());
+		editorUIManager->TileAttributes(assetManager, mouse);
+
+		if (!MouseOutOfBounds()) {
+			mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
+		}
+
+		if (mouse->TileAdded()) {
+			editManager->Execute(std::make_shared<AddTile>(mouse));
+			mouse->SetTileAdded(false);
+			removedTile = false;
+		}
+
+		if (mouse->TileRemoved()) {
+			editManager->Execute(std::make_shared<RemoveTile>(mouse));
+			mouse->SetRemovedTile(false);
+			removedTile = true;
+		}
+	}
 
 	//update mouse
 	mouse->UpdateMousePosition(camera);
@@ -180,7 +202,7 @@ void EditorUIRendering::CreateNewCanvas() {
 	tileSize = 32;
 	canvasWidth = 960;
 	canvasHeight = 640;
-	createdTiles = true;
+	createTiles = false;
 	gridSnap = false;
 
 	for (auto& entity : GetSystemEntities()) {
@@ -197,7 +219,7 @@ void EditorUIRendering::UpdateCanvas() {
 
 void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera) {
 	//show mouse on canvas
-	if (!mouse->MouseOutOfBounds() && (createdTiles)) {
+	if (!mouse->MouseOutOfBounds() && (createTiles)) {
 		gridX = static_cast<int>(mouse->GetMousePosition().x) / tileSize;
 		gridY = static_cast<int>(mouse->GetMousePosition().y) / tileSize;
 

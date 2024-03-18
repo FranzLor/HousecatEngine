@@ -35,6 +35,7 @@ private:
 	std::string fileName;
 	std::string assetID;
 	std::string imageName;
+	std::string luaFile;
 
 	//tilesets
 	std::vector<std::string> tilesets;

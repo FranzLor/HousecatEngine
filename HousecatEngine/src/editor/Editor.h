@@ -39,6 +39,8 @@ private:
 	//AssetManager ptr
 	AssetManagerPtr assetManager;
 
+	SDL_Event event;
+
 	//TODO
 	//mouse
 	//camera
