@@ -15,6 +15,9 @@ EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
 	textureWidth(0),
 	textureHeight(0),
 	loadTileset(false),
+	isReset(false),
+	isNewFile(false),
+	newCanvas(false),
 	Undo(false),
 	Redo(false),
 	fileName(""),
@@ -22,6 +25,9 @@ EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
 	tilesets(),
 	tilesetsTarget(),
 	mouse(mouse),
+
+	fileDialog(std::make_unique<FileDialogue>()),
+	projectManagement(std::make_unique<ProjectManagement>()),
 	editManager(std::make_unique<EditManager>()) {
 
 	//Logger::Lifecycle("ImGuiFunctions Constructor Called!");
@@ -37,7 +43,7 @@ void EditorUIManager::InitImGui() {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
-	//ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	//TODO
 	//KEYS
@@ -53,16 +59,13 @@ void EditorUIManager::Setup() {
 void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize) {
 	//MENU file interact
 	if (ImGui::MenuItem("New Project", "CTRL+N")) {
-		NewProject();
+		isNewFile = true;
 	}
 	if (ImGui::MenuItem("Open Project", "CTRL+O")) {
-		OpenProject(renderer, assetManager, canvas, tileSize);
+		Open(renderer, assetManager, canvas, tileSize);
 	}
 	if (ImGui::MenuItem("Save", "CTRL+S")) {
 		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
-
-		//TODO 
-		//file management
 	}
 	if (ImGui::MenuItem("Save As", "CTRL+SHIFT+S")) {
 		//TODO
@@ -92,43 +95,43 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 	}
 }
 
-void EditorUIManager::ShowEditMenu() {
-	//MENU edit interact
-	if (ImGui::MenuItem("Undo", "CTRL+Z")) {
-		//Undo = true;
-	}
-	if (ImGui::MenuItem("Redo", "CTRL+Y")) {
-		//Redo = true;
-	}
+//void EditorUIManager::ShowEditMenu() {
+//	//MENU edit interact
+//	if (ImGui::MenuItem("Undo", "CTRL+Z")) {
+//		//Undo = true;
+//	}
+//	if (ImGui::MenuItem("Redo", "CTRL+Y")) {
+//		//Redo = true;
+//	}
+//
+//}
 
-}
-
-void EditorUIManager::ShowViewMenu() {
-	//MENU view interact
-	if (ImGui::MenuItem("Show Grid", "CTRL+G")) {
-		//TODO
-		//grid management
-	}
-	if (ImGui::MenuItem("Grid Snapping")) {
-		//TODO
-
-	}
-	if (ImGui::MenuItem("Zoom In")) {
-		//TODO
-
-	}
-	if (ImGui::MenuItem("Zoom Out")) {
-		//TODO
-
-	}
-
-}
+//void EditorUIManager::ShowViewMenu() {
+//	//MENU view interact
+//	if (ImGui::MenuItem("Show Grid", "CTRL+G")) {
+//		//TODO
+//		//grid management
+//	}
+//	if (ImGui::MenuItem("Grid Snapping")) {
+//		//TODO
+//
+//	}
+//	if (ImGui::MenuItem("Zoom In")) {
+//		//TODO
+//
+//	}
+//	if (ImGui::MenuItem("Zoom Out")) {
+//		//TODO
+//
+//	}
+//
+//}
 
 void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager) {
 	//MENU project interact
-	if (ImGui::MenuItem("New Map")) {
-		//TODO
-	}
+	//if (ImGui::MenuItem("New Map")) {
+	//	//TODO
+	//}
 
 	if (ImGui::MenuItem("New Tileset")) {
 		FileDialogue fileDialog;
@@ -234,6 +237,7 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 
 		if (CheckTransform()) {
 			mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
+			mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
 		}
 
 		mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
@@ -257,15 +261,61 @@ void EditorUIManager::NewProject() {
 
 }
 
-void EditorUIManager::OpenProject(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize) {
+void EditorUIManager::Open(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize) {
+	std::string fileName = fileDialog->OpenFile();
 
+	if (!fileName.empty()) {
+		projectManagement->OpenProject(fileName, renderer, canvas, assetManager, tilesets, tilesetsTarget, tileSize);
+	}
 }
 
 void EditorUIManager::Save(EditorRenderer& renderer, const AssetManagerPtr& assetManager, const int& canvasWidth, const int& canvasHeight, int& tileSize) {
+	if (fileName.empty()) {
+		fileName = fileDialog->SaveFile();
 
+		if (fileName.empty()) {
+			return;
+		}
+	}
+	
+	projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvasWidth, canvasHeight, tileSize);
 }
 
+void EditorUIManager::OpenNewWindow() {
+	if (!isNewFile) {
+		return;
+	}
 
+	if (ImGui::Begin("New Canvas")) {
+		ImGui::Text("Are you sure?");
+		ImGui::Spacing();
+
+		if (ImGui::Button("Yes")) {
+			newCanvas = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("No")) {
+			isNewFile = false;
+		}
+		ImGui::End();
+	}
+
+	if (newCanvas) {
+		ResetLoadedFiles();
+		isNewFile = false;
+		newCanvas = false;
+	}
+}
+
+void EditorUIManager::ResetLoadedFiles() {
+	fileName = "";
+	assetID = "";
+	imageName = "";
+	loadTileset = false;
+	tilesets.clear();
+	tilesetsTarget.clear();
+	isReset = true;
+}
 
 
 

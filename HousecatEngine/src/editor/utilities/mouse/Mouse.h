@@ -82,6 +82,9 @@ public:
 		isMouseOutOfBounds = isOver;
 	}
 
+	inline void SetMouseTileRect(int mouseRectX, int mouseRectY) {
+		mouseRect = glm::vec2(mouseRectX, mouseRectY);
+	}
 
 
 

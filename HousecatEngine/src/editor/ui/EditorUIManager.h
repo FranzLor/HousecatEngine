@@ -26,10 +26,14 @@ private:
 	int textureWidth;
 	int textureHeight;
 	bool loadTileset;
+	bool isReset;
+	bool isNewFile;
+	bool newCanvas;
 
 	//edit
 	bool Undo;
 	bool Redo;
+
 
 	//project
 	std::string fileName;
@@ -71,9 +75,21 @@ public:
 	//file management
 	void NewProject();
 
-	void OpenProject(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize);
+	void Open(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize);
 
 	void Save(EditorRenderer& renderer, const AssetManagerPtr& assetManager, const int& canvasWidth, const int& canvasHeight, int& tileSize);
+
+	void OpenNewWindow();
+
+	void ResetLoadedFiles();
+
+	inline const bool& FileReset() const {
+		return isReset;
+	}
+
+	inline void SetFileReset(const bool& reset) {
+		isReset = reset;
+	}
 
 	//TODO
 	//tileset management

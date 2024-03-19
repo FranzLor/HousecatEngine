@@ -12,6 +12,7 @@
 #include <imgui/imgui_impl_sdl2.h>
 #include "../utilities/AddTile.h"
 #include "../utilities/RemoveTile.h"
+#include "../utilities/EditCanvasSize.h"
 
 
 EditorUIRendering::EditorUIRendering()
@@ -39,6 +40,9 @@ EditorUIRendering::EditorUIRendering()
 
 	canvasPreviousWidth = 960;
 	canvasPreviousHeight = 640;
+
+	//sol lua libraries here
+	//TODO
 
 	Logger::Lifecycle("ImGuiRendering Constructor Called!");
 }
@@ -76,13 +80,9 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		if (ImGui::BeginMenu("View")) {
 			//show view menu
 			//call View();
+			ImGui::Checkbox("Show Grid", &gridShow);
 
-			if (ImGui::Checkbox("Show Grid", &gridShow)) {
-			 
-			}
-			if (ImGui::Checkbox("Snap to Grid", &gridSnap)) {
-			 
-			}
+			ImGui::Checkbox("Snap to Grid", &gridSnap);
 
 			ImGui::Spacing();
 			ImGui::Spacing();
@@ -105,18 +105,60 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
-			if (ImGui::MenuItem("New Tileset")) {
+			if (ImGui::Checkbox("New Tileset", &createTiles)) {
 				createTiles = true;
 			}
 
-			
+			ImGui::Spacing;
+			ImGui::Spacing;
+
+			if (ImGui::InputInt("Tile Size", &tileSize, 8, 8)) {
+				if (tileSize <= 8) {
+					tileSize = 8;
+				}
+			}
+
+			if (ImGui::InputInt("Canvas Width", &canvasWidth, tileSize, tileSize)) {
+				if (canvasPreviousWidth != canvasWidth) {
+					canvas->SetCanvasWidth(canvasWidth);
+					editManager->Execute(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
+					canvasPreviousWidth = canvasWidth;
+				}
+
+				if (canvasWidth <= 960) {
+					canvasWidth = 960;
+					canvas->SetCanvasWidth(canvasWidth);
+					canvasPreviousWidth = canvasWidth;
+				}
+			}
+
+			if (ImGui::InputInt("Canvas Height", &canvasHeight, tileSize, tileSize)) {
+				if (canvasPreviousHeight != canvasHeight) {
+					canvas->SetCanvasHeight(canvasHeight);
+					editManager->Execute(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
+					canvasPreviousHeight = canvasHeight;
+				}
+
+				if (canvasHeight <= 640) {
+					canvasHeight = 640;
+					canvas->SetCanvasHeight(canvasHeight);
+					canvasPreviousHeight = canvasHeight;
+				}
+			}
 			ImGui::EndMenu();
 		}
 
 		ShowMouseLocation(mouseTile, camera);
+
+		ImGui::EndMainMenuBar();
 	}
 
-	ImGui::EndMainMenuBar();
+	editorUIManager->OpenNewWindow();
+
+	if (editorUIManager->FileReset()) {
+		CreateNewCanvas();
+		editorUIManager->SetFileReset(false);
+	}
 
 	if (createTiles) {
 		editorUIManager->TilesetWindow(assetManager, mouse->GetMousePosition());
@@ -159,10 +201,14 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	//render imgui
 	ImGui::Render();
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
-
 }
 
 void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {
+
+	//if (!gridShow) {
+	//	return;
+	//}
+
 	//used for changing grid size with canvas
 	auto tilesX = (canvas->GetCanvasWidth() / tileSize);
 	auto tilesY = (canvas->GetCanvasHeight() / tileSize);
@@ -202,8 +248,9 @@ void EditorUIRendering::CreateNewCanvas() {
 	tileSize = 32;
 	canvasWidth = 960;
 	canvasHeight = 640;
+
 	createTiles = false;
-	gridSnap = false;
+	gridSnap = true;
 
 	for (auto& entity : GetSystemEntities()) {
 		entity.Kill();
