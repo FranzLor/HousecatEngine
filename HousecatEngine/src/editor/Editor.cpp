@@ -190,14 +190,36 @@ void Editor::Render() {
 }
 
 void Editor::CameraController(SDL_Event& event) {
-	//TODO
-	//sdl event -> mousewheel zoom
+	constexpr float zoomStep = 0.4f;
+
+	if (event.wheel.y > 0) {
+		zoom = std::min(zoom + zoomStep, 2.2f);
+	}
+	else if (event.wheel.y < 0) {
+		zoom = std::max(zoom - zoomStep, 0.4f);
+	}
+
+	camera.h *= zoom;
+	camera.w *= zoom;
 }
 
 void Editor::KeyboardCameraController() {
-	//todo
-	//sdl event -> keydown
-	//switch case keys
+	if (event.type == SDL_KEYDOWN) {
+		switch (event.key.keysym.sym) {
+		case SDLK_w:
+			camera.y -= camSpeed;
+			break;
+		case SDLK_a:
+			camera.x -= camSpeed;
+			break;
+		case SDLK_s:
+			camera.y += camSpeed;
+			break;
+		case SDLK_d:
+			camera.x += camSpeed;
+			break;
+		}
+	}
 }
 
 void Editor::Run() {
