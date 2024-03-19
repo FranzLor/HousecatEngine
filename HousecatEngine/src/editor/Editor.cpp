@@ -19,6 +19,7 @@ Editor::Editor()
 	zoom(0.0f),
 	mouseTile(),
 	camera(),
+	event(),
 	editorWindow(nullptr),
 	editorRenderer(nullptr),
 	editorImGuiContext(nullptr) {
@@ -78,15 +79,18 @@ void Editor::Initialize() {
 	//x, y, w, h
 	mouseTile = { 0, 0, 1, 1 };
 
-	IMGUI_CHECKVERSION();
-	//TODO
-	//AssetManager Init here
+	//camera
+	camera = { defaultCamX, defaultCamY, windowEditorWidth, windowEditorHeight };
 
 
 	//ImGui Init
+	IMGUI_CHECKVERSION();
 	editorImGuiContext = ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForSDLRenderer(editorWindow.get(), editorRenderer.get());
 	ImGui_ImplSDLRenderer2_Init(editorRenderer.get());
+
+	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
+
 
 	//TODO
 	assetManager = std::make_unique<AssetManager>();

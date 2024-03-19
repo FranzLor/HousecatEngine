@@ -20,7 +20,7 @@ public:
 	ProjectManagement();
 	~ProjectManagement();
 	
-	void OpenProject(const std::string& fileName, EditorRenderer& renderer, std::shared_ptr<EditorCanvas>& canvas,
+	void OpenProject(sol::state& lua, const std::string& fileName, EditorRenderer& renderer, std::shared_ptr<EditorCanvas>& canvas,
 		const AssetManagerPtr& assetManager, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath,
 		int& tileSize);
 	 

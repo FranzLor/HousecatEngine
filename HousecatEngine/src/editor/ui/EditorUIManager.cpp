@@ -56,13 +56,13 @@ void EditorUIManager::Setup() {
 
 //TODO
 //menu bar management
-void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize) {
+void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize) {
 	//MENU file interact
 	if (ImGui::MenuItem("New Project", "CTRL+N")) {
 		isNewFile = true;
 	}
 	if (ImGui::MenuItem("Open Project", "CTRL+O")) {
-		Open(renderer, assetManager, canvas, tileSize);
+		Open(renderer, assetManager, canvas, lua, tileSize);
 	}
 	if (ImGui::MenuItem("Save", "CTRL+S")) {
 		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
@@ -211,38 +211,46 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 	ImGui::End();
 }
 
-void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse) {
+void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow) {
 	std::string currentTileset = "Tileset Attributes";
+
+	if (!tileWindow) {
+		return;
+	}
 
 	if (ImGui::Begin(currentTileset.c_str())) {
 
-		ImGui::Text("Scaling");
-		ImGui::SliderInt("Scale X", &tileAttributes.scaleX, 1, 10);
-		ImGui::SliderInt("Scale Y", &tileAttributes.scaleY, 1, 10);
+		if (tileWindow) {
+
+			ImGui::Text("Scaling");
+			ImGui::SliderInt("Scale X", &tileAttributes.scaleX, 1, 10);
+			ImGui::SliderInt("Scale Y", &tileAttributes.scaleY, 1, 10);
 
 
-		ImGui::Text("Sprite");
-		if (ImGui::InputInt("Tile X", &tileAttributes.mouseRectX, 8, 8)) {
-			tileAttributes.mouseRectX = (tileAttributes.mouseRectX / 8) * 8;
-			if (tileAttributes.mouseRectX <= 0) {
-				tileAttributes.mouseRectX = 0;
+			ImGui::Text("Sprite");
+			if (ImGui::InputInt("Tile X", &tileAttributes.mouseRectX, 8, 8)) {
+				tileAttributes.mouseRectX = (tileAttributes.mouseRectX / 8) * 8;
+				if (tileAttributes.mouseRectX <= 0) {
+					tileAttributes.mouseRectX = 0;
+				}
 			}
-		}
-		if (ImGui::InputInt("Tile Y", &tileAttributes.mouseRectY, 8, 8)) {
-			tileAttributes.mouseRectY = (tileAttributes.mouseRectY / 8) * 8;
-			if (tileAttributes.mouseRectY <= 0) {
-				tileAttributes.mouseRectY = 0;
+			if (ImGui::InputInt("Tile Y", &tileAttributes.mouseRectY, 8, 8)) {
+				tileAttributes.mouseRectY = (tileAttributes.mouseRectY / 8) * 8;
+				if (tileAttributes.mouseRectY <= 0) {
+					tileAttributes.mouseRectY = 0;
+				}
 			}
+
+			if (CheckTransform()) {
+				mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
+				mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
+			}
+
+			mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
+
+			ImGui::End();
+
 		}
-
-		if (CheckTransform()) {
-			mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
-			mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
-		}
-
-		mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
-
-		ImGui::End();
 	}
 }
 
@@ -261,11 +269,11 @@ void EditorUIManager::NewProject() {
 
 }
 
-void EditorUIManager::Open(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize) {
+void EditorUIManager::Open(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize) {
 	std::string fileName = fileDialog->OpenFile();
 
 	if (!fileName.empty()) {
-		projectManagement->OpenProject(fileName, renderer, canvas, assetManager, tilesets, tilesetsTarget, tileSize);
+		projectManagement->OpenProject(lua, fileName, renderer, canvas, assetManager, tilesets, tilesetsTarget, tileSize);
 	}
 }
 

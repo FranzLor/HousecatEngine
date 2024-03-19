@@ -27,6 +27,11 @@ std::string FileDialogue::OpenFile(const char* filterPattern, HWND windowHandle)
 	return std::string();
 }
 
+std::string FileDialogue::OpenTextureFile(const char* filterPattern, HWND windowHandle) {
+	return OpenFile(filterPattern, windowHandle);
+}
+
+
 std::string FileDialogue::SaveFile(const char* filterPath, HWND windowHandle) {
 	std::vector<char> filePath(MAX_PATH);
 	OPENFILENAMEA saveFileDialogStruct = { 0 };

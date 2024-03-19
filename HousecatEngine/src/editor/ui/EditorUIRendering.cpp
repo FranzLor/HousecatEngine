@@ -1,5 +1,6 @@
 #include <imgui/imgui.h>
 
+
 #include "../utilities/SDLUtility.h"
 
 #include "EditorUIManager.h"
@@ -52,7 +53,7 @@ EditorUIRendering::~EditorUIRendering() {
 }
 
 
-void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, 
+void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile,
 	SDL_Event& event, const float& zoom, const float& dT) {
 
 	//start frame
@@ -62,7 +63,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-			editorUIManager->ShowFileMenu(renderer, assetManager, canvas, tileSize);
+			editorUIManager->ShowFileMenu(renderer, assetManager, canvas, lua, tileSize);
 			ImGui::EndMenu();
 		}
 
@@ -162,7 +163,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 	if (createTiles) {
 		editorUIManager->TilesetWindow(assetManager, mouse->GetMousePosition());
-		editorUIManager->TileAttributes(assetManager, mouse);
+		editorUIManager->TileAttributes(assetManager, mouse, true);
 
 		if (!MouseOutOfBounds()) {
 			mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
@@ -207,6 +208,25 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 
 	//if (!gridShow) {
 	//	return;
+	//}
+
+	//auto xTiles = (canvas->GetCanvasWidth() / tileSize);
+	//auto yTiles = (canvas->GetCanvasHeight() / tileSize);
+
+	//for (int i = 0; i < yTiles; i++)
+	//{
+	//	for (int j = 0; j < xTiles; j++)
+	//	{
+	//		// Create a checkerboard
+	//		if ((j - i) % 2 == 0 && (i - j) % 2 == 0)
+	//			SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, 70);
+	//		else
+	//			SDL_SetRenderDrawColor(renderer.get(), 200, 200, 200, 70);
+
+	//		SDL_Rect newRect = { (std::floor(j * tileSize * zoom)) - camera.x, (std::floor(i * tileSize * zoom)) - camera.y, std::ceil(tileSize * zoom), std::ceil(tileSize * zoom) };
+
+	//		SDL_RenderFillRect(renderer.get(), &newRect);
+	//	}
 	//}
 
 	//used for changing grid size with canvas

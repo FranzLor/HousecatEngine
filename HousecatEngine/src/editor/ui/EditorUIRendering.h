@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <sol/sol.hpp>
+
 #include "../utilities/SDLUtility.h"
 
 #include "../../ecs/ECS.h"
@@ -29,6 +31,8 @@ private:
 	std::shared_ptr<class EditorUIManager> editorUIManager;
 	std::shared_ptr<class Mouse> mouse;
 	std::unique_ptr<class EditManager> editManager;
+
+	sol::state lua;
 
 	const bool MouseOutOfBounds() const;
 public:

@@ -63,7 +63,7 @@ public:
 
 	//TODO
 	//project management
-	void ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize);
+	void ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize);
 
 	void ShowEditMenu();
 
@@ -75,7 +75,7 @@ public:
 	//file management
 	void NewProject();
 
-	void Open(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, int& tileSize);
+	void Open(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize);
 
 	void Save(EditorRenderer& renderer, const AssetManagerPtr& assetManager, const int& canvasWidth, const int& canvasHeight, int& tileSize);
 
@@ -97,7 +97,7 @@ public:
 
 	void TilesetLayers(const AssetManagerPtr& assetManager);
 
-	void TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse);
+	void TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow);
 
 	//TODO
 	//shortcut management

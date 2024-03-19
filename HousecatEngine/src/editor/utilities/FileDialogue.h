@@ -12,6 +12,8 @@ public:
 
 	static std::string OpenFile(const char* filterPattern = "Tilemap Files (*.map) | *.map\0*.map\0", HWND windowHandle = NULL);
 
+	static std::string OpenTextureFile(const char* filterPattern = "Texture Files (*.png) | *.png\0*.png\0 JPEG Files (*.jpg) |*.jpg\0*.jpg\0", HWND windowHandle = NULL);
+
 	static std::string SaveFile(const char* filterPath = "Tilemap Files (*.map) | *.map\0*.map\0", HWND windowHandle = NULL);
 
 
