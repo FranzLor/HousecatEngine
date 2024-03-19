@@ -19,8 +19,8 @@
 EditorUIRendering::EditorUIRendering()
 	: canvasWidth(960),
 	canvasHeight(640),
-	canvasPreviousWidth(canvasWidth),
-	canvasPreviousHeight(canvasHeight),
+	canvasPreviousWidth(960),
+	canvasPreviousHeight(640),
 	tileSize(32),
 	tilePrevSize(tileSize),
 	createTiles(false),
@@ -39,11 +39,7 @@ EditorUIRendering::EditorUIRendering()
 	editorUIManager->InitImGui();
 	editorUIManager->Setup();
 
-	canvasPreviousWidth = 960;
-	canvasPreviousHeight = 640;
-
-	//sol lua libraries here
-	//TODO
+	lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::os);
 
 	Logger::Lifecycle("ImGuiRendering Constructor Called!");
 }
@@ -120,6 +116,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			}
 
 			if (ImGui::InputInt("Canvas Width", &canvasWidth, tileSize, tileSize)) {
+
 				if (canvasPreviousWidth != canvasWidth) {
 					canvas->SetCanvasWidth(canvasWidth);
 					editManager->Execute(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
@@ -131,9 +128,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 					canvas->SetCanvasWidth(canvasWidth);
 					canvasPreviousWidth = canvasWidth;
 				}
+
 			}
 
 			if (ImGui::InputInt("Canvas Height", &canvasHeight, tileSize, tileSize)) {
+
 				if (canvasPreviousHeight != canvasHeight) {
 					canvas->SetCanvasHeight(canvasHeight);
 					editManager->Execute(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
@@ -145,6 +144,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 					canvas->SetCanvasHeight(canvasHeight);
 					canvasPreviousHeight = canvasHeight;
 				}
+
 			}
 			ImGui::EndMenu();
 		}
@@ -205,61 +205,40 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 }
 
 void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {
+	//Logger::Debug("Rendering Grid!");
 
-	//if (!gridShow) {
-	//	return;
-	//}
-
-	//auto xTiles = (canvas->GetCanvasWidth() / tileSize);
-	//auto yTiles = (canvas->GetCanvasHeight() / tileSize);
-
-	//for (int i = 0; i < yTiles; i++)
-	//{
-	//	for (int j = 0; j < xTiles; j++)
-	//	{
-	//		// Create a checkerboard
-	//		if ((j - i) % 2 == 0 && (i - j) % 2 == 0)
-	//			SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, 70);
-	//		else
-	//			SDL_SetRenderDrawColor(renderer.get(), 200, 200, 200, 70);
-
-	//		SDL_Rect newRect = { (std::floor(j * tileSize * zoom)) - camera.x, (std::floor(i * tileSize * zoom)) - camera.y, std::ceil(tileSize * zoom), std::ceil(tileSize * zoom) };
-
-	//		SDL_RenderFillRect(renderer.get(), &newRect);
-	//	}
-	//}
-
-	//used for changing grid size with canvas
-	auto tilesX = (canvas->GetCanvasWidth() / tileSize);
-	auto tilesY = (canvas->GetCanvasHeight() / tileSize);
-
-	//grid lines
-	SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 255);
-
-	for (int i = 0; i < canvas->GetCanvasWidth(); i += tileSize) {
-		SDL_Rect line = { i - camera.x, -camera.y, 1, canvas->GetCanvasHeight() };
-		SDL_RenderFillRect(renderer.get(), &line);
-	}
-	for (int i = 0; i < canvas->GetCanvasHeight(); i += tileSize) {
-		SDL_Rect line = { -camera.x, i - camera.y, canvas->GetCanvasWidth(), 1 };
-		SDL_RenderFillRect(renderer.get(), &line);
+	if (!gridShow) {
+		return;
 	}
 
-	//tile squares and collider
-	SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, 255);
+	auto xLines = (canvas->GetCanvasWidth() / tileSize) + 1; // +1 to ensure the last line is drawn
+	auto yLines = (canvas->GetCanvasHeight() / tileSize) + 1; // +1 to ensure the last line is drawn
 
-	for (int i = 0; i < tilesY; i++) {
-		for (int j = 0; j < tilesX; j++) {
-			SDL_Rect newRect = {
-				(std::floor(j * tileSize * zoom)) - camera.x,
-				(std::floor(i * tileSize * zoom)) - camera.y,
-				std::ceil(tileSize * zoom),
-				std::ceil(tileSize * zoom)
-			};
+	//per grid line
+	SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, SDL_ALPHA_OPAQUE); // Grey color for the grid lines, fully opaque
 
-			SDL_RenderFillRect(renderer.get(), &newRect);
+	//vertical
+	for (int i = 0; i < xLines; i++) {
+		int x = std::floor(i * tileSize * zoom) - camera.x;
+		// Check if the line is within the visible area (taking camera position into account)
+		if (x >= -camera.x && x <= canvas->GetCanvasWidth() - camera.x) {
+			SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, std::floor(canvas->GetCanvasHeight() * zoom) - camera.y);
 		}
 	}
+
+	//horizontal
+	for (int j = 0; j < yLines; j++) {
+		int y = std::floor(j * tileSize * zoom) - camera.y;
+		// Check if the line is within the visible area (taking camera position into account)
+		if (y >= -camera.y && y <= canvas->GetCanvasHeight() - camera.y) {
+			SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, std::floor(canvas->GetCanvasWidth() * zoom) - camera.x, y);
+		}
+	}
+
+	//boundary
+	SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_Rect boundaryRect = { 0 - camera.x, 0 - camera.y, std::floor(canvas->GetCanvasWidth() * zoom), std::floor(canvas->GetCanvasHeight() * zoom) };
+	SDL_RenderDrawRect(renderer.get(), &boundaryRect);
 }
 
 

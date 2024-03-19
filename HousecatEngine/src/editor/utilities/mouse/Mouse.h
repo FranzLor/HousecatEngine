@@ -34,6 +34,7 @@ private:
 	int panX;
 	int panY;
 	float zoom;
+	int grid;
 	bool gridSnap;
 
 
@@ -62,7 +63,7 @@ public:
 
 
 	//mouse 
-	void MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManger, SDL_Rect& camera, SDL_Rect& mouseTile);
+	void MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile);
 
 	void CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 

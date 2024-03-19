@@ -16,7 +16,7 @@
 Editor::Editor()
 	: isRunning(false),
 	millisecsPreviousFrame(0),
-	zoom(0.0f),
+	zoom(1.0f),
 	mouseTile(),
 	camera(),
 	event(),
@@ -170,7 +170,7 @@ void Editor::Update() {
 
 
 void Editor::Render() {
-	SDL_SetRenderDrawColor(editorRenderer.get(), 10, 10, 10, 255);
+	SDL_SetRenderDrawColor(editorRenderer.get(), 150, 150, 150, 255);
 	SDL_RenderClear(editorRenderer.get());
 
 	//render editor

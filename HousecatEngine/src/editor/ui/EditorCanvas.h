@@ -14,19 +14,19 @@ public:
 	~EditorCanvas() = default;
 
 	//helper functions
-	const int& GetCanvasWidth() const {
+	inline const int& GetCanvasWidth() const {
 		return canvasWidth;
 	}
 
-	const int& GetCanvasHeight() const {
+	inline const int& GetCanvasHeight() const {
 		return canvasHeight;
 	}
 
-	void SetCanvasWidth(int width) {
+	inline void SetCanvasWidth(int width) {
 		canvasWidth = width;
 	}
 
-	void SetCanvasHeight(int height) {
-		canvasWidth = height;
+	inline void SetCanvasHeight(int height) {
+		canvasHeight = height;
 	}
 };
