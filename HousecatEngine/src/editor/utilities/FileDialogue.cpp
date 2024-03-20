@@ -21,11 +21,16 @@ std::string FileDialogue::OpenFile(const char* filterPattern, HWND windowHandle)
 
 	if (GetOpenFileNameA(&openFileDialogStruct)) {
 		//string from vector to ensure null-terminated
-		return std::string(selectedFilePath.begin(), std::find(selectedFilePath.begin(), selectedFilePath.end(), '\0'));
+		return openFileDialogStruct.lpstrFile;
 	}
 
 	return std::string();
 }
+
+std::string FileDialogue::OpenTextureFile(const char* filterPattern, HWND windowHandle) {
+	return OpenFile(filterPattern, windowHandle);
+}
+
 
 std::string FileDialogue::SaveFile(const char* filterPath, HWND windowHandle) {
 	std::vector<char> filePath(MAX_PATH);
@@ -38,6 +43,7 @@ std::string FileDialogue::SaveFile(const char* filterPath, HWND windowHandle) {
 	saveFileDialogStruct.nMaxFile = filePath.size();
 	saveFileDialogStruct.Flags = OFN_NOCHANGEDIR | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 	saveFileDialogStruct.nFilterIndex = 1;
+	saveFileDialogStruct.lpstrDefExt = "lua";
 
 	if (GetSaveFileNameA(&saveFileDialogStruct)) {
 		return std::string(filePath.begin(), std::find(filePath.begin(), filePath.end(), '\0'));

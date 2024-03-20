@@ -133,6 +133,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\components\SFXComponent.h" />
+    <ClInclude Include="src\editor\utilities\AddTile.h" />
+    <ClInclude Include="src\editor\utilities\LuaExporter.h" />
+    <ClInclude Include="src\editor\utilities\RemoveTile.h" />
+    <ClInclude Include="src\events\SFXEvent.h" />
+    <ClInclude Include="src\game\CollisionMap.h" />
     <ClInclude Include="src\game\LevelManager.h" />
     <ClInclude Include="src\editor\utilities\EditCanvasSize.h" />
     <ClInclude Include="src\editor\utilities\EditTile.h" />
@@ -435,10 +441,13 @@
     <ClInclude Include="src\systems\RenderImGuiSystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
     <ClInclude Include="src\systems\RenderTextSystem.h" />
+    <ClInclude Include="src\systems\SoundSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\scripts\CatGameScript.lua" />
     <None Include="assets\scripts\Level1Test.lua" />
     <None Include="assets\tilemaps\Map1.map" />
+    <None Include="assets\tilemaps\Map1Test.map" />
     <None Include="Housecat.aps" />
     <None Include="imgui.ini" />
     <None Include="libavif-16.dll" />
@@ -589,6 +598,10 @@
     <None Include="SDL2_ttf.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor\utilities\AddTile.cpp" />
+    <ClCompile Include="src\editor\utilities\LuaExporter.cpp" />
+    <ClCompile Include="src\editor\utilities\RemoveTile.cpp" />
+    <ClCompile Include="src\game\CollisionMap.cpp" />
     <ClCompile Include="src\game\LevelManager.cpp" />
     <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp" />
     <ClCompile Include="src\editor\utilities\EditTile.cpp" />

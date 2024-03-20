@@ -32,3 +32,12 @@ void EditManager::ClearRedoStack() {
 		redoStack.pop();
 	}
 }
+
+void EditManager::Clear() {
+	while (!editStack.empty()) {
+		editStack.pop();
+	}
+	while (!redoStack.empty()) {
+		redoStack.pop();
+	}
+}

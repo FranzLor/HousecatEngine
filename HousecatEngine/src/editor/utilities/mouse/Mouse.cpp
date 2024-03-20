@@ -32,7 +32,7 @@ Mouse::Mouse()
 }
 
 //mouse 
-void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManger, SDL_Rect& camera, SDL_Rect& mouseTile) {
+void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile) {
 	//normal
 	if (!gridSnap) {
 		mouseTile.x = (mousePosX * zoom - camera.x - (mouseRect.x * appliedTransform.scale.x * zoom) / 2);
@@ -76,6 +76,9 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMang
 }
 
 void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
+	
+	MouseTile(renderer, assetManager, camera, mouseTile);
+
 	//only draws if mouse is in bounds
 	if (MouseOutOfBounds()) {
 		return;

@@ -200,6 +200,13 @@ std::vector<Entity> Housecat::GetGroup(const std::string& group) const {
 	return std::vector<Entity>(setEntities.begin(), setEntities.end());
 }
 
+bool Housecat::IsThereGroup(const std::string& group) const {
+	if (entitiesByGroup.find(group) != entitiesByGroup.end()) {
+		return true;
+	}
+	return false;
+}
+
 //process housecat management
 void Housecat::Update() {
 	//creation

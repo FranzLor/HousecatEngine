@@ -6,10 +6,16 @@
 
 #include <sol/sol.hpp>
 
+#include <vector>
+
+#include "CollisionMap.h"
+
 #include "../ecs/ECS.h"
 #include "../assetmanager/AssetManager.h"
 
 class LevelManager {
+private:
+	std::vector<std::vector<bool>> collisionMap;
 public:
 	LevelManager();
 	~LevelManager();

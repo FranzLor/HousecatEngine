@@ -16,9 +16,10 @@
 Editor::Editor()
 	: isRunning(false),
 	millisecsPreviousFrame(0),
-	zoom(0.0f),
+	zoom(1),
 	mouseTile(),
 	camera(),
+	event(),
 	editorWindow(nullptr),
 	editorRenderer(nullptr),
 	editorImGuiContext(nullptr) {
@@ -78,15 +79,18 @@ void Editor::Initialize() {
 	//x, y, w, h
 	mouseTile = { 0, 0, 1, 1 };
 
-	IMGUI_CHECKVERSION();
-	//TODO
-	//AssetManager Init here
+	//camera
+	camera = { defaultCamX, defaultCamY, windowEditorWidth, windowEditorHeight };
 
 
 	//ImGui Init
+	IMGUI_CHECKVERSION();
 	editorImGuiContext = ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForSDLRenderer(editorWindow.get(), editorRenderer.get());
 	ImGui_ImplSDLRenderer2_Init(editorRenderer.get());
+
+	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
+
 
 	//TODO
 	assetManager = std::make_unique<AssetManager>();
@@ -105,11 +109,9 @@ void Editor::Initialize() {
 
 
 void Editor::ProcessInput() {
-	SDL_Event sdlEditorEvent;
-
-	while (SDL_PollEvent(&sdlEditorEvent)) {
+	while (SDL_PollEvent(&event)) {
 		//handle ImGui SDL input
-		ImGui_ImplSDL2_ProcessEvent(&sdlEditorEvent);
+		ImGui_ImplSDL2_ProcessEvent(&event);
 		ImGuiIO& IO = ImGui::GetIO();
 
 		//mouse buttons
@@ -118,24 +120,24 @@ void Editor::ProcessInput() {
 
 		IO.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 		IO.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
-		IO.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
+		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
 		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
 
-		switch (sdlEditorEvent.type) {
+		switch (event.type) {
 		case SDL_QUIT:
 			isRunning = false;
 			break;
 		case SDL_MOUSEWHEEL:
 			if (!IO.WantCaptureMouse) {
-				//TDOOD
-				//zoom -> event
+				CameraController(event);
 			}
 			break;
 		case SDL_KEYDOWN:
-			if (sdlEditorEvent.key.keysym.sym == SDLK_ESCAPE) {
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				isRunning = false;
 
 			}
+			KeyboardCameraController(event);
 			break;
 		}
 	}
@@ -166,7 +168,7 @@ void Editor::Update() {
 
 
 void Editor::Render() {
-	SDL_SetRenderDrawColor(editorRenderer.get(), 10, 10, 10, 255);
+	SDL_SetRenderDrawColor(editorRenderer.get(), 155, 155, 155, 255);
 	SDL_RenderClear(editorRenderer.get());
 
 	//render editor
@@ -177,31 +179,50 @@ void Editor::Render() {
 	//render collider
 	//render animation
 
-	ImGui_ImplSDLRenderer2_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();
 
-	ImGui::SetCurrentContext(editorImGuiContext);
+	Housecat::GetInstance().GetSystem<EditorUIRendering>().Update(editorRenderer, assetManager, camera, mouseTile,
+		event, zoom, millisecsPreviousFrame);
 
-	ImGui::ShowDemoWindow();
-
-	ImGui::Render();
-	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
-
-	ImGui::EndFrame();
 
 	SDL_RenderPresent(editorRenderer.get());
 }
 
 void Editor::CameraController(SDL_Event& event) {
-	//TODO
-	//sdl event -> mousewheel zoom
+	constexpr float zoomStep = 0.4f;
+
+	if (event.wheel.y > 0) {
+		zoom = std::min(zoom + zoomStep, 2.2f);
+	}
+	else if (event.wheel.y < 0) {
+		zoom = std::max(zoom - zoomStep, 0.4f);
+	}
+
+	camera.h *= zoom;
+	camera.w *= zoom;
 }
 
-void Editor::KeyboardCameraController() {
-	//todo
-	//sdl event -> keydown
-	//switch case keys
+void Editor::KeyboardCameraController(SDL_Event& event) {
+	if (event.type == SDL_KEYDOWN) {
+		switch (event.key.keysym.sym) {
+		case SDLK_SPACE:
+			camera.x = defaultCamX;
+			camera.y = defaultCamY;
+			zoom = defaultZoom;
+			break;
+		case SDLK_w:
+			camera.y -= camSpeed;
+			break;
+		case SDLK_a:
+			camera.x -= camSpeed;
+			break;
+		case SDLK_s:
+			camera.y += camSpeed;
+			break;
+		case SDLK_d:
+			camera.x += camSpeed;
+			break;
+		}
+	}
 }
 
 void Editor::Run() {

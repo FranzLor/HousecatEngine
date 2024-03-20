@@ -1,7 +1,10 @@
 #pragma once
 
+#include "../editor/utilities/SDLUtility.h"
+
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 #include <map>
 #include <string>
@@ -9,25 +12,43 @@
 
 class AssetManager {
 private:
-	std::map<std::string, SDL_Texture*> textures;
 	std::unique_ptr<AssetManager> AssetManagerPtr;
+
+	std::map<std::string, SDL_Texture*> textures;
+
+	std::map<std::string, EditorTexture> editorTextures;
+
 	std::map<std::string, TTF_Font*> fonts;
 
-	//TODO
-	//assets to manage
-	//sound
+	std::map<std::string, Mix_Music*> musics;
+	std::map<std::string, Mix_Chunk*> sounds;
 
 public:
 	AssetManager();
 	~AssetManager();
 
 	SDL_Texture* GetTexture(const std::string& assetID);
+	const EditorTexture& ReturnEditorTexture(const std::string& assetID);
+	bool EditorHasTexture(const std::string& assetID);
+
 	void AddTexture(SDL_Renderer* renderer, const std::string& assetID, const std::string& filePath);
-	void ClearAssets();
+	void AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath);
 
 	TTF_Font* GetFont(const std::string& assetID);
-
 	void AddFont(const std::string& assetID, const std::string& filePath, int fontSize);
+
+	Mix_Music* GetMusic(const std::string& assetID);
+	void AddMusic(const std::string& assetID, const std::string& filePath);
+	void SetVolume(int volume);
+	void PlayMusic(const std::string& assetID, int loop);
+	void PauseMusic();
+	void StopMusic();
+
+	Mix_Chunk* GetSound(const std::string& assetID);
+	void AddSound(const std::string& assetID, const std::string& filePath);
+	void PlaySound(const std::string& assetID, int volume, int loop);
+
+	void ClearAssets();
 
 };
 

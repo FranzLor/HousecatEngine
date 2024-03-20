@@ -20,6 +20,12 @@ private:
 	const int EDITOR_MILLISECS_PER_FRAME = 1000 / EDITOR_FPS;
 	int millisecsPreviousFrame;
 
+	//camera
+	const int defaultCamX = -350;
+	const int defaultCamY = -150;
+	const int defaultZoom = 1;
+	const int camSpeed = 10;
+
 	bool isRunning;
 
 	float zoom;
@@ -27,6 +33,9 @@ private:
 	SDL_Rect mouseTile;
 
 	SDL_Rect camera;
+
+	SDL_Event event;
+
 
 	//SDL_Window* windowEditor;
 	//SDL_Renderer* rendererEditor;
@@ -39,13 +48,14 @@ private:
 	//AssetManager ptr
 	AssetManagerPtr assetManager;
 
+
 	//TODO
 	//mouse
 	//camera
 	//events?
 
 	void CameraController(SDL_Event& event);
-	void KeyboardCameraController();
+	void KeyboardCameraController(SDL_Event& event);
 
 public:
 	Editor();
