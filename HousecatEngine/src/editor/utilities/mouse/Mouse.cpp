@@ -21,7 +21,7 @@ Mouse::Mouse()
 	tileSize(16),
 	panX(0),
 	panY(0),
-	zoom(0.0f),
+	zoom(0),
 	gridSnap(false),
 	isMouseOutOfBounds(false),
 	appliedTransform(),
@@ -37,18 +37,17 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 	if (!gridSnap) {
 		mouseTile.x = (mousePosX * zoom - camera.x - (mouseRect.x * appliedTransform.scale.x * zoom) / 2);
 		mouseTile.y = (mousePosY * zoom - camera.y - (mouseRect.y * appliedTransform.scale.y * zoom) / 2);
-
 	}
 	//grid snapping
 	else {
-		mousePosWindow.x = mousePosTile.x * tileSize;
-		mousePosWindow.y = mousePosTile.y * tileSize;
+		mousePosTile.x = mousePosX * tileSize;
+		mousePosTile.y = mousePosY * tileSize;
 
 		if (mousePosX >= 0) {
-			mousePosX / tileSize;
+			mousePosTile.x = mousePosX / tileSize;
 		}
 		if (mousePosY >= 0) {
-			mousePosY / tileSize;
+			mousePosTile.y = mousePosY / tileSize;
 		}
 		mouseTile.x = std::round(mousePosTile.x * tileSize * zoom) - camera.x;
 		mouseTile.y = std::round(mousePosTile.y * tileSize * zoom) - camera.y;
@@ -203,37 +202,30 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 	if (MiddleMouseButton()) {
 		SDL_ShowCursor(0);
 
-		SDL_Rect srcRect = {
-			0,
-			0,
-			24,
-			24
-		};
-
+		SDL_Rect srcRect = { 0, 0, 32, 32 };
 		SDL_Rect dstRect = {
 			mousePosX * zoom - camera.x,
 			mousePosY * zoom - camera.y,
-			48, 
-			48
+			32, 32
 		};
 
-		//TODO
-		/*SDL_RenderCopyEx(
+		SDL_RenderCopyEx(
 			renderer.get(),
-			assetManager->ReturnEditorTexture("mousehand").get(),
+			assetManager->ReturnEditorTexture("pan").get(),
 			&srcRect,
 			&dstRect,
 			NULL,
 			NULL,
 			SDL_FLIP_NONE
-		);*/
+		);
 
-		//current panning mouse to last values
-		if (panX != mousePosWindow.x) {
-			camera.x -= (mousePosWindow.x - panX) * zoom * dT * 5;
-		}
-		if (panY != mousePosWindow.y) {
-			camera.y -= (mousePosWindow.y - panY) * zoom * dT * 5;
+		if (panX != mousePosWindow.x || panY != mousePosWindow.y) {
+			//calculate changes
+			float deltaX = (mousePosWindow.x - panX) * zoom * dT * 5;
+			float deltaY = (mousePosWindow.y - panY) * zoom * dT * 5;
+
+			camera.x -= deltaX;
+			camera.y -= deltaY;
 		}
 	}
 	else {

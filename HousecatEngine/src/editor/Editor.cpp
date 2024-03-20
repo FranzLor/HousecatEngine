@@ -95,7 +95,7 @@ void Editor::Initialize() {
 	//TODO
 	assetManager = std::make_unique<AssetManager>();
 	//textures
-	//assetManager->AddTexture(editorRenderer.get(), "x", "x");
+	assetManager->AddEditorTexture(editorRenderer, "pan", "./assets/icon/pan.png");
 
 	//SYSTEMS
 	//call Housecat to add systems for editor
@@ -150,7 +150,7 @@ void Editor::Update() {
 		SDL_Delay(waitingTime);
 	}
 	//diff. in ticks since last frame converted to secs
-	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0;
+	deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0f;
 	//store curr. frame time
 	millisecsPreviousFrame = SDL_GetTicks();
 
@@ -182,7 +182,7 @@ void Editor::Render() {
 
 
 	Housecat::GetInstance().GetSystem<EditorUIRendering>().Update(editorRenderer, assetManager, camera, mouseTile,
-		event, zoom, millisecsPreviousFrame);
+		event, zoom, deltaTime);
 
 
 	SDL_RenderPresent(editorRenderer.get());

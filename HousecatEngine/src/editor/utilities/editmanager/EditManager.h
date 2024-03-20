@@ -26,9 +26,13 @@ struct IEdit {
 	//virtual void InvertSelection() = 0;
 };
 
+typedef std::shared_ptr<IEdit> EditPtr;
+
+
+
 class EditManager {
 private:
-	std::stack<std::shared_ptr<IEdit>> editStack;
+	std::stack<std::shared_ptr<IEdit>> undoStack;
 
 	std::stack<std::shared_ptr<IEdit>> redoStack;
 

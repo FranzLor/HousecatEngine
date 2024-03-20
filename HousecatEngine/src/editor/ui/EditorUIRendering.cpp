@@ -19,8 +19,6 @@
 EditorUIRendering::EditorUIRendering()
 	: canvasWidth(960),
 	canvasHeight(640),
-	canvasPreviousWidth(960),
-	canvasPreviousHeight(640),
 	tileSize(64),
 	tilePrevSize(tileSize),
 	createTiles(false),
@@ -29,6 +27,9 @@ EditorUIRendering::EditorUIRendering()
 	gridY(0),
 	gridSnap(true),
 	gridShow(true) {
+
+	canvasPreviousWidth = 960;
+	canvasPreviousHeight = 640;
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
 	mouse = std::make_shared<Mouse>();
