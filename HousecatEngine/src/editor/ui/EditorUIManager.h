@@ -30,6 +30,8 @@ private:
 	bool isNewFile;
 	bool newCanvas;
 
+	const int titleBar = 25;
+
 	//edit
 	bool Undo;
 	bool Redo;

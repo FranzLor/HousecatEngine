@@ -55,7 +55,7 @@ private:
 	//events?
 
 	void CameraController(SDL_Event& event);
-	void KeyboardCameraController();
+	void KeyboardCameraController(SDL_Event& event);
 
 public:
 	Editor();

@@ -133,11 +133,13 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 	//	//TODO
 	//}
 
-	if (ImGui::MenuItem("New Tileset")) {
+	if (ImGui::MenuItem("Add Tileset")) {
 		FileDialogue fileDialog;
-		imageName = fileDialog.OpenFile();
+		imageName = fileDialog.OpenTextureFile();
 
 		if (imageName != "" || !imageName.empty()) {
+			Logger::Debug("Image Name: " + imageName);
+
 			std::filesystem::path path(imageName);
 			assetID = path.stem().string();
 
@@ -150,6 +152,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 			assetManager->AddEditorTexture(renderer, assetID, imageName);
 
 			if (SDL_QueryTexture(assetManager->ReturnEditorTexture(assetID).get(), NULL, NULL, &tileWidth, &tileHeight) != 0) {
+				const char* error = SDL_GetError();
 				loadTileset = false;
 			}
 			else {
@@ -168,41 +171,38 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 //tileset management
 void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
 
-	if (ImGui::Begin("Tilset", &loadTileset)) {
+	if (ImGui::Begin("Tilset", &loadTileset, ImGuiWindowFlags_HorizontalScrollbar)) {
 		//resize on mouse scroll
 		float scrollX = ImGui::GetScrollX();
 		float scrollY = ImGui::GetScrollY();
-		int imageWidth = textureWidth * 2;
-		int imageHeight = textureHeight;
 
-		ImGui::Image(assetManager->GetTexture(assetID), ImVec2(imageWidth, imageHeight));
+		int imageWidth = textureWidth * 2; 
+		int imageHeight = textureHeight * 2;
+
+		ImGui::Image(assetManager->ReturnEditorTexture(assetID).get(), ImVec2(imageWidth, imageHeight));
 
 		int mousePosX = static_cast<int>(ImGui::GetMousePos().x - ImGui::GetWindowPos().x + scrollX);
-		int mousePosY = static_cast<int>(ImGui::GetMousePos().y - ImGui::GetWindowPos().y + scrollY);
+		int mousePosY = static_cast<int>(ImGui::GetMousePos().y - ImGui::GetWindowPos().y - titleBar + scrollY);
 
 		int tileCol = imageWidth / (mouseRect.x * 2);
 		int tileRow = imageHeight / (mouseRect.y * 2);
 
-		//store highlighted tiles
-		auto highlightTiles = ImGui::GetWindowDrawList();
-
 		//render tileset textures
 		for (int c = 0; c < tileCol; c++) {
 			for (int r = 0; r < tileRow; r++) {
-				// Calculate tile boundaries
-				int tileAX = (imageWidth / tileCol) * c;
-				int tileAY = (imageHeight / tileRow) * r;
-				int tileBX = tileAX + (imageWidth / tileCol);
-				int tileBY = tileAX + (imageHeight / tileRow);
+				auto drawList = ImGui::GetWindowDrawList();
 
-				//wihtin tile area
-				if (mousePosX >= tileAX && mousePosX <= tileBX && mousePosY >= tileAY && mousePosY <= tileBY) {
-					//highlight blueish
-					highlightTiles->AddRectFilled(ImVec2(tileAX, tileAY), ImVec2(tileBX, tileBY), IM_COL32(0, 0, 255, 100));
 
-					if (ImGui::IsMouseClicked(0)) {
-						tileAttributes.srcRectX = c * (int)mouseRect.x * 2;
-						tileAttributes.srcRectY = r * (int)mouseRect.y * 2;
+				//grab desired 2d tile
+				if ((mousePosX >= (imageWidth / tileCol) * c && mousePosX <= (imageWidth / tileCol) + ((imageWidth / tileCol) * c))
+					&& (mousePosY >= (imageHeight / tileRow) * r && mousePosY <= (imageHeight / tileRow) + ((imageHeight / tileRow) * r)))
+				{
+					if (ImGui::IsItemHovered()){
+
+						if (ImGui::IsMouseClicked(0)) {
+							tileAttributes.srcRectX = c * mouseRect.x;
+							tileAttributes.srcRectY = r * mouseRect.y;
+						}
 					}
 				}
 			}

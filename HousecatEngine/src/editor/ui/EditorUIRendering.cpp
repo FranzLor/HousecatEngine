@@ -103,7 +103,8 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 
 			if (ImGui::Checkbox("New Tileset", &createTiles)) {
-				createTiles = true;
+				//REMIND
+				Logger::Debug("New Tileset Button Pressed!");
 			}
 
 			ImGui::Spacing;
@@ -189,6 +190,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	mouse->UpdateGridSize(tileSize);
 	mouse->SetGridSnap(gridSnap);
 
+	//render imgui
+	ImGui::Render();
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
+
+
 	ImGuiIO& IO = ImGui::GetIO();
 	if (IO.WantCaptureMouse) {
 		mouse->MouseOverWindow(true);
@@ -198,10 +204,6 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	}
 
 	UpdateCanvas();
-
-	//render imgui
-	ImGui::Render();
-	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 }
 
 void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {

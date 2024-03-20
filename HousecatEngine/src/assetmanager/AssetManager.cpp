@@ -48,6 +48,8 @@ void AssetManager::AddEditorTexture(EditorRenderer& renderer, const std::string&
 		SDL_FreeSurface(surface);
 
 		editorTextures.emplace(assetID, std::move(texture));
+
+		Logger::Debug("Editor Texture Added: " + assetID);
 	}
 }
 

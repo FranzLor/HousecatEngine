@@ -16,7 +16,7 @@
 Editor::Editor()
 	: isRunning(false),
 	millisecsPreviousFrame(0),
-	zoom(1.0f),
+	zoom(1),
 	mouseTile(),
 	camera(),
 	event(),
@@ -109,11 +109,9 @@ void Editor::Initialize() {
 
 
 void Editor::ProcessInput() {
-	SDL_Event sdlEditorEvent;
-
-	while (SDL_PollEvent(&sdlEditorEvent)) {
+	while (SDL_PollEvent(&event)) {
 		//handle ImGui SDL input
-		ImGui_ImplSDL2_ProcessEvent(&sdlEditorEvent);
+		ImGui_ImplSDL2_ProcessEvent(&event);
 		ImGuiIO& IO = ImGui::GetIO();
 
 		//mouse buttons
@@ -122,24 +120,24 @@ void Editor::ProcessInput() {
 
 		IO.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 		IO.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
-		IO.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
+		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
 		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
 
-		switch (sdlEditorEvent.type) {
+		switch (event.type) {
 		case SDL_QUIT:
 			isRunning = false;
 			break;
 		case SDL_MOUSEWHEEL:
 			if (!IO.WantCaptureMouse) {
-				//TDOOD
-				//zoom -> event
+				CameraController(event);
 			}
 			break;
 		case SDL_KEYDOWN:
-			if (sdlEditorEvent.key.keysym.sym == SDLK_ESCAPE) {
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				isRunning = false;
 
 			}
+			KeyboardCameraController(event);
 			break;
 		}
 	}
@@ -170,7 +168,7 @@ void Editor::Update() {
 
 
 void Editor::Render() {
-	SDL_SetRenderDrawColor(editorRenderer.get(), 150, 150, 150, 255);
+	SDL_SetRenderDrawColor(editorRenderer.get(), 155, 155, 155, 255);
 	SDL_RenderClear(editorRenderer.get());
 
 	//render editor
@@ -203,9 +201,14 @@ void Editor::CameraController(SDL_Event& event) {
 	camera.w *= zoom;
 }
 
-void Editor::KeyboardCameraController() {
+void Editor::KeyboardCameraController(SDL_Event& event) {
 	if (event.type == SDL_KEYDOWN) {
 		switch (event.key.keysym.sym) {
+		case SDLK_SPACE:
+			camera.x = defaultCamX;
+			camera.y = defaultCamY;
+			zoom = defaultZoom;
+			break;
 		case SDLK_w:
 			camera.y -= camSpeed;
 			break;
