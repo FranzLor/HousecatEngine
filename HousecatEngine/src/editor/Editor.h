@@ -21,10 +21,10 @@ private:
 	int millisecsPreviousFrame;
 
 	//camera
-	const int defaultCamX = -350;
+	const int defaultCamX = -300;
 	const int defaultCamY = -150;
 	const int defaultZoom = 1;
-	const int camSpeed = 10;
+	const int camSpeed = 4;
 
 	bool isRunning;
 

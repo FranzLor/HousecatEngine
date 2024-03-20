@@ -6,7 +6,7 @@
 #include "../utilities/SDLUtility.h"
 #include "../utilities/editmanager/EditManager.h"
 
-EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
+EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 //int tileWidth, tileHeight, scaleX, scaleY, layer, tileOffset, srcRectX, srcRectY
 	: tileAttributes{ 16, 16, 1, 1, 0, {0, 0}, 0, 0 },
 	tilePrevAttributes{ 16, 16, 1, 1, 0, {0, 0}, 0, 0 },
@@ -27,8 +27,7 @@ EditorUIManager::EditorUIManager(class std::shared_ptr<Mouse>& mouse)
 	mouse(mouse),
 
 	fileDialog(std::make_unique<FileDialogue>()),
-	projectManagement(std::make_unique<ProjectManagement>()),
-	editManager(std::make_unique<EditManager>()) {
+	projectManagement(std::make_unique<ProjectManagement>()) {
 
 	//Logger::Lifecycle("ImGuiFunctions Constructor Called!");
 }
@@ -138,8 +137,6 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 		imageName = fileDialog.OpenTextureFile();
 
 		if (imageName != "" || !imageName.empty()) {
-			Logger::Debug("Image Name: " + imageName);
-
 			std::filesystem::path path(imageName);
 			assetID = path.stem().string();
 
@@ -171,14 +168,15 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 //tileset management
 void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
 
-	if (ImGui::Begin("Tilset", &loadTileset, ImGuiWindowFlags_HorizontalScrollbar)) {
+	if (ImGui::Begin("Tileset", &loadTileset, ImGuiWindowFlags_HorizontalScrollbar)) {
 		//resize on mouse scroll
 		float scrollX = ImGui::GetScrollX();
 		float scrollY = ImGui::GetScrollY();
 
-		int imageWidth = textureWidth * 2; 
-		int imageHeight = textureHeight * 2;
+		int imageWidth = tileWidth * 2;
+		int imageHeight = tileHeight * 2;
 
+		
 		ImGui::Image(assetManager->ReturnEditorTexture(assetID).get(), ImVec2(imageWidth, imageHeight));
 
 		int mousePosX = static_cast<int>(ImGui::GetMousePos().x - ImGui::GetWindowPos().x + scrollX);
@@ -195,8 +193,8 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 
 				//grab desired 2d tile
 				if ((mousePosX >= (imageWidth / tileCol) * c && mousePosX <= (imageWidth / tileCol) + ((imageWidth / tileCol) * c))
-					&& (mousePosY >= (imageHeight / tileRow) * r && mousePosY <= (imageHeight / tileRow) + ((imageHeight / tileRow) * r)))
-				{
+					&& (mousePosY >= (imageHeight / tileRow) * r && mousePosY <= (imageHeight / tileRow) + ((imageHeight / tileRow) * r))) {
+
 					if (ImGui::IsItemHovered()){
 
 						if (ImGui::IsMouseClicked(0)) {
@@ -212,15 +210,31 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 }
 
 void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow) {
-	std::string currentTileset = "Tileset Attributes";
+	std::string tilesetName = "Tileset Attributes";
 
 	if (!tileWindow) {
 		return;
 	}
 
-	if (ImGui::Begin(currentTileset.c_str())) {
+	if (ImGui::Begin(tilesetName.c_str())) {
 
 		if (tileWindow) {
+
+			static std::string currentTileset = "";
+			static std::string previousTileset = assetID;
+
+			if (ImGui::BeginCombo("Tilesets", currentTileset.c_str())) {
+				for (int tileset = 0; tileset < tilesets.size(); tileset++) {
+					bool selected = (currentTileset == tilesets[tileset]);
+					if (ImGui::Selectable(tilesets[tileset].c_str(), selected)) {
+						currentTileset = tilesets[tileset];
+					}
+					if (selected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
 
 			ImGui::Text("Scaling");
 			ImGui::SliderInt("Scale X", &tileAttributes.scaleX, 1, 10);
@@ -246,7 +260,9 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
 			}
 
-			mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
+			if (tileWindow) {
+				mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
+			}
 
 			ImGui::End();
 

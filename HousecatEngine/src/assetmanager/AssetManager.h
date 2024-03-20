@@ -27,12 +27,15 @@ public:
 	AssetManager();
 	~AssetManager();
 
+	//game 
 	SDL_Texture* GetTexture(const std::string& assetID);
+	void AddTexture(SDL_Renderer* renderer, const std::string& assetID, const std::string& filePath);
+
+	//editor
+	void AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath);
 	const EditorTexture& ReturnEditorTexture(const std::string& assetID);
 	bool EditorHasTexture(const std::string& assetID);
 
-	void AddTexture(SDL_Renderer* renderer, const std::string& assetID, const std::string& filePath);
-	void AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath);
 
 	TTF_Font* GetFont(const std::string& assetID);
 	void AddFont(const std::string& assetID, const std::string& filePath, int fontSize);

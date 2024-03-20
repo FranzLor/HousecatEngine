@@ -21,10 +21,12 @@ private:
 	//tile
 	TileAttributes tileAttributes;
 	TileAttributes tilePrevAttributes;
+
 	int tileWidth;
 	int tileHeight;
 	int textureWidth;
 	int textureHeight;
+
 	bool loadTileset;
 	bool isReset;
 	bool isNewFile;
@@ -47,7 +49,6 @@ private:
 	std::vector<std::string> tilesets;
 	std::vector<std::string> tilesetsTarget;
 
-	std::unique_ptr<class EditManager> editManager;
 	std::unique_ptr<class FileDialogue> fileDialog;
 	std::unique_ptr<class ProjectManagement> projectManagement;
 

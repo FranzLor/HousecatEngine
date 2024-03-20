@@ -121,7 +121,7 @@ void Editor::ProcessInput() {
 		IO.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 		IO.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
 		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
-		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
+		IO.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
 
 		switch (event.type) {
 		case SDL_QUIT:
@@ -172,8 +172,9 @@ void Editor::Render() {
 	SDL_RenderClear(editorRenderer.get());
 
 	//render editor
-	Housecat::GetInstance().GetSystem<EditorUIRendering>().RenderGrid(editorRenderer, camera, zoom);
 	Housecat::GetInstance().GetSystem<RenderSystem>().Update(editorRenderer.get(), assetManager, camera);
+
+	Housecat::GetInstance().GetSystem<EditorUIRendering>().RenderGrid(editorRenderer, camera, zoom);
 
 	//TODO
 	//render collider

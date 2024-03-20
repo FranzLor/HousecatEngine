@@ -5,10 +5,13 @@
 struct TileAttributes {
 	int tileWidth;
 	int tileHeight;
+
 	int scaleX;
 	int scaleY;
+
 	int layer;
 	glm::vec2 tileOffset;
+
 	int srcRectX;
 	int srcRectY;
 	int mouseRectX;

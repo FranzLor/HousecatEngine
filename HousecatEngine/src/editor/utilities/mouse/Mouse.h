@@ -34,7 +34,6 @@ private:
 	int panX;
 	int panY;
 	float zoom;
-	int grid;
 	bool gridSnap;
 
 
@@ -75,11 +74,15 @@ public:
 	//mouse bounds
 	const bool MouseOutOfBounds() const;
 
-	const glm::vec2& GetMousePosition() const {
+	inline const glm::vec2& GetMousePosition() const {
 		return mousePosWindow;
 	}
 
-	void MouseOverWindow(bool isOver) {
+	inline const glm::vec2& GetMouseRect() const {
+		return mouseRect;
+	}
+
+	inline void MouseOverWindow(bool isOver) {
 		isMouseOutOfBounds = isOver;
 	}
 

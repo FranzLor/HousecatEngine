@@ -21,7 +21,7 @@ EditorUIRendering::EditorUIRendering()
 	canvasHeight(640),
 	canvasPreviousWidth(960),
 	canvasPreviousHeight(640),
-	tileSize(32),
+	tileSize(64),
 	tilePrevSize(tileSize),
 	createTiles(false),
 	removedTile(false),
@@ -102,10 +102,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
-			if (ImGui::Checkbox("New Tileset", &createTiles)) {
-				//REMIND
-				Logger::Debug("New Tileset Button Pressed!");
-			}
+			if (ImGui::Checkbox("New Tileset", &createTiles));
 
 			ImGui::Spacing;
 			ImGui::Spacing;
@@ -163,7 +160,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	}
 
 	if (createTiles) {
-		editorUIManager->TilesetWindow(assetManager, mouse->GetMousePosition());
+		editorUIManager->TilesetWindow(assetManager, mouse->GetMouseRect());
 		editorUIManager->TileAttributes(assetManager, mouse, true);
 
 		if (!MouseOutOfBounds()) {
@@ -213,8 +210,8 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 		return;
 	}
 
-	auto xLines = (canvas->GetCanvasWidth() / tileSize) + 1; // +1 to ensure the last line is drawn
-	auto yLines = (canvas->GetCanvasHeight() / tileSize) + 1; // +1 to ensure the last line is drawn
+	auto xLines = (canvas->GetCanvasWidth() / tileSize);
+	auto yLines = (canvas->GetCanvasHeight() / tileSize);
 
 	//per grid line
 	SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, SDL_ALPHA_OPAQUE); // Grey color for the grid lines, fully opaque
