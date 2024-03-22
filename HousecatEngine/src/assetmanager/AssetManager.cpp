@@ -16,14 +16,6 @@ SDL_Texture* AssetManager::GetTexture(const std::string& assetID) {
 	return textures[assetID];
 }
 
-const EditorTexture& AssetManager::ReturnEditorTexture(const std::string& assetID) {
-	return editorTextures[assetID];
-}
-
-bool AssetManager::EditorHasTexture(const std::string& assetID) {
-	return editorTextures.find(assetID) != editorTextures.end();
-}
-
 void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& assetID, const std::string& filePath) {
 	SDL_Surface* surface = IMG_Load(filePath.c_str());
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -41,17 +33,40 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& assetID
 	textures.emplace(assetID, texture);
 }
 
+
+
+
+
+
+
 void AssetManager::AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath) {
 	if (!EditorHasTexture(assetID)) {
 		SDL_Surface* surface = IMG_Load(filePath.c_str());
-		EditorTexture texture = EditorTexture(SDL_CreateTextureFromSurface(renderer.get(), surface));
-		SDL_FreeSurface(surface);
+		if (!surface) {
+			Logger::Error("Error Loading Surface: " + std::string(IMG_GetError()));
+			return;
+		}
+
+		EditorTexture texture(SDL_CreateTextureFromSurface(renderer.get(), surface));
+		if (!texture) {
+			Logger::Error("Error Creating Texture from Surface: " + std::string(SDL_GetError()));
+			SDL_FreeSurface(surface);
+			return;
+		}
 
 		editorTextures.emplace(assetID, std::move(texture));
-
-		Logger::Debug("Editor Texture Added: " + assetID);
 	}
 }
+
+const EditorTexture& AssetManager::ReturnEditorTexture(const std::string& assetID) {
+	return editorTextures[assetID];
+}
+
+bool AssetManager::EditorHasTexture(const std::string& assetID) {
+	return editorTextures.find(assetID) != editorTextures.end();
+}
+
+
 
 
 

@@ -20,11 +20,13 @@ private:
 	const int EDITOR_MILLISECS_PER_FRAME = 1000 / EDITOR_FPS;
 	int millisecsPreviousFrame;
 
+	float deltaTime;
+
 	//camera
 	const int defaultCamX = -350;
-	const int defaultCamY = -150;
+	const int defaultCamY = -170;
 	const int defaultZoom = 1;
-	const int camSpeed = 10;
+	const int camSpeed = 5;
 
 	bool isRunning;
 

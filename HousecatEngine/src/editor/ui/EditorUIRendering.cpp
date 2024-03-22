@@ -11,7 +11,7 @@
 #include "../src/logger/Logger.h"
 #include <imgui/imgui_impl_sdlrenderer2.h>
 #include <imgui/imgui_impl_sdl2.h>
-#include "../utilities/AddTile.h"
+#include "../utilities/EditTile.h"
 #include "../utilities/RemoveTile.h"
 #include "../utilities/EditCanvasSize.h"
 
@@ -22,7 +22,7 @@ EditorUIRendering::EditorUIRendering()
 	canvasPreviousWidth(960),
 	canvasPreviousHeight(640),
 	tileSize(32),
-	tilePrevSize(tileSize),
+	tilePrevSize(32),
 	createTiles(false),
 	removedTile(false),
 	gridX(0),
@@ -101,12 +101,14 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 			ImGui::Spacing;
 			ImGui::Spacing;
+			ImGui::Spacing;
 
-			if (ImGui::Checkbox("New Tileset", &createTiles)) {
-				//REMIND
-				Logger::Debug("New Tileset Button Pressed!");
+			if (ImGui::MenuItem("Tilset Window")) {
+				createTiles = !createTiles;
 			}
 
+			ImGui::Spacing;
+			ImGui::Spacing;
 			ImGui::Spacing;
 			ImGui::Spacing;
 
@@ -163,29 +165,30 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	}
 
 	if (createTiles) {
-		editorUIManager->TilesetWindow(assetManager, mouse->GetMousePosition());
+		editorUIManager->TilesetWindow(assetManager, mouse->GetMouseRect());
 		editorUIManager->TileAttributes(assetManager, mouse, true);
 
 		if (!MouseOutOfBounds()) {
 			mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
+
 		}
 
 		if (mouse->TileAdded()) {
-			editManager->Execute(std::make_shared<AddTile>(mouse));
+			editManager->Execute(std::make_shared<EditAddTile>(mouse));
 			mouse->SetTileAdded(false);
 			removedTile = false;
 		}
 
 		if (mouse->TileRemoved()) {
-			editManager->Execute(std::make_shared<RemoveTile>(mouse));
+			editManager->Execute(std::make_shared<EditRemoveTile>(mouse));
 			mouse->SetRemovedTile(false);
 			removedTile = true;
 		}
 	}
 
 	//update mouse
-	mouse->UpdateMousePosition(camera);
 	mouse->MousePanCamera(renderer, camera, assetManager, dT);
+	mouse->UpdateMousePosition(camera);
 	mouse->UpdateZoom(zoom);
 	mouse->UpdateGridSize(tileSize);
 	mouse->SetGridSnap(gridSnap);
@@ -213,8 +216,8 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 		return;
 	}
 
-	auto xLines = (canvas->GetCanvasWidth() / tileSize) + 1; // +1 to ensure the last line is drawn
-	auto yLines = (canvas->GetCanvasHeight() / tileSize) + 1; // +1 to ensure the last line is drawn
+	auto xLines = (canvas->GetCanvasWidth() / tileSize);
+	auto yLines = (canvas->GetCanvasHeight() / tileSize);
 
 	//per grid line
 	SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, SDL_ALPHA_OPAQUE); // Grey color for the grid lines, fully opaque
@@ -246,12 +249,12 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 
 void EditorUIRendering::CreateNewCanvas() {
 	//resetting canvas
+	createTiles = false;
+	gridSnap = true;
+
 	tileSize = 32;
 	canvasWidth = 960;
 	canvasHeight = 640;
-
-	createTiles = false;
-	gridSnap = true;
 
 	for (auto& entity : GetSystemEntities()) {
 		entity.Kill();

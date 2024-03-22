@@ -17,7 +17,7 @@ Mouse::Mouse()
 	isRightMouseButton(false),
 	tileAdded(false),
 	tileRemoved(false),
-	tileRecent(0),
+	tileRecent(-1),
 	tileSize(16),
 	panX(0),
 	panY(0),
@@ -37,18 +37,17 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 	if (!gridSnap) {
 		mouseTile.x = (mousePosX * zoom - camera.x - (mouseRect.x * appliedTransform.scale.x * zoom) / 2);
 		mouseTile.y = (mousePosY * zoom - camera.y - (mouseRect.y * appliedTransform.scale.y * zoom) / 2);
-
 	}
 	//grid snapping
 	else {
-		mousePosWindow.x = mousePosTile.x * tileSize;
-		mousePosWindow.y = mousePosTile.y * tileSize;
+		mousePosTile.x = mousePosX * tileSize;
+		mousePosTile.y = mousePosY * tileSize;
 
 		if (mousePosX >= 0) {
-			mousePosX / tileSize;
+			mousePosTile.x = mousePosX / tileSize;
 		}
 		if (mousePosY >= 0) {
-			mousePosX / tileSize;
+			mousePosTile.y = mousePosY / tileSize;
 		}
 		mouseTile.x = std::round(mousePosTile.x * tileSize * zoom) - camera.x;
 		mouseTile.y = std::round(mousePosTile.y * tileSize * zoom) - camera.y;
@@ -63,16 +62,24 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 		};
 
 		SDL_Rect destRect = {
-			//TODO
-			mouseTile.x - camera.x,
-			mouseTile.y - camera.y,
-			mouseRect.x,
-			mouseRect.y
+			mouseTile.x,
+			mouseTile.y,
+			std::round(mouseTile.w * mouseRect.x * appliedTransform.scale.x * zoom),
+			std::round(mouseTile.h * mouseRect.y * appliedTransform.scale.y * zoom)
 		};
+
+		//draw tile from set
+		SDL_RenderCopyEx(
+			renderer.get(),
+			assetManager->ReturnEditorTexture(appliedSprite.assetID).get(),
+			&srcRect,
+			&destRect,
+			appliedTransform.rotation,
+			NULL,
+			appliedSprite.flip
+		);
 	}
 
-	//TODO
-	//multiple tiles selected
 }
 
 void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
@@ -84,6 +91,9 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 		return;
 	}
 
+	//multi tiles
+	glm::vec2 pos = glm::vec2(mouseTile.x + camera.x / tileSize, mouseTile.y + camera.y / tileSize);
+
 	//set transform account camera
 	appliedTransform.position = glm::vec2(mouseTile.x + camera.x, mouseTile.y + camera.y);
 
@@ -91,25 +101,96 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 	if (!LeftMouseButton()) {
 		isLeftMouseButton = false;
 	}
-	if (!MiddleMouseButton()) {
-		isMiddleMouseButton = false;
-	}
 	if (!RightMouseButton()) {
 		isRightMouseButton = false;
 	}
 
 	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
-		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton)) {
-			//TODO
-			//create
+		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton) || MultiTile(pos)) {
+			//update grid
+			int gridX = static_cast<int>(mousePosWindow.x) / tileSize;
+			int gridY = static_cast<int>(mousePosWindow.y) / tileSize;
+
+			if (gridSnap) {
+				appliedTransform.position.x = gridX * tileSize;
+				appliedTransform.position.y = gridY * tileSize;
+			}
+			else {
+				appliedTransform.position.x = static_cast<int>(mousePosWindow.x - (mouseRect.x * appliedTransform.scale.x / 2));
+				appliedTransform.position.y = static_cast<int>(mousePosWindow.y - (mouseRect.y * appliedTransform.scale.y / 2));
+			}
+
+			Entity newTile = Housecat::GetInstance().CreateEntity();
+			newTile.Group("tiles");
+			newTile.AddComponent<TransformComponent>(
+				glm::vec2(appliedTransform.position.x, appliedTransform.position.y),
+				appliedTransform.scale,
+				appliedTransform.rotation
+			);
+			newTile.AddComponent<SpriteComponent>(
+				appliedSprite.assetID,
+				appliedSprite.width,
+				appliedSprite.height,
+				appliedSprite.zIndex,
+				appliedSprite.isFixed,
+				appliedSprite.srcRect.x,
+				appliedSprite.srcRect.y
+			);
+
+			//get recent tile
+			tileRecent = newTile.GetID();
+			tileAdded = true;
 			isLeftMouseButton = true;
+
+			mousePrevPosTile.x = pos.x;
+			mousePrevPosTile.y = pos.y;
 		}
 
 		if (event.button.button == SDL_BUTTON_RIGHT && !isRightMouseButton) {
-			//TODO
-			//remove
-			isRightMouseButton = true;
+			if (!Housecat::GetInstance().IsThereGroup("tiles")) {
+				return;
+			}
+
+			//help for non precise removing on tile
+			glm::vec2 subtract = glm::vec2(
+				(mouseRect.x * appliedTransform.scale.x) / 2,
+				(mouseRect.y * appliedTransform.scale.y) / 2
+			);
+
+			auto entities = Housecat::GetInstance().GetGroup("tiles");
+
+			//remove tiles on hover
+			for (auto& entity : entities) {
+				const auto& transform = entity.GetComponent<TransformComponent>();
+				const auto& sprite = entity.GetComponent<SpriteComponent>();
+
+				if (mousePosX >= transform.position.x && mousePosX <= transform.position.x + sprite.width * transform.scale.x &&
+					mousePosY >= transform.position.y && mousePosY <= transform.position.y + sprite.height * transform.scale.y &&
+					appliedSprite.zIndex == sprite.zIndex) {
+
+					removedTransform = transform;
+					removedSprite = sprite;
+
+					entity.Kill();
+					isRightMouseButton = true;
+					tileRemoved = true;
+				}
+			}
 		}
+	}
+}
+
+bool Mouse::MultiTile(const glm::vec2& pos) {
+	if (gridSnap) {
+		if ((pos.x != mousePrevPosTile.x || pos.y != mousePrevPosTile.y) && LeftMouseButton()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
 	}
 }
 
@@ -122,6 +203,8 @@ void Mouse::UpdateMousePosition(const SDL_Rect& camera) {
 	mousePosY += camera.y;
 	mousePosX /= zoom;
 	mousePosY /= zoom;
+	mousePosWindow.x = mousePosX;
+	mousePosWindow.y = mousePosY;
 
 }
 
@@ -137,23 +220,16 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 	if (MiddleMouseButton()) {
 		SDL_ShowCursor(0);
 
-		SDL_Rect srcRect = {
-			0,
-			0,
-			16,
-			16
-		};
-
+		//mouse texture
+		SDL_Rect srcRect = { 0, 0, 32, 32 };
 		SDL_Rect dstRect = {
-			camera.x -= (mousePosWindow.x - panX) * zoom * dT * 5,
-			camera.y -= (mousePosWindow.y - panY) * zoom * dT * 5,
-			16,
-			16
+			mousePosX * zoom - camera.x,
+			mousePosY * zoom - camera.y,
+			32, 32
 		};
-
 		SDL_RenderCopyEx(
 			renderer.get(),
-			assetManager->GetTexture("mousehand"),
+			assetManager->ReturnEditorTexture("pan").get(),
 			&srcRect,
 			&dstRect,
 			NULL,
@@ -161,12 +237,13 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 			SDL_FLIP_NONE
 		);
 
-		//current panning mouse to last values
-		if (panX != mousePosWindow.x) {
-			camera.x -= (mousePosWindow.x - panX) * zoom * dT * 5;
-		}
-		if (panY != mousePosWindow.y) {
-			camera.y -= (mousePosWindow.y - panY) * zoom * dT * 5;
+		if (panX != mousePosWindow.x || panY != mousePosWindow.y) {
+			//calculate changes
+			float deltaX = static_cast<float>((mousePosWindow.x - panX) * zoom * dT * 4);
+			float deltaY = static_cast<float>((mousePosWindow.y - panY) * zoom * dT * 4);
+
+			camera.x -= deltaX;
+			camera.y -= deltaY;
 		}
 	}
 	else {
@@ -177,8 +254,8 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 }
 
 //components
-void Mouse::ApplyTransform(const int scaleX, const int scaley) {
-	appliedTransform.scale = glm::vec2(scaleX, scaley);
+void Mouse::ApplyTransform(const int scaleX, const int scaleY) {
+	appliedTransform.scale = glm::vec2(scaleX, scaleY);
 }
 
 void Mouse::ApplySprite(const std::string& assetID, const int width, const int height, const int layer, const int srcRectX, const int srcRectY) {
@@ -186,6 +263,7 @@ void Mouse::ApplySprite(const std::string& assetID, const int width, const int h
 	appliedSprite.width = width;
 	appliedSprite.height = height;
 	appliedSprite.zIndex = layer;
+	appliedSprite.isFixed = false;
 	appliedSprite.srcRect = { srcRectX, srcRectY, width, height };
-
+	appliedSprite.flip = SDL_FLIP_NONE;
 }

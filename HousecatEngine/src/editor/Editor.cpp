@@ -16,6 +16,7 @@
 Editor::Editor()
 	: isRunning(false),
 	millisecsPreviousFrame(0),
+	deltaTime(0.0f),
 	zoom(1),
 	mouseTile(),
 	camera(),
@@ -95,7 +96,7 @@ void Editor::Initialize() {
 	//TODO
 	assetManager = std::make_unique<AssetManager>();
 	//textures
-	//assetManager->AddTexture(editorRenderer.get(), "x", "x");
+	assetManager->AddEditorTexture(editorRenderer, "pan", "./assets/icon/pan.png");
 
 	//SYSTEMS
 	//call Housecat to add systems for editor
@@ -121,7 +122,7 @@ void Editor::ProcessInput() {
 		IO.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 		IO.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
 		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE);
-		IO.MouseDown[2] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
+		IO.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
 
 		switch (event.type) {
 		case SDL_QUIT:
@@ -150,7 +151,7 @@ void Editor::Update() {
 		SDL_Delay(waitingTime);
 	}
 	//diff. in ticks since last frame converted to secs
-	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0;
+	deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0f;
 	//store curr. frame time
 	millisecsPreviousFrame = SDL_GetTicks();
 
@@ -173,7 +174,9 @@ void Editor::Render() {
 
 	//render editor
 	Housecat::GetInstance().GetSystem<EditorUIRendering>().RenderGrid(editorRenderer, camera, zoom);
-	Housecat::GetInstance().GetSystem<RenderSystem>().Update(editorRenderer.get(), assetManager, camera);
+
+	Housecat::GetInstance().GetSystem<RenderSystem>().UpdateEditor(editorRenderer.get(), assetManager, camera, zoom);
+
 
 	//TODO
 	//render collider
@@ -181,7 +184,7 @@ void Editor::Render() {
 
 
 	Housecat::GetInstance().GetSystem<EditorUIRendering>().Update(editorRenderer, assetManager, camera, mouseTile,
-		event, zoom, millisecsPreviousFrame);
+		event, zoom, deltaTime);
 
 
 	SDL_RenderPresent(editorRenderer.get());

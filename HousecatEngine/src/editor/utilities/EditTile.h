@@ -13,16 +13,16 @@ private:
 
 	std::shared_ptr<class Mouse> mouse;
 
-	TransformComponent originalTransformComponent;
-	SpriteComponent originalSpriteComponent;
+	TransformComponent transformComponent;
+	SpriteComponent spriteComponent;
 
 public:
-	EditAddTile(std::shared_ptr<Mouse> mouse);
+	EditAddTile(std::shared_ptr<Mouse>& mouse);
 	~EditAddTile() = default;
 
-	void Execute() override;
-	void Undo() override;
-	void Redo() override;
+	virtual void Execute() override;
+	virtual void Undo() override;
+	virtual void Redo() override;
 
 };
 
@@ -32,15 +32,15 @@ private:
 
 	std::shared_ptr<class Mouse> mouse;
 
-	TransformComponent originalTransformComponent;
-	SpriteComponent originalSpriteComponent;
+	TransformComponent transformComponent;
+	SpriteComponent spriteComponent;
 
 public:
-	EditRemoveTile(std::shared_ptr<Mouse> mouse);
+	EditRemoveTile(std::shared_ptr<Mouse>& mouse);
 	~EditRemoveTile() = default;
 
-	void Execute() override;
-	void Undo() override;
-	void Redo() override;
+	virtual void Execute() override;
+	virtual void Undo() override;
+	virtual void Redo() override;
 
 };
