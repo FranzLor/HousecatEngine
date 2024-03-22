@@ -212,26 +212,26 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {
 	//Logger::Debug("Rendering Grid!");
 
-	if (!gridShow) {
-		return;
-	}
-
 	//calc full tiles in canvas
 	int xTiles = canvas->GetCanvasWidth() / tileSize;
 	int yTiles = canvas->GetCanvasHeight() / tileSize;
 
-	SDL_SetRenderDrawColor(renderer.get(), 140, 140, 140, SDL_ALPHA_OPAQUE);
 
-	//vertical
-	for (int i = 0; i <= xTiles; i++) {
-		int x = std::floor(i * tileSize * zoom) - camera.x;
-		SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, (yTiles * tileSize * zoom) - camera.y);
-	}
+	if (gridShow) {
+		
+		SDL_SetRenderDrawColor(renderer.get(), 140, 140, 140, SDL_ALPHA_OPAQUE);
 
-	//horizontal
-	for (int j = 0; j <= yTiles; j++) {
-		int y = std::floor(j * tileSize * zoom) - camera.y;
-		SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, (xTiles * tileSize * zoom) - camera.x, y);
+		//vertical
+		for (int i = 0; i <= xTiles; i++) {
+			int x = std::floor(i * tileSize * zoom) - camera.x;
+			SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, (yTiles * tileSize * zoom) - camera.y);
+		}
+
+		//horizontal
+		for (int j = 0; j <= yTiles; j++) {
+			int y = std::floor(j * tileSize * zoom) - camera.y;
+			SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, (xTiles * tileSize * zoom) - camera.x, y);
+		}
 	}
 
 	//boundary

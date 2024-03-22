@@ -191,7 +191,7 @@ void Editor::Render() {
 }
 
 void Editor::CameraController(SDL_Event& event) {
-	constexpr float zoomStep = 0.4f;
+	constexpr float zoomStep = 0.1f;
 
 	if (event.wheel.y > 0) {
 		zoom = std::min(zoom + zoomStep, 2.2f);
