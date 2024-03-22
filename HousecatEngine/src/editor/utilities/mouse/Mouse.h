@@ -66,6 +66,8 @@ public:
 
 	void CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 
+	bool MultiTile(const glm::vec2& pos);
+
 	void UpdateMousePosition(const SDL_Rect& camera);
 
 	void MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const AssetManagerPtr& assetManager, const float& dT);
@@ -134,7 +136,7 @@ public:
 
 
 	//components
-	void ApplyTransform(const int scaleX, const int scaley);
+	void ApplyTransform(const int scaleX, const int scaleY);
 
 	void ApplySprite(const std::string& assetID, const int width, const int height, const int layer, const int srcRectX, const int srcRectY);
 
@@ -146,5 +148,6 @@ public:
 	const SpriteComponent& GetRemovedSprite() {
 		return removedSprite;
 	}
+
 };
 

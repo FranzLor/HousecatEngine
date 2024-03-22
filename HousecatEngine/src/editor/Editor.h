@@ -23,10 +23,10 @@ private:
 	float deltaTime;
 
 	//camera
-	const int defaultCamX = -300;
-	const int defaultCamY = -150;
+	const int defaultCamX = -350;
+	const int defaultCamY = -170;
 	const int defaultZoom = 1;
-	const int camSpeed = 4;
+	const int camSpeed = 5;
 
 	bool isRunning;
 

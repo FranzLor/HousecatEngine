@@ -11,7 +11,7 @@
 #include "../src/logger/Logger.h"
 #include <imgui/imgui_impl_sdlrenderer2.h>
 #include <imgui/imgui_impl_sdl2.h>
-#include "../utilities/AddTile.h"
+#include "../utilities/EditTile.h"
 #include "../utilities/RemoveTile.h"
 #include "../utilities/EditCanvasSize.h"
 
@@ -19,17 +19,16 @@
 EditorUIRendering::EditorUIRendering()
 	: canvasWidth(960),
 	canvasHeight(640),
-	tileSize(64),
-	tilePrevSize(tileSize),
+	canvasPreviousWidth(960),
+	canvasPreviousHeight(640),
+	tileSize(32),
+	tilePrevSize(32),
 	createTiles(false),
 	removedTile(false),
 	gridX(0),
 	gridY(0),
 	gridSnap(true),
 	gridShow(true) {
-
-	canvasPreviousWidth = 960;
-	canvasPreviousHeight = 640;
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
 	mouse = std::make_shared<Mouse>();
@@ -102,9 +101,14 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 			ImGui::Spacing;
 			ImGui::Spacing;
+			ImGui::Spacing;
 
-			if (ImGui::Checkbox("New Tileset", &createTiles));
+			if (ImGui::MenuItem("Tilset Window")) {
+				createTiles = !createTiles;
+			}
 
+			ImGui::Spacing;
+			ImGui::Spacing;
 			ImGui::Spacing;
 			ImGui::Spacing;
 
@@ -166,24 +170,25 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 		if (!MouseOutOfBounds()) {
 			mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
+
 		}
 
 		if (mouse->TileAdded()) {
-			editManager->Execute(std::make_shared<AddTile>(mouse));
+			editManager->Execute(std::make_shared<EditAddTile>(mouse));
 			mouse->SetTileAdded(false);
 			removedTile = false;
 		}
 
 		if (mouse->TileRemoved()) {
-			editManager->Execute(std::make_shared<RemoveTile>(mouse));
+			editManager->Execute(std::make_shared<EditRemoveTile>(mouse));
 			mouse->SetRemovedTile(false);
 			removedTile = true;
 		}
 	}
 
 	//update mouse
-	mouse->UpdateMousePosition(camera);
 	mouse->MousePanCamera(renderer, camera, assetManager, dT);
+	mouse->UpdateMousePosition(camera);
 	mouse->UpdateZoom(zoom);
 	mouse->UpdateGridSize(tileSize);
 	mouse->SetGridSnap(gridSnap);
@@ -244,12 +249,12 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 
 void EditorUIRendering::CreateNewCanvas() {
 	//resetting canvas
+	createTiles = false;
+	gridSnap = true;
+
 	tileSize = 32;
 	canvasWidth = 960;
 	canvasHeight = 640;
-
-	createTiles = false;
-	gridSnap = true;
 
 	for (auto& entity : GetSystemEntities()) {
 		entity.Kill();

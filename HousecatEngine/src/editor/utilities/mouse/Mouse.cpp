@@ -21,7 +21,7 @@ Mouse::Mouse()
 	tileSize(16),
 	panX(0),
 	panY(0),
-	zoom(0),
+	zoom(0.0f),
 	gridSnap(false),
 	isMouseOutOfBounds(false),
 	appliedTransform(),
@@ -80,8 +80,6 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 		);
 	}
 
-	//TODO
-	//multiple tiles selected
 }
 
 void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
@@ -92,6 +90,9 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 	if (MouseOutOfBounds()) {
 		return;
 	}
+
+	//multi tiles
+	glm::vec2 pos = glm::vec2(mouseTile.x + camera.x / tileSize, mouseTile.y + camera.y / tileSize);
 
 	//set transform account camera
 	appliedTransform.position = glm::vec2(mouseTile.x + camera.x, mouseTile.y + camera.y);
@@ -105,7 +106,7 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 	}
 
 	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
-		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton)) {
+		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton) || MultiTile(pos)) {
 			//update grid
 			int gridX = static_cast<int>(mousePosWindow.x) / tileSize;
 			int gridY = static_cast<int>(mousePosWindow.y) / tileSize;
@@ -123,7 +124,7 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 			newTile.Group("tiles");
 			newTile.AddComponent<TransformComponent>(
 				glm::vec2(appliedTransform.position.x, appliedTransform.position.y),
-				glm::vec2(appliedTransform.scale.x, appliedTransform.scale.y),
+				appliedTransform.scale,
 				appliedTransform.rotation
 			);
 			newTile.AddComponent<SpriteComponent>(
@@ -140,6 +141,9 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 			tileRecent = newTile.GetID();
 			tileAdded = true;
 			isLeftMouseButton = true;
+
+			mousePrevPosTile.x = pos.x;
+			mousePrevPosTile.y = pos.y;
 		}
 
 		if (event.button.button == SDL_BUTTON_RIGHT && !isRightMouseButton) {
@@ -176,6 +180,20 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 	}
 }
 
+bool Mouse::MultiTile(const glm::vec2& pos) {
+	if (gridSnap) {
+		if ((pos.x != mousePrevPosTile.x || pos.y != mousePrevPosTile.y) && LeftMouseButton()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+}
+
 void Mouse::UpdateMousePosition(const SDL_Rect& camera) {
 	//SDL mouse pos
 	SDL_GetMouseState(&mousePosX, &mousePosY);
@@ -202,13 +220,13 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 	if (MiddleMouseButton()) {
 		SDL_ShowCursor(0);
 
+		//mouse texture
 		SDL_Rect srcRect = { 0, 0, 32, 32 };
 		SDL_Rect dstRect = {
 			mousePosX * zoom - camera.x,
 			mousePosY * zoom - camera.y,
 			32, 32
 		};
-
 		SDL_RenderCopyEx(
 			renderer.get(),
 			assetManager->ReturnEditorTexture("pan").get(),
@@ -221,8 +239,8 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 
 		if (panX != mousePosWindow.x || panY != mousePosWindow.y) {
 			//calculate changes
-			float deltaX = (mousePosWindow.x - panX) * zoom * dT * 5;
-			float deltaY = (mousePosWindow.y - panY) * zoom * dT * 5;
+			float deltaX = static_cast<float>((mousePosWindow.x - panX) * zoom * dT * 4);
+			float deltaY = static_cast<float>((mousePosWindow.y - panY) * zoom * dT * 4);
 
 			camera.x -= deltaX;
 			camera.y -= deltaY;

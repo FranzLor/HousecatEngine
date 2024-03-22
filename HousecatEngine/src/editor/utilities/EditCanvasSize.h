@@ -12,12 +12,12 @@ private:
 	std::shared_ptr<class EditorCanvas> canvas;
 
 public:
-	EditCanvasSize(std::shared_ptr<EditorCanvas> canvas, int canvasPreviousWidth, int canvasPreviousHeight);
+	EditCanvasSize(std::shared_ptr<EditorCanvas>& canvas, const int& canvasPreviousWidth, const int& canvasPreviousHeight);
 	~EditCanvasSize() = default;
 
-	void Execute() override;
-	void Undo() override;
-	void Redo() override;
+	virtual void Execute() override;
+	virtual void Undo() override;
+	virtual void Redo() override;
 
 	EditCanvasSize(const EditCanvasSize&) = delete;
 	EditCanvasSize& operator=(const EditCanvasSize&) = delete;

@@ -18,10 +18,6 @@
 
 class EditorUIManager {
 private:
-	//tile
-	TileAttributes tileAttributes;
-	TileAttributes tilePrevAttributes;
-
 	int tileWidth;
 	int tileHeight;
 	int textureWidth;
@@ -37,6 +33,10 @@ private:
 	//edit
 	bool Undo;
 	bool Redo;
+
+	//tile
+	TileAttributes tileAttributes;
+	TileAttributes tilePrevAttributes;
 
 
 	//project

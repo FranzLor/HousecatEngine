@@ -2,12 +2,12 @@
 
 #include "../utilities/mouse/Mouse.h"
 
-EditAddTile::EditAddTile(std::shared_ptr<Mouse> mouse)
+EditAddTile::EditAddTile(std::shared_ptr<Mouse>& mouse)
 	: tileID(-1),
 	initialStateStored(false),
-	mouse(std::move(mouse)),
-	originalTransformComponent(),
-	originalSpriteComponent() {
+	mouse(mouse),
+	transformComponent(),
+	spriteComponent() {
 
 }
 
@@ -17,8 +17,8 @@ void EditAddTile::Execute() {
 
 	for (auto& entity : entities) {
 		if (entity.GetID() == tileID) {
-			originalTransformComponent = entity.GetComponent<TransformComponent>();
-			originalSpriteComponent = entity.GetComponent<SpriteComponent>();
+			transformComponent = entity.GetComponent<TransformComponent>();
+			spriteComponent = entity.GetComponent<SpriteComponent>();
 			//break out early
 			initialStateStored = true;
 			break;
@@ -53,8 +53,8 @@ void EditAddTile::Redo() {
 	Entity recreateEntity = Housecat::GetInstance().CreateEntity();
 
 	recreateEntity.Group("tiles");
-	recreateEntity.AddComponent<TransformComponent>(originalTransformComponent);
-	recreateEntity.AddComponent<SpriteComponent>(originalSpriteComponent);
+	recreateEntity.AddComponent<TransformComponent>(transformComponent);
+	recreateEntity.AddComponent<SpriteComponent>(spriteComponent);
 
 	tileID = recreateEntity.GetID();
 }
@@ -64,11 +64,11 @@ void EditAddTile::Redo() {
 
 
 
-EditRemoveTile::EditRemoveTile(std::shared_ptr<Mouse> mouse)
+EditRemoveTile::EditRemoveTile(std::shared_ptr<Mouse>& mouse)
 	: tileID(-1),
-	mouse(std::move(mouse)),
-	originalTransformComponent(),
-	originalSpriteComponent() {
+	mouse(mouse),
+	transformComponent(),
+	spriteComponent() {
 
 }
 
@@ -78,8 +78,8 @@ void EditRemoveTile::Execute() {
 
 	for (auto& entity : entities) {
 		if (entity.GetID() == tileID) {
-			originalTransformComponent = entity.GetComponent<TransformComponent>();
-			originalSpriteComponent = entity.GetComponent<SpriteComponent>();
+			transformComponent = entity.GetComponent<TransformComponent>();
+			spriteComponent = entity.GetComponent<SpriteComponent>();
 
 			entity.Kill();
 			break;
@@ -95,8 +95,8 @@ void EditRemoveTile::Undo() {
 
 	Entity recreateEntity = Housecat::GetInstance().CreateEntity();
 	recreateEntity.Group("tiles");
-	recreateEntity.AddComponent<TransformComponent>(originalTransformComponent);
-	recreateEntity.AddComponent<SpriteComponent>(originalSpriteComponent);
+	recreateEntity.AddComponent<TransformComponent>(transformComponent);
+	recreateEntity.AddComponent<SpriteComponent>(spriteComponent);
 	tileID = recreateEntity.GetID();
 }
 

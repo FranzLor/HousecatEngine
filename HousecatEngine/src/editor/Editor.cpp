@@ -16,6 +16,7 @@
 Editor::Editor()
 	: isRunning(false),
 	millisecsPreviousFrame(0),
+	deltaTime(0.0f),
 	zoom(1),
 	mouseTile(),
 	camera(),
@@ -172,9 +173,10 @@ void Editor::Render() {
 	SDL_RenderClear(editorRenderer.get());
 
 	//render editor
-	Housecat::GetInstance().GetSystem<RenderSystem>().Update(editorRenderer.get(), assetManager, camera);
-
 	Housecat::GetInstance().GetSystem<EditorUIRendering>().RenderGrid(editorRenderer, camera, zoom);
+
+	Housecat::GetInstance().GetSystem<RenderSystem>().UpdateEditor(editorRenderer.get(), assetManager, camera, zoom);
+
 
 	//TODO
 	//render collider

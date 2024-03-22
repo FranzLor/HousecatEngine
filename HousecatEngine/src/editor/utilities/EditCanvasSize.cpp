@@ -2,7 +2,7 @@
 
 #include "../ui/EditorCanvas.h"
 
-EditCanvasSize::EditCanvasSize(std::shared_ptr<EditorCanvas> canvas, int canvasPreviousWidth, int canvasPreviousHeight)
+EditCanvasSize::EditCanvasSize(std::shared_ptr<EditorCanvas>& canvas, const int& canvasPreviousWidth, const int& canvasPreviousHeight)
 //reduce ref (new test)
 	: canvas(std::move(canvas)),
 	canvasPreviousWidth(canvasPreviousWidth),

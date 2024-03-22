@@ -136,27 +136,29 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 		FileDialogue fileDialog;
 		imageName = fileDialog.OpenTextureFile();
 
-		if (imageName != "" || !imageName.empty()) {
-			std::filesystem::path path(imageName);
-			assetID = path.stem().string();
+		if (imageName.empty()) {
+			return;
+		}
+		
+		std::filesystem::path path(imageName);
+		assetID = path.stem().string();
 
-			for (const auto& assets : tilesets) {
-				if (assets == assetID) {
-					return;
-				}
+		for (const auto& assets : tilesets) {
+			if (assets == assetID) {
+				return;
 			}
+		}
 
-			assetManager->AddEditorTexture(renderer, assetID, imageName);
+		assetManager->AddEditorTexture(renderer, assetID, imageName);
 
-			if (SDL_QueryTexture(assetManager->ReturnEditorTexture(assetID).get(), NULL, NULL, &tileWidth, &tileHeight) != 0) {
-				const char* error = SDL_GetError();
-				loadTileset = false;
-			}
-			else {
-				loadTileset = true;
-				tilesets.push_back(assetID);
-				tilesetsTarget.push_back(imageName);
-			}
+		if (SDL_QueryTexture(assetManager->ReturnEditorTexture(assetID).get(), NULL, NULL, &textureWidth, &textureHeight) != 0) {
+			const char* error = SDL_GetError();
+			loadTileset = false;
+		}
+		else {
+			loadTileset = true;
+			tilesets.push_back(assetID);
+			tilesetsTarget.push_back(imageName);
 		}
 
 	}
@@ -173,8 +175,8 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 		float scrollX = ImGui::GetScrollX();
 		float scrollY = ImGui::GetScrollY();
 
-		int imageWidth = tileWidth * 2;
-		int imageHeight = tileHeight * 2;
+		int imageWidth = textureWidth * 2;
+		int imageHeight = textureHeight * 2;
 
 		
 		ImGui::Image(assetManager->ReturnEditorTexture(assetID).get(), ImVec2(imageWidth, imageHeight));
@@ -196,7 +198,6 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 					&& (mousePosY >= (imageHeight / tileRow) * r && mousePosY <= (imageHeight / tileRow) + ((imageHeight / tileRow) * r))) {
 
 					if (ImGui::IsItemHovered()){
-
 						if (ImGui::IsMouseClicked(0)) {
 							tileAttributes.srcRectX = c * mouseRect.x;
 							tileAttributes.srcRectY = r * mouseRect.y;
@@ -219,15 +220,15 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 	if (ImGui::Begin(tilesetName.c_str())) {
 
 		if (tileWindow) {
-
 			static std::string currentTileset = "";
 			static std::string previousTileset = assetID;
 
+			//changing tilesets 
 			if (ImGui::BeginCombo("Tilesets", currentTileset.c_str())) {
-				for (int tileset = 0; tileset < tilesets.size(); tileset++) {
-					bool selected = (currentTileset == tilesets[tileset]);
-					if (ImGui::Selectable(tilesets[tileset].c_str(), selected)) {
-						currentTileset = tilesets[tileset];
+				for (int set = 0; set < tilesets.size(); set++) {
+					bool selected = (currentTileset == tilesets[set]);
+					if (ImGui::Selectable(tilesets[set].c_str(), selected)) {
+						currentTileset = tilesets[set];
 					}
 					if (selected) {
 						ImGui::SetItemDefaultFocus();
@@ -235,12 +236,34 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				}
 				ImGui::EndCombo();
 			}
+			if (currentTileset != "") {
+				if (previousTileset != currentTileset) {
+					assetID = currentTileset;
+					SDL_QueryTexture(assetManager->ReturnEditorTexture(assetID).get(), NULL, NULL, &textureWidth, &textureHeight);
+					previousTileset = currentTileset;
+				}
+				if (currentTileset != assetID) {
+					currentTileset = assetID;
+				}
+			}
+
 
 			ImGui::Text("Scaling");
 			ImGui::SliderInt("Scale X", &tileAttributes.scaleX, 1, 10);
 			ImGui::SliderInt("Scale Y", &tileAttributes.scaleY, 1, 10);
 
+			//REMIND
+			if (ImGui::InputInt("Layer", &tileAttributes.layer, 1, 50)) {
+				if (tileAttributes.layer <= 0) {
+					tileAttributes.layer = 0;
+				}
+				if (tileAttributes.layer >= 50) {
+					tileAttributes.layer = 50;
+				}
+			}
 
+
+		
 			ImGui::Text("Sprite");
 			if (ImGui::InputInt("Tile X", &tileAttributes.mouseRectX, 8, 8)) {
 				tileAttributes.mouseRectX = (tileAttributes.mouseRectX / 8) * 8;
@@ -255,13 +278,13 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				}
 			}
 
+			if (tileWindow) {
+				mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
+			}
+
 			if (CheckTransform()) {
 				mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
 				mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
-			}
-
-			if (tileWindow) {
-				mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
 			}
 
 			ImGui::End();
@@ -352,12 +375,37 @@ void EditorUIManager::ApplyShortcuts() {
 
 bool EditorUIManager::CheckTransform() {
 	//changes from current attributes to previous attributes
-	return tileAttributes.scaleX != tilePrevAttributes.scaleX ||
-		tileAttributes.scaleY != tilePrevAttributes.scaleY ||
-		tileAttributes.mouseRectX != tilePrevAttributes.mouseRectX ||
-		tileAttributes.mouseRectY != tilePrevAttributes.mouseRectY;
+	bool statusChanged = false;
+
+	if (tileAttributes.scaleX != tilePrevAttributes.scaleX)
+	{
+		tilePrevAttributes.scaleX = tileAttributes.scaleX;
+		statusChanged = true;
+	}
+
+	if (tileAttributes.scaleY != tilePrevAttributes.scaleY)
+	{
+		tilePrevAttributes.scaleY = tileAttributes.scaleY;
+		statusChanged = true;
+	}
+
+	if (tileAttributes.mouseRectX != tilePrevAttributes.mouseRectX)
+	{
+		tilePrevAttributes.mouseRectX = tileAttributes.mouseRectX;
+		tileWidth = tileAttributes.mouseRectX;
+		statusChanged = true;
+	}
+
+	if (tileAttributes.mouseRectY != tilePrevAttributes.mouseRectY)
+	{
+		tilePrevAttributes.mouseRectY = tileAttributes.mouseRectY;
+		tileHeight = tileAttributes.mouseRectY;
+		statusChanged = true;
+	}
+
+	return statusChanged;
 }
 
-bool EditorUIManager::CheckSprite() {
-	return false;
-}
+//bool EditorUIManager::CheckSprite() {
+//	return false;
+//}
