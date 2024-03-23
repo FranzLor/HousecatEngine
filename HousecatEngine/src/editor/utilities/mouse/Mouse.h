@@ -52,9 +52,12 @@ private:
 	bool MiddleMouseButton() {
 		return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(2);
 	}
-	bool RightMouseButton() {
+
+	//right click does not work
+	//IDK WTF
+	/*bool RightMouseButton() {
 		return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(3);
-	}
+	}*/
 
 public:
 	Mouse();
@@ -65,6 +68,11 @@ public:
 	void MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile);
 
 	void CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
+
+	void RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
+
+	//TODO
+	//void FillTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 
 	bool MultiTile(const glm::vec2& pos);
 

@@ -167,9 +167,22 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	if (createTiles) {
 		editorUIManager->TilesetWindow(assetManager, mouse->GetMouseRect());
 		editorUIManager->TileAttributes(assetManager, mouse, true);
+		editorUIManager->TilesetTools(assetManager, mouse, true);
 
 		if (!MouseOutOfBounds()) {
-			mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
+			if (editorUIManager->IsPaintToolActive()) {
+				
+				mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
+			}
+			else if (editorUIManager->IsEraserToolActive()) {
+				mouse->RemoveTile(renderer, assetManager, camera, mouseTile, event);
+			}
+			//TODO
+			//fill
+			else if (editorUIManager->IsFillToolActive()) {
+				//mouse->MultiTile(mouse->GetMousePosition());
+			}
+			
 
 		}
 

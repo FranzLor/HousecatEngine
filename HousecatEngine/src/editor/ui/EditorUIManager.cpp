@@ -20,6 +20,9 @@ EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 	isReset(false),
 	isNewFile(false),
 	newCanvas(false),
+	isPaintToolActive(false),
+	isEraserToolActive(false),
+	isFillToolActive(false),
 	Undo(false),
 	Redo(false),
 	fileName(""),
@@ -218,6 +221,78 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 			}
 		}
 	}
+	ImGui::End();
+}
+
+void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow) {
+	if (!tileWindow) {
+		return;
+	}
+
+	if (ImGui::Begin("Tileset Tools")) {
+		ImGuiStyle& style = ImGui::GetStyle();
+		float originalItemSpacing = style.ItemSpacing.x;
+		style.ItemSpacing.x = 15.0f;
+
+		//toggle paint
+		bool pushed = false;
+		if (isPaintToolActive) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			pushed = true;
+		}
+		//toggle state
+		if (ImGui::Button("Paint")) {
+			isPaintToolActive = !isPaintToolActive;
+			if (isPaintToolActive) {
+				isEraserToolActive = false;
+				isFillToolActive = false;
+			}
+		}
+		//reset
+		if (pushed) {
+			ImGui::PopStyleColor(1);
+			pushed = false;
+		}
+		ImGui::SameLine();
+
+		//toggle eraser
+		if (isEraserToolActive) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			pushed = true;
+		}
+		if (ImGui::Button("Eraser")) {
+			isEraserToolActive = !isEraserToolActive;
+			if (isEraserToolActive) {
+				isPaintToolActive = false;
+				isFillToolActive = false;
+			}
+		}
+		if (pushed) {
+			ImGui::PopStyleColor(1);
+			pushed = false;
+		}
+		ImGui::SameLine();
+
+		//toggle fill
+		if (isFillToolActive) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			pushed = true;
+		}
+		if (ImGui::Button("Fill")) {
+			isFillToolActive = !isFillToolActive;
+			if (isFillToolActive) {
+				isPaintToolActive = false;
+				isEraserToolActive = false;
+			}
+		}
+		if (pushed) {
+			ImGui::PopStyleColor(1);
+		}
+
+		//restore original spacing
+		style.ItemSpacing.x = originalItemSpacing;
+	}
+
 	ImGui::End();
 }
 

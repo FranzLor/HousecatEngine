@@ -83,7 +83,7 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 }
 
 void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
-	
+
 	MouseTile(renderer, assetManager, camera, mouseTile);
 
 	//only draws if mouse is in bounds
@@ -100,9 +100,6 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 	//reset mouse press
 	if (!LeftMouseButton()) {
 		isLeftMouseButton = false;
-	}
-	if (!RightMouseButton()) {
-		isRightMouseButton = false;
 	}
 
 	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
@@ -145,8 +142,32 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 			mousePrevPosTile.x = pos.x;
 			mousePrevPosTile.y = pos.y;
 		}
+	}
+}
 
-		if (event.button.button == SDL_BUTTON_RIGHT && !isRightMouseButton) {
+void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
+	//TODO
+	// RENDER ERASER ICON
+	//MouseTile(renderer, assetManager, camera, mouseTile);
+
+	////only draws if mouse is in bounds
+	//if (MouseOutOfBounds()) {
+	//	return;
+	//}
+
+	//multi tiles
+	glm::vec2 pos = glm::vec2(mouseTile.x + camera.x / tileSize, mouseTile.y + camera.y / tileSize);
+
+	//set transform account camera
+	appliedTransform.position = glm::vec2(mouseTile.x + camera.x, mouseTile.y + camera.y);
+
+	//reset mouse press
+	if (!LeftMouseButton()) {
+		isLeftMouseButton = false;
+	}
+
+	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
+		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton) || MultiTile(pos)) {
 			if (!Housecat::GetInstance().IsThereGroup("tiles")) {
 				return;
 			}
@@ -172,13 +193,14 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 					removedSprite = sprite;
 
 					entity.Kill();
-					isRightMouseButton = true;
+					isLeftMouseButton = true;
 					tileRemoved = true;
 				}
 			}
 		}
 	}
 }
+
 
 bool Mouse::MultiTile(const glm::vec2& pos) {
 	if (gridSnap) {

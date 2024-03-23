@@ -28,6 +28,11 @@ private:
 	bool isNewFile;
 	bool newCanvas;
 
+	//tileset tools
+	bool isPaintToolActive;
+	bool isEraserToolActive;
+	bool isFillToolActive;
+
 	const int titleBar = 25;
 
 	//edit
@@ -94,9 +99,24 @@ public:
 		isReset = reset;
 	}
 
+	//tools getter
+	inline const bool& IsPaintToolActive() const {
+		return isPaintToolActive;
+	}
+
+	inline const bool& IsEraserToolActive() const {
+		return isEraserToolActive;
+	}
+
+	inline const bool& IsFillToolActive() const {
+		return isFillToolActive;
+	}
+
 	//TODO
 	//tileset management
 	void TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect);
+
+	void TilesetTools(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow);
 
 	void TilesetLayers(const AssetManagerPtr& assetManager);
 
