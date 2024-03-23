@@ -171,7 +171,6 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 		if (!MouseOutOfBounds()) {
 			if (editorUIManager->IsPaintToolActive()) {
-				
 				mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
 			}
 			else if (editorUIManager->IsEraserToolActive()) {
@@ -180,7 +179,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			//TODO
 			//fill
 			else if (editorUIManager->IsFillToolActive()) {
-				//mouse->MultiTile(mouse->GetMousePosition());
+				mouse->FillTiles(renderer, assetManager, camera, mouseTile, event, *canvas);
 			}
 			
 

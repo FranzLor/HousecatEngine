@@ -7,6 +7,7 @@
 
 #include "../../../ecs/ECS.h"
 #include "../../../assetmanager/AssetManager.h"
+#include "../../ui/EditorCanvas.h"
 
 #include "../../../components/TransformComponent.h"
 #include "../../../components/SpriteComponent.h"
@@ -70,6 +71,8 @@ public:
 	void CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 
 	void RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
+
+	void FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event, const EditorCanvas& canvas);
 
 	//TODO
 	//void FillTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);

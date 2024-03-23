@@ -3,6 +3,7 @@
 #include "Mouse.h"
 
 #include "../../../assetmanager/AssetManager.h"
+#include "../../ui/EditorCanvas.h"
 
 
 Mouse::Mouse()
@@ -197,6 +198,64 @@ void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 					tileRemoved = true;
 				}
 			}
+		}
+	}
+}
+
+void Mouse::FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event, const EditorCanvas& canvas) {
+	//used for rendering
+	//remove when -> highlighting with texture
+	MouseTile(renderer, assetManager, camera, mouseTile);
+
+	//only draws if mouse is in bounds
+	if (MouseOutOfBounds()) {
+		return;
+	}
+
+	//multi tiles for apply fill
+	//dont remove
+	glm::vec2 pos = glm::vec2(mouseTile.x + camera.x / tileSize, mouseTile.y + camera.y / tileSize);
+
+	//set transform account camera
+	appliedTransform.position = glm::vec2(mouseTile.x + camera.x, mouseTile.y + camera.y);
+
+	//reset mouse press
+	if (!LeftMouseButton()) {
+		isLeftMouseButton = false;
+	}
+
+	//REMIND
+	//spamming fps drop
+	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
+		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton) || MultiTile(pos)) {
+
+			int canvasWidthInTiles = canvas.GetCanvasWidth() / tileSize;
+			int canvasHeightInTiles = canvas.GetCanvasHeight() / tileSize;
+
+			for (int x = 0; x < canvasWidthInTiles; ++x) {
+				for (int y = 0; y < canvasHeightInTiles; ++y) {
+					glm::vec2 tilePosition = glm::vec2(x * tileSize, y * tileSize);
+
+					Entity newTile = Housecat::GetInstance().CreateEntity();
+					newTile.Group("tiles");
+					newTile.AddComponent<TransformComponent>(
+						tilePosition,
+						appliedTransform.scale,
+						appliedTransform.rotation
+					);
+
+					newTile.AddComponent<SpriteComponent>(
+						appliedSprite.assetID,
+						tileSize,
+						tileSize,
+						appliedSprite.zIndex, 
+						appliedSprite.isFixed,
+						appliedSprite.srcRect.x,
+						appliedSprite.srcRect.y
+					);
+				}
+			}
+			tileAdded = true;
 		}
 	}
 }
