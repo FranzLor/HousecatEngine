@@ -110,6 +110,9 @@ void Editor::Initialize() {
 
 
 void Editor::ProcessInput() {
+	//keyboard states
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
+
 	while (SDL_PollEvent(&event)) {
 		//handle ImGui SDL input
 		ImGui_ImplSDL2_ProcessEvent(&event);
@@ -136,10 +139,19 @@ void Editor::ProcessInput() {
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				isRunning = false;
-
 			}
 			KeyboardCameraController(event);
 			break;
+		}
+
+		//zoom shortcuts - keyboard
+		if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL]) {
+			if (keyState[SDL_SCANCODE_EQUALS]) {
+				AdjustZoom(1.4);
+			}
+			if (keyState[SDL_SCANCODE_MINUS]) {
+				AdjustZoom(-1.4);
+			}
 		}
 	}
 }
@@ -191,17 +203,9 @@ void Editor::Render() {
 }
 
 void Editor::CameraController(SDL_Event& event) {
-	constexpr float zoomStep = 0.1f;
-
-	if (event.wheel.y > 0) {
-		zoom = std::min(zoom + zoomStep, 2.2f);
+	if (event.type == SDL_MOUSEWHEEL) {
+		AdjustZoom(event.wheel.y);
 	}
-	else if (event.wheel.y < 0) {
-		zoom = std::max(zoom - zoomStep, 0.4f);
-	}
-
-	camera.h *= zoom;
-	camera.w *= zoom;
 }
 
 void Editor::KeyboardCameraController(SDL_Event& event) {
@@ -226,6 +230,20 @@ void Editor::KeyboardCameraController(SDL_Event& event) {
 			break;
 		}
 	}
+}
+
+void Editor::AdjustZoom(int direction) {
+	constexpr float zoomStep = 0.1f;
+
+	if (direction > 0) {
+		zoom = std::min(zoom + zoomStep, 2.8f);
+	}
+	else if (direction < 0) {
+		zoom = std::max(zoom - zoomStep, 0.2f);
+	}
+
+	camera.h = static_cast<int>(windowEditorHeight * zoom);
+	camera.w = static_cast<int>(windowEditorWidth * zoom);
 }
 
 void Editor::Run() {
