@@ -218,6 +218,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		mouse->MouseOverWindow(false);
 	}
 
+	editorUIManager->Shortcuts(renderer, assetManager, canvas, editManager, tileSize, lua);
 	UpdateCanvas();
 }
 

@@ -124,7 +124,8 @@ public:
 
 	//TODO
 	//shortcut management
-	void ApplyShortcuts();
+	void Shortcuts(EditorRenderer& renderer,  const AssetManagerPtr& assetManager,
+		std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua);
 
 
 	//comopnents

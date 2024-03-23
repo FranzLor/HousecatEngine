@@ -447,8 +447,38 @@ void EditorUIManager::ResetLoadedFiles() {
 
 //TODO
 //shortcut management
-void EditorUIManager::ApplyShortcuts() {
+void EditorUIManager::Shortcuts(EditorRenderer& renderer, const AssetManagerPtr& assetManager,
+	std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua) {
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
+	//save shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_S]) {
+		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
+	}
+
+	//new shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_N]) {
+		isNewFile = true;
+	}
+
+	//undo shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_Z]) {
+		editManager->Undo();
+		Undo = true;
+	}
+	else if (!keyState[SDL_SCANCODE_Z] && Undo) {
+		Undo = false;
+	}
+	
+	//TODO FIX
+	//redo shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_Y]) {
+		editManager->Redo();
+		Redo = true;
+	}
+	else if (!keyState[SDL_SCANCODE_Y] && Redo) {
+		Redo = false;
+	}
 }
 
 
