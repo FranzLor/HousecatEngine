@@ -16,6 +16,8 @@ private:
 	int canvasPreviousWidth;
 	int canvasPreviousHeight;
 
+	bool isTilesetLoaded;
+
 	int tileSize;
 	int tilePrevSize;
 
@@ -43,6 +45,10 @@ private:
 		isExit = exit;
 	}
 
+	void SetTilesetLoaded(bool loaded) {
+		isTilesetLoaded = loaded;
+	}
+
 public:
 	EditorUIRendering();
 	~EditorUIRendering();
@@ -60,9 +66,14 @@ public:
 
 	void ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera);
 
+	inline const bool& GetTileset() const {
+		return isTilesetLoaded;
+	}
+
 	inline const bool& GetExit() const {
 		return isExit;
 	}
+	
 
 };
 

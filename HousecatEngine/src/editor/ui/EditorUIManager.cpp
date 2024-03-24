@@ -20,6 +20,7 @@ EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 	isReset(false),
 	isNewFile(false),
 	newCanvas(false),
+	tilesetLoaded(false),
 	isPaintToolActive(false),
 	isEraserToolActive(false),
 	isFillToolActive(false),
@@ -165,6 +166,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 			loadTileset = true;
 			tilesets.push_back(assetID);
 			tilesetsTarget.push_back(imageName);
+			tilesetLoaded = true;
 		}
 
 	}

@@ -21,6 +21,7 @@ EditorUIRendering::EditorUIRendering()
 	canvasHeight(640),
 	canvasPreviousWidth(960),
 	canvasPreviousHeight(640),
+	isTilesetLoaded(false),
 	tileSize(32),
 	tilePrevSize(32),
 	createTiles(false),
@@ -167,8 +168,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 	if (createTiles) {
 		editorUIManager->TilesetWindow(assetManager, mouse->GetMouseRect());
-		editorUIManager->TileAttributes(assetManager, mouse, true);
-		editorUIManager->TilesetTools(assetManager, mouse, true);
+
+		if (GetTileset()) {
+			editorUIManager->TileAttributes(assetManager, mouse, true);
+			editorUIManager->TilesetTools(assetManager, mouse, true);
+		}
 
 		if (!MouseOutOfBounds()) {
 			if (editorUIManager->IsPaintToolActive()) {
@@ -205,6 +209,9 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	mouse->UpdateZoom(zoom);
 	mouse->UpdateGridSize(tileSize);
 	mouse->SetGridSnap(gridSnap);
+
+	//tilset loaded
+	SetTilesetLoaded(editorUIManager->IsTilesetLoaded());
 
 	//render imgui
 	ImGui::Render();

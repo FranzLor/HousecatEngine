@@ -28,6 +28,8 @@ private:
 	bool isNewFile;
 	bool newCanvas;
 
+	bool tilesetLoaded;
+
 	//tileset tools
 	bool isPaintToolActive;
 	bool isEraserToolActive;
@@ -93,6 +95,10 @@ public:
 	void OpenNewWindow();
 
 	void ResetLoadedFiles();
+
+	const bool& IsTilesetLoaded() const {
+		return tilesetLoaded;
+	}
 
 	inline const bool& FileReset() const {
 		return isReset;
