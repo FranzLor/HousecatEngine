@@ -70,6 +70,8 @@ public:
 	void Render();
 	void Destroy();
 
+	void AdjustZoom(int direction);
+
 	bool IsRunning() const { return isRunning; }
 	void SetRunning(bool running) { isRunning = running; }
 

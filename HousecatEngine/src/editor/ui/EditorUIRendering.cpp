@@ -21,6 +21,7 @@ EditorUIRendering::EditorUIRendering()
 	canvasHeight(640),
 	canvasPreviousWidth(960),
 	canvasPreviousHeight(640),
+	isTilesetLoaded(false),
 	tileSize(32),
 	tilePrevSize(32),
 	createTiles(false),
@@ -28,7 +29,8 @@ EditorUIRendering::EditorUIRendering()
 	gridX(0),
 	gridY(0),
 	gridSnap(true),
-	gridShow(true) {
+	gridShow(true),
+	isExit(false) {
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
 	mouse = std::make_shared<Mouse>();
@@ -68,8 +70,17 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			if (ImGui::MenuItem("Undo", "CTRL + Z")) {
 				editManager->Undo();
 			}
+
+			ImGui::Spacing();
+
 			if (ImGui::MenuItem("Redo", "CTRL + Y")) {
 				editManager->Redo();
+			}
+
+			ImGui::Spacing();
+
+			if (ImGui::MenuItem("Clear Canvas")) {
+				ClearCanvas();
 			}
 			ImGui::EndMenu();
 		}
@@ -79,20 +90,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			//call View();
 			ImGui::Checkbox("Show Grid", &gridShow);
 
+			ImGui::Spacing();
+
 			ImGui::Checkbox("Snap to Grid", &gridSnap);
 
-			ImGui::Spacing();
-			ImGui::Spacing();
 
-			if (ImGui::MenuItem("Zoom In", "CTRL + +")) {
-
-			}
-			if (ImGui::MenuItem("Zoom Out", "CTRL + -")) {
-
-			}
-			if (ImGui::MenuItem("Fit to View")) {
-
-			}
 			ImGui::EndMenu();
 		}
 
@@ -103,7 +105,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
-			if (ImGui::MenuItem("Tilset Window")) {
+			if (ImGui::MenuItem("Tileset Window")) {
 				createTiles = !createTiles;
 			}
 
@@ -166,10 +168,25 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 	if (createTiles) {
 		editorUIManager->TilesetWindow(assetManager, mouse->GetMouseRect());
-		editorUIManager->TileAttributes(assetManager, mouse, true);
+
+		if (GetTileset()) {
+			editorUIManager->TileAttributes(assetManager, mouse, true);
+			editorUIManager->TilesetTools(assetManager, mouse, true);
+		}
 
 		if (!MouseOutOfBounds()) {
-			mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
+			if (editorUIManager->IsPaintToolActive()) {
+				mouse->CreateTile(renderer, assetManager, camera, mouseTile, event);
+			}
+			else if (editorUIManager->IsEraserToolActive()) {
+				mouse->RemoveTile(renderer, assetManager, camera, mouseTile, event);
+			}
+			//TODO
+			//fill
+			else if (editorUIManager->IsFillToolActive()) {
+				mouse->FillTiles(renderer, assetManager, camera, mouseTile, event, *canvas);
+			}
+			
 
 		}
 
@@ -193,6 +210,9 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	mouse->UpdateGridSize(tileSize);
 	mouse->SetGridSnap(gridSnap);
 
+	//tilset loaded
+	SetTilesetLoaded(editorUIManager->IsTilesetLoaded());
+
 	//render imgui
 	ImGui::Render();
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
@@ -206,43 +226,41 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		mouse->MouseOverWindow(false);
 	}
 
+	SetExit(editorUIManager->GetExit());
+
+
+	editorUIManager->Shortcuts(renderer, assetManager, canvas, editManager, tileSize, lua);
 	UpdateCanvas();
 }
 
 void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {
 	//Logger::Debug("Rendering Grid!");
 
-	if (!gridShow) {
-		return;
-	}
+	//calc full tiles in canvas
+	int xTiles = canvas->GetCanvasWidth() / tileSize;
+	int yTiles = canvas->GetCanvasHeight() / tileSize;
 
-	auto xLines = (canvas->GetCanvasWidth() / tileSize);
-	auto yLines = (canvas->GetCanvasHeight() / tileSize);
 
-	//per grid line
-	SDL_SetRenderDrawColor(renderer.get(), 125, 125, 125, SDL_ALPHA_OPAQUE); // Grey color for the grid lines, fully opaque
+	if (gridShow) {
+		
+		SDL_SetRenderDrawColor(renderer.get(), 140, 140, 140, SDL_ALPHA_OPAQUE);
 
-	//vertical
-	for (int i = 0; i < xLines; i++) {
-		int x = std::floor(i * tileSize * zoom) - camera.x;
-		// Check if the line is within the visible area (taking camera position into account)
-		if (x >= -camera.x && x <= canvas->GetCanvasWidth() - camera.x) {
-			SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, std::floor(canvas->GetCanvasHeight() * zoom) - camera.y);
+		//vertical
+		for (int i = 0; i <= xTiles; i++) {
+			int x = std::floor(i * tileSize * zoom) - camera.x;
+			SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, (yTiles * tileSize * zoom) - camera.y);
 		}
-	}
 
-	//horizontal
-	for (int j = 0; j < yLines; j++) {
-		int y = std::floor(j * tileSize * zoom) - camera.y;
-		// Check if the line is within the visible area (taking camera position into account)
-		if (y >= -camera.y && y <= canvas->GetCanvasHeight() - camera.y) {
-			SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, std::floor(canvas->GetCanvasWidth() * zoom) - camera.x, y);
+		//horizontal
+		for (int j = 0; j <= yTiles; j++) {
+			int y = std::floor(j * tileSize * zoom) - camera.y;
+			SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, (xTiles * tileSize * zoom) - camera.x, y);
 		}
 	}
 
 	//boundary
-	SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_Rect boundaryRect = { 0 - camera.x, 0 - camera.y, std::floor(canvas->GetCanvasWidth() * zoom), std::floor(canvas->GetCanvasHeight() * zoom) };
+	SDL_SetRenderDrawColor(renderer.get(), 37, 39, 41, SDL_ALPHA_OPAQUE);
+	SDL_Rect boundaryRect = { 0 - camera.x, 0 - camera.y, xTiles * tileSize * zoom, yTiles * tileSize * zoom };
 	SDL_RenderDrawRect(renderer.get(), &boundaryRect);
 }
 
@@ -261,6 +279,12 @@ void EditorUIRendering::CreateNewCanvas() {
 	}
 
 	editManager->Clear();
+}
+
+void EditorUIRendering::ClearCanvas() {
+	for (auto& entity : GetSystemEntities()) {
+		entity.Kill();
+	}
 }
 
 void EditorUIRendering::UpdateCanvas() {

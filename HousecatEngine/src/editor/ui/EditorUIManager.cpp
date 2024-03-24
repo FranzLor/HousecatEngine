@@ -1,6 +1,8 @@
 
 #include <imgui/imgui.h>
 
+#include <algorithm>
+
 #include "EditorUIManager.h"
 
 #include "../utilities/SDLUtility.h"
@@ -18,8 +20,13 @@ EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 	isReset(false),
 	isNewFile(false),
 	newCanvas(false),
+	tilesetLoaded(false),
+	isPaintToolActive(false),
+	isEraserToolActive(false),
+	isFillToolActive(false),
 	Undo(false),
 	Redo(false),
+	isExit(false),
 	fileName(""),
 	assetID(""),
 	tilesets(),
@@ -89,8 +96,8 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		}
 	}
 
-	if (ImGui::MenuItem("Exit", "ALT+F4")) {
-		//EXIT
+	if (ImGui::MenuItem("Exit", "ESC")) {
+		isExit = true;
 	}
 }
 
@@ -159,6 +166,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 			loadTileset = true;
 			tilesets.push_back(assetID);
 			tilesetsTarget.push_back(imageName);
+			tilesetLoaded = true;
 		}
 
 	}
@@ -184,29 +192,110 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 		int mousePosX = static_cast<int>(ImGui::GetMousePos().x - ImGui::GetWindowPos().x + scrollX);
 		int mousePosY = static_cast<int>(ImGui::GetMousePos().y - ImGui::GetWindowPos().y - titleBar + scrollY);
 
-		int tileCol = imageWidth / (mouseRect.x * 2);
-		int tileRow = imageHeight / (mouseRect.y * 2);
+		int tileCol = imageWidth / static_cast<int>(mouseRect.x * 2);
+		int tileRow = imageHeight / static_cast<int>(mouseRect.y * 2);
 
-		//render tileset textures
-		for (int c = 0; c < tileCol; c++) {
-			for (int r = 0; r < tileRow; r++) {
-				auto drawList = ImGui::GetWindowDrawList();
+		//imgui render grid
+		auto drawList = ImGui::GetWindowDrawList();
+		ImVec2 winPos = ImGui::GetWindowPos();
 
-
-				//grab desired 2d tile
-				if ((mousePosX >= (imageWidth / tileCol) * c && mousePosX <= (imageWidth / tileCol) + ((imageWidth / tileCol) * c))
-					&& (mousePosY >= (imageHeight / tileRow) * r && mousePosY <= (imageHeight / tileRow) + ((imageHeight / tileRow) * r))) {
-
-					if (ImGui::IsItemHovered()){
-						if (ImGui::IsMouseClicked(0)) {
-							tileAttributes.srcRectX = c * mouseRect.x;
-							tileAttributes.srcRectY = r * mouseRect.y;
-						}
-					}
+		//render grid
+		for (int c = 1; c < tileCol; c++) {
+			drawList->AddLine(
+				ImVec2(winPos.x + c * mouseRect.x * 2 - scrollX, winPos.y),
+				ImVec2(winPos.x + c * mouseRect.x * 2 - scrollX, winPos.y + imageHeight),
+				IM_COL32(125, 125, 125, 100));
+		}
+		for (int r = 1; r < tileRow; r++) {
+			drawList->AddLine(
+				ImVec2(winPos.x, winPos.y + r * mouseRect.y * 2 - scrollY),
+				ImVec2(winPos.x + imageWidth, winPos.y + r * mouseRect.y * 2 - scrollY),
+				IM_COL32(125, 125, 125, 100));
+		}
+		//selection
+		if ((mousePosX >= 0 && mousePosX <= imageWidth) && (mousePosY >= 0 && mousePosY <= imageHeight)) {
+			if (ImGui::IsMouseHoveringRect(winPos, ImVec2(winPos.x + imageWidth, winPos.y + imageHeight))) {
+				if (ImGui::IsMouseClicked(0)) {
+					int selectedCol = mousePosX / (mouseRect.x * 2);
+					int selectedRow = mousePosY / (mouseRect.y * 2);
+					tileAttributes.srcRectX = selectedCol * static_cast<int>(mouseRect.x);
+					tileAttributes.srcRectY = selectedRow * static_cast<int>(mouseRect.y);
 				}
 			}
 		}
 	}
+	ImGui::End();
+}
+
+void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow) {
+	if (!tileWindow) {
+		return;
+	}
+
+	if (ImGui::Begin("Tileset Tools")) {
+		ImGuiStyle& style = ImGui::GetStyle();
+		float originalItemSpacing = style.ItemSpacing.x;
+		style.ItemSpacing.x = 15.0f;
+
+		//toggle paint
+		bool pushed = false;
+		if (isPaintToolActive) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			pushed = true;
+		}
+		//toggle state
+		if (ImGui::Button("Paint")) {
+			isPaintToolActive = !isPaintToolActive;
+			if (isPaintToolActive) {
+				isEraserToolActive = false;
+				isFillToolActive = false;
+			}
+		}
+		//reset
+		if (pushed) {
+			ImGui::PopStyleColor(1);
+			pushed = false;
+		}
+		ImGui::SameLine();
+
+		//toggle eraser
+		if (isEraserToolActive) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			pushed = true;
+		}
+		if (ImGui::Button("Eraser")) {
+			isEraserToolActive = !isEraserToolActive;
+			if (isEraserToolActive) {
+				isPaintToolActive = false;
+				isFillToolActive = false;
+			}
+		}
+		if (pushed) {
+			ImGui::PopStyleColor(1);
+			pushed = false;
+		}
+		ImGui::SameLine();
+
+		//toggle fill
+		if (isFillToolActive) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			pushed = true;
+		}
+		if (ImGui::Button("Fill")) {
+			isFillToolActive = !isFillToolActive;
+			if (isFillToolActive) {
+				isPaintToolActive = false;
+				isEraserToolActive = false;
+			}
+		}
+		if (pushed) {
+			ImGui::PopStyleColor(1);
+		}
+
+		//restore original spacing
+		style.ItemSpacing.x = originalItemSpacing;
+	}
+
 	ImGui::End();
 }
 
@@ -262,20 +351,13 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				}
 			}
 
-
-		
 			ImGui::Text("Sprite");
+			//clamping to prevent division by 0 at tileset window
 			if (ImGui::InputInt("Tile X", &tileAttributes.mouseRectX, 8, 8)) {
-				tileAttributes.mouseRectX = (tileAttributes.mouseRectX / 8) * 8;
-				if (tileAttributes.mouseRectX <= 0) {
-					tileAttributes.mouseRectX = 0;
-				}
+				tileAttributes.mouseRectX = max(8, (tileAttributes.mouseRectX / 8) * 8);
 			}
 			if (ImGui::InputInt("Tile Y", &tileAttributes.mouseRectY, 8, 8)) {
-				tileAttributes.mouseRectY = (tileAttributes.mouseRectY / 8) * 8;
-				if (tileAttributes.mouseRectY <= 0) {
-					tileAttributes.mouseRectY = 0;
-				}
+				tileAttributes.mouseRectY = max(8, (tileAttributes.mouseRectY / 8) * 8);
 			}
 
 			if (tileWindow) {
@@ -368,8 +450,38 @@ void EditorUIManager::ResetLoadedFiles() {
 
 //TODO
 //shortcut management
-void EditorUIManager::ApplyShortcuts() {
+void EditorUIManager::Shortcuts(EditorRenderer& renderer, const AssetManagerPtr& assetManager,
+	std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua) {
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
+	//save shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_S]) {
+		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
+	}
+
+	//new shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_N]) {
+		isNewFile = true;
+	}
+
+	//undo shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_Z]) {
+		editManager->Undo();
+		Undo = true;
+	}
+	else if (!keyState[SDL_SCANCODE_Z] && Undo) {
+		Undo = false;
+	}
+	
+	//TODO FIX
+	//redo shortcut
+	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_Y]) {
+		editManager->Redo();
+		Redo = true;
+	}
+	else if (!keyState[SDL_SCANCODE_Y] && Redo) {
+		Redo = false;
+	}
 }
 
 

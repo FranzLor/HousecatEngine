@@ -4,7 +4,7 @@
 
 EditCanvasSize::EditCanvasSize(std::shared_ptr<EditorCanvas>& canvas, const int& canvasPreviousWidth, const int& canvasPreviousHeight)
 //reduce ref (new test)
-	: canvas(std::move(canvas)),
+	: canvas(canvas),
 	canvasPreviousWidth(canvasPreviousWidth),
 	canvasPreviousHeight(canvasPreviousHeight) {
 

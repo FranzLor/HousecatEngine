@@ -28,11 +28,21 @@ private:
 	bool isNewFile;
 	bool newCanvas;
 
+	bool tilesetLoaded;
+
+	//tileset tools
+	bool isPaintToolActive;
+	bool isEraserToolActive;
+	bool isFillToolActive;
+
 	const int titleBar = 25;
 
 	//edit
 	bool Undo;
 	bool Redo;
+
+	//exit
+	bool isExit;
 
 	//tile
 	TileAttributes tileAttributes;
@@ -86,6 +96,10 @@ public:
 
 	void ResetLoadedFiles();
 
+	const bool& IsTilesetLoaded() const {
+		return tilesetLoaded;
+	}
+
 	inline const bool& FileReset() const {
 		return isReset;
 	}
@@ -94,9 +108,24 @@ public:
 		isReset = reset;
 	}
 
+	//tools getter
+	inline const bool& IsPaintToolActive() const {
+		return isPaintToolActive;
+	}
+
+	inline const bool& IsEraserToolActive() const {
+		return isEraserToolActive;
+	}
+
+	inline const bool& IsFillToolActive() const {
+		return isFillToolActive;
+	}
+
 	//TODO
 	//tileset management
 	void TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect);
+
+	void TilesetTools(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow);
 
 	void TilesetLayers(const AssetManagerPtr& assetManager);
 
@@ -104,7 +133,14 @@ public:
 
 	//TODO
 	//shortcut management
-	void ApplyShortcuts();
+	void Shortcuts(EditorRenderer& renderer,  const AssetManagerPtr& assetManager,
+		std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua);
+
+	
+	//exit
+	const bool& GetExit() const {
+		return isExit;
+	}
 
 
 	//comopnents

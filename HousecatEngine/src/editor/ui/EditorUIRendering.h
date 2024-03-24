@@ -16,6 +16,8 @@ private:
 	int canvasPreviousWidth;
 	int canvasPreviousHeight;
 
+	bool isTilesetLoaded;
+
 	int tileSize;
 	int tilePrevSize;
 
@@ -27,6 +29,9 @@ private:
 	bool gridSnap;
 	bool gridShow;
 
+	bool isExit;
+	
+
 	std::shared_ptr<class EditorCanvas> canvas;
 	std::shared_ptr<class EditorUIManager> editorUIManager;
 	std::shared_ptr<class Mouse> mouse;
@@ -35,6 +40,15 @@ private:
 	sol::state lua;
 
 	const bool MouseOutOfBounds() const;
+
+	void SetExit(bool exit) {
+		isExit = exit;
+	}
+
+	void SetTilesetLoaded(bool loaded) {
+		isTilesetLoaded = loaded;
+	}
+
 public:
 	EditorUIRendering();
 	~EditorUIRendering();
@@ -48,8 +62,18 @@ public:
 
 	void UpdateCanvas();
 
+	void ClearCanvas();
+
 	void ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera);
 
+	inline const bool& GetTileset() const {
+		return isTilesetLoaded;
+	}
+
+	inline const bool& GetExit() const {
+		return isExit;
+	}
+	
 
 };
 
