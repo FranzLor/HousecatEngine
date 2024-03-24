@@ -28,6 +28,7 @@ private:
 	bool gridShow;
 
 	bool isExit;
+	
 
 	std::shared_ptr<class EditorCanvas> canvas;
 	std::shared_ptr<class EditorUIManager> editorUIManager;
@@ -54,6 +55,8 @@ public:
 	void CreateNewCanvas();
 
 	void UpdateCanvas();
+
+	void ClearCanvas();
 
 	void ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera);
 

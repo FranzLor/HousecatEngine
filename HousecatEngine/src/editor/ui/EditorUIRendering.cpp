@@ -69,8 +69,17 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			if (ImGui::MenuItem("Undo", "CTRL + Z")) {
 				editManager->Undo();
 			}
+
+			ImGui::Spacing();
+
 			if (ImGui::MenuItem("Redo", "CTRL + Y")) {
 				editManager->Redo();
+			}
+
+			ImGui::Spacing();
+
+			if (ImGui::MenuItem("Clear Canvas")) {
+				ClearCanvas();
 			}
 			ImGui::EndMenu();
 		}
@@ -80,20 +89,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			//call View();
 			ImGui::Checkbox("Show Grid", &gridShow);
 
+			ImGui::Spacing();
+
 			ImGui::Checkbox("Snap to Grid", &gridSnap);
 
-			ImGui::Spacing();
-			ImGui::Spacing();
 
-			if (ImGui::MenuItem("Zoom In", "CTRL + +")) {
-
-			}
-			if (ImGui::MenuItem("Zoom Out", "CTRL + -")) {
-
-			}
-			if (ImGui::MenuItem("Fit to View")) {
-
-			}
 			ImGui::EndMenu();
 		}
 
@@ -272,6 +272,12 @@ void EditorUIRendering::CreateNewCanvas() {
 	}
 
 	editManager->Clear();
+}
+
+void EditorUIRendering::ClearCanvas() {
+	for (auto& entity : GetSystemEntities()) {
+		entity.Kill();
+	}
 }
 
 void EditorUIRendering::UpdateCanvas() {

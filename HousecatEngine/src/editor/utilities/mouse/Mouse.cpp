@@ -320,8 +320,8 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 
 		if (panX != mousePosWindow.x || panY != mousePosWindow.y) {
 			//calculate changes
-			float deltaX = static_cast<float>((mousePosWindow.x - panX) * zoom * dT * 4);
-			float deltaY = static_cast<float>((mousePosWindow.y - panY) * zoom * dT * 4);
+			float deltaX = static_cast<float>((mousePosWindow.x - panX) * zoom * dT * 40.0f);
+			float deltaY = static_cast<float>((mousePosWindow.y - panY) * zoom * dT * 40.0f);
 
 			camera.x -= deltaX;
 			camera.y -= deltaY;
