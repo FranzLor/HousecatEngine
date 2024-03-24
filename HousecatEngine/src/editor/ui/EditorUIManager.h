@@ -39,6 +39,9 @@ private:
 	bool Undo;
 	bool Redo;
 
+	//exit
+	bool isExit;
+
 	//tile
 	TileAttributes tileAttributes;
 	TileAttributes tilePrevAttributes;
@@ -126,6 +129,12 @@ public:
 	//shortcut management
 	void Shortcuts(EditorRenderer& renderer,  const AssetManagerPtr& assetManager,
 		std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua);
+
+	
+	//exit
+	const bool& GetExit() const {
+		return isExit;
+	}
 
 
 	//comopnents

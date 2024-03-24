@@ -25,6 +25,7 @@ EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 	isFillToolActive(false),
 	Undo(false),
 	Redo(false),
+	isExit(false),
 	fileName(""),
 	assetID(""),
 	tilesets(),
@@ -94,8 +95,8 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		}
 	}
 
-	if (ImGui::MenuItem("Exit", "ALT+F4")) {
-		//EXIT
+	if (ImGui::MenuItem("Exit", "ESC")) {
+		isExit = true;
 	}
 }
 

@@ -14,7 +14,7 @@
 #include "../systems/AnimationSystem.h"
 
 Editor::Editor()
-	: isRunning(false),
+	: isRunning(true),
 	millisecsPreviousFrame(0),
 	deltaTime(0.0f),
 	zoom(1),
@@ -74,7 +74,6 @@ void Editor::Initialize() {
 	}
 
 	SDL_SetWindowFullscreen(editorWindow.get(), SDL_FALSE);
-	isRunning = true;
 
 	//mouse
 	//x, y, w, h
@@ -140,10 +139,10 @@ void Editor::ProcessInput() {
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				isRunning = false;
 			}
-			KeyboardCameraController(event);
 			break;
 		}
 
+		//CTRL
 		//zoom shortcuts - keyboard
 		if (keyState[SDL_SCANCODE_LCTRL] || keyState[SDL_SCANCODE_RCTRL]) {
 			if (keyState[SDL_SCANCODE_EQUALS]) {
@@ -152,6 +151,12 @@ void Editor::ProcessInput() {
 			if (keyState[SDL_SCANCODE_MINUS]) {
 				AdjustZoom(-1.4);
 			}
+		}
+
+		//shift
+		//camera movement
+		if (keyState[SDL_SCANCODE_LSHIFT]) {
+			KeyboardCameraController(event);
 		}
 	}
 }
@@ -167,16 +172,11 @@ void Editor::Update() {
 	//store curr. frame time
 	millisecsPreviousFrame = SDL_GetTicks();
 
-	//TODO
 	Housecat::GetInstance().Update();
 
-	//TODO
-	//exit
-	/*if (Housecat::GetInstance().GetSystem<ImGuiRendering>().Exit()) {
+	if (Housecat::GetInstance().GetSystem<EditorUIRendering>().GetExit()) {
 		isRunning = false;
-	}*/
-
-	//TODO
+	}
 }
 
 
@@ -217,16 +217,16 @@ void Editor::KeyboardCameraController(SDL_Event& event) {
 			zoom = defaultZoom;
 			break;
 		case SDLK_w:
-			camera.y -= camSpeed;
-			break;
-		case SDLK_a:
-			camera.x -= camSpeed;
-			break;
-		case SDLK_s:
 			camera.y += camSpeed;
 			break;
-		case SDLK_d:
+		case SDLK_a:
 			camera.x += camSpeed;
+			break;
+		case SDLK_s:
+			camera.y -= camSpeed;
+			break;
+		case SDLK_d:
+			camera.x -= camSpeed;
 			break;
 		}
 	}

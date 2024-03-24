@@ -28,7 +28,8 @@ EditorUIRendering::EditorUIRendering()
 	gridX(0),
 	gridY(0),
 	gridSnap(true),
-	gridShow(true) {
+	gridShow(true),
+	isExit(false) {
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
 	mouse = std::make_shared<Mouse>();
@@ -217,6 +218,9 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	else {
 		mouse->MouseOverWindow(false);
 	}
+
+	SetExit(editorUIManager->GetExit());
+
 
 	editorUIManager->Shortcuts(renderer, assetManager, canvas, editManager, tileSize, lua);
 	UpdateCanvas();
