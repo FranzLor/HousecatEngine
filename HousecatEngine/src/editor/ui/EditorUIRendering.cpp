@@ -105,7 +105,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
-			if (ImGui::MenuItem("Tilset Window")) {
+			if (ImGui::MenuItem("Tileset Window")) {
 				createTiles = !createTiles;
 			}
 
