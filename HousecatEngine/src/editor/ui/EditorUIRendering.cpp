@@ -128,8 +128,8 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 					canvasPreviousWidth = canvasWidth;
 				}
 
-				if (canvasWidth <= 960) {
-					canvasWidth = 960;
+				if (canvasWidth <= 32) {
+					canvasWidth = 32;
 					canvas->SetCanvasWidth(canvasWidth);
 					canvasPreviousWidth = canvasWidth;
 				}
@@ -144,8 +144,8 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 					canvasPreviousHeight = canvasHeight;
 				}
 
-				if (canvasHeight <= 640) {
-					canvasHeight = 640;
+				if (canvasHeight <= 32) {
+					canvasHeight = 32;
 					canvas->SetCanvasHeight(canvasHeight);
 					canvasPreviousHeight = canvasHeight;
 				}
