@@ -112,7 +112,7 @@ Entity Housecat::CreateEntity() {
 	//try entity ID reusability design?
 
 	//REMIND TESTING remove latr
-	Logger::Log("Entity [" + std::to_string(entityID) + "] Created!");
+	//Logger::Log("Entity [" + std::to_string(entityID) + "] Created!");
 
 	return entity;
 }
