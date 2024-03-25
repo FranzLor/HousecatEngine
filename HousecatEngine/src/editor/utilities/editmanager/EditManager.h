@@ -10,11 +10,19 @@
 //           base for all edits | commands             //
 //-----------------------------------------------------//
 struct IEdit {
-	virtual ~IEdit() = default;
+	virtual ~IEdit() {}
 
 	virtual void Execute() = 0;
 	virtual void Undo() = 0;
 	virtual void Redo() = 0;
+	
+	virtual bool CanUndo() const {
+		return true;
+	}
+
+	virtual bool CanRedo() const {
+		return true;
+	}
 
 	//TODO?..
 	//virtual void Copy() = 0;
@@ -26,15 +34,15 @@ struct IEdit {
 	//virtual void InvertSelection() = 0;
 };
 
-typedef std::shared_ptr<IEdit> EditPtr;
+typedef std::stack<std::shared_ptr<IEdit>> EditStack;
 
 
 
 class EditManager {
 private:
-	std::stack<std::shared_ptr<IEdit>> undoStack;
+	EditStack undoStack;
 
-	std::stack<std::shared_ptr<IEdit>> redoStack;
+	EditStack redoStack;
 
 	//...
 public:
@@ -46,16 +54,18 @@ public:
 		Logger::Lifecycle("EditManager Destructor Called!");
 	}
 
-	void Execute(std::shared_ptr<IEdit> edit);
+	void ExecuteEdit(std::shared_ptr<IEdit> edit);
 
 	//undo management
 	void Undo();
 
 	//redo management
 	void Redo();
-	void ClearRedoStack();
 
 	void Clear();
+
+	bool CanUndo() const { return !undoStack.empty(); }
+	bool CanRedo() const { return !redoStack.empty(); }
 
 	//TODO?..
 };

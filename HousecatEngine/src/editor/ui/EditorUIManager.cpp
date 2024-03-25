@@ -465,21 +465,22 @@ void EditorUIManager::Shortcuts(EditorRenderer& renderer, const AssetManagerPtr&
 	}
 
 	//undo shortcut
-	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_Z]) {
+	if ((keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_Z])
+		&& (!keyState[SDL_SCANCODE_LSHIFT] && !Undo)) {
 		editManager->Undo();
 		Undo = true;
 	}
 	else if (!keyState[SDL_SCANCODE_Z] && Undo) {
 		Undo = false;
 	}
-	
-	//TODO FIX
+
 	//redo shortcut
-	if (keyState[SDL_SCANCODE_LCTRL] && keyState[SDL_SCANCODE_Y]) {
+	if ((keyState[SDL_SCANCODE_LCTRL] && (keyState[SDL_SCANCODE_Z])
+		&& (keyState[SDL_SCANCODE_LSHIFT])) && !Redo) {
 		editManager->Redo();
 		Redo = true;
 	}
-	else if (!keyState[SDL_SCANCODE_Y] && Redo) {
+	else if (!keyState[SDL_SCANCODE_Z] && Redo) {
 		Redo = false;
 	}
 }

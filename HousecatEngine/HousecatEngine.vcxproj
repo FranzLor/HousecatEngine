@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="src\components\SFXComponent.h" />
     <ClInclude Include="src\editor\utilities\AddTile.h" />
+    <ClInclude Include="src\editor\utilities\editmanager\CompoundBatching.h" />
     <ClInclude Include="src\editor\utilities\LuaExporter.h" />
     <ClInclude Include="src\editor\utilities\RemoveTile.h" />
     <ClInclude Include="src\events\SFXEvent.h" />
