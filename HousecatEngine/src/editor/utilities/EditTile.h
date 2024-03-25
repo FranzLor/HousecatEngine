@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../utilities/editmanager/EditManager.h"
+#include "../utilities/editmanager/IEdit.h"
+
 #include "../utilities/mouse/Mouse.h"
 
 #include "../../components/TransformComponent.h"

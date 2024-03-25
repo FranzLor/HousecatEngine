@@ -4,6 +4,15 @@ void EditManager::ExecuteEdit(std::shared_ptr<IEdit> edit) {
 	redoStack = EditStack();
 	edit->Execute();
 	undoStack.push(edit);
+
+	if (isBatching) {
+		currentBatch->AddEdit(edit);
+	}
+	else {
+		redoStack = EditStack();
+		edit->Execute();
+		undoStack.push(edit);
+	}
 }
 
 void EditManager::Undo() {
