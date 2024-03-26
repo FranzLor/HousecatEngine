@@ -100,7 +100,7 @@ void Editor::Initialize() {
 	float textFontSize = 18.0f;
 	ImFont* robotoFont = IO.Fonts->AddFontFromFileTTF("assets/fonts/roboto.regular.ttf", textFontSize);
 	if (!robotoFont) {
-		std::cerr << "Failed to load font: assets/fonts/roboto.regular.ttf" << std::endl;
+		Logger::Error("Failed to load font: assets/fonts/roboto.regular.ttf");
 	}
 
 	float baseFontSize = 20.0f;
@@ -114,7 +114,7 @@ void Editor::Initialize() {
 
 	ImFont* FAIconsFont = IO.Fonts->AddFontFromFileTTF("assets/fonts/fa-solid-900.ttf", iconFontSize, &config, icons_ranges);
 	if (!FAIconsFont) {
-		std::cerr << "Failed to load font: assets/fonts/fa-solid-900.ttf" << std::endl;
+		Logger::Error("Failed to load font: assets/fonts/fa-solid-900.ttf");
 	}
 
 	IO.Fonts->Build();

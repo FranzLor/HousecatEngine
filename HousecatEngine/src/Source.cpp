@@ -73,6 +73,16 @@ void Source::Initialize() {
 	ImGui_ImplSDL2_InitForSDLRenderer(windowSource, rendererSource);
 	ImGui_ImplSDLRenderer2_Init(rendererSource);
 
+	//fonts
+	ImGuiIO& IO = ImGui::GetIO();
+
+	float textFontSize = 19.0f;
+	ImFont* robotoFont = IO.Fonts->AddFontFromFileTTF("assets/fonts/roboto.regular.ttf", textFontSize);
+	if (!robotoFont) {
+		Logger::Error("Failed to load font : assets/fonts/roboto.regular.ttf");
+	}
+
+	IO.Fonts->Build();
 }
 
 
