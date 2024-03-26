@@ -54,8 +54,17 @@ void EditorUIManager::InitImGui() {
 
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
-	//TODO
-	//KEYS
+
+	//ImGui UI styling
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	style.FrameRounding = 3.0f;
+	style.FrameBorderSize = 2.0f;
+	style.TabRounding = 0.0f;
+	style.ScrollbarRounding = 1.0f;
+	style.ScrollbarSize = 12.0f;
+
+	style.WindowMenuButtonPosition = ImGuiDir_Right;
 }
 
 void EditorUIManager::Setup() {

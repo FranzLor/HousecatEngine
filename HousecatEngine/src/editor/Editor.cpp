@@ -94,7 +94,14 @@ void Editor::Initialize() {
 
 	//fonts
 	ImGuiIO& IO = ImGui::GetIO();
-	IO.Fonts->AddFontDefault();
+	//IO.Fonts->AddFontDefault();
+
+
+	float textFontSize = 18.0f;
+	ImFont* robotoFont = IO.Fonts->AddFontFromFileTTF("assets/fonts/roboto.regular.ttf", textFontSize);
+	if (!robotoFont) {
+		std::cerr << "Failed to load font: assets/fonts/roboto.regular.ttf" << std::endl;
+	}
 
 	float baseFontSize = 20.0f;
 	float iconFontSize = baseFontSize * 2.0f / 3.0f;
@@ -105,15 +112,16 @@ void Editor::Initialize() {
 	config.GlyphMinAdvanceX = iconFontSize;
 	static const ImWchar icons_ranges[] = { ICON_MIN_FA , ICON_MAX_FA , 0 };
 
-	if (!IO.Fonts->AddFontFromFileTTF("assets/fonts/fa-solid-900.ttf", iconFontSize, &config, icons_ranges)) {
+	ImFont* FAIconsFont = IO.Fonts->AddFontFromFileTTF("assets/fonts/fa-solid-900.ttf", iconFontSize, &config, icons_ranges);
+	if (!FAIconsFont) {
 		std::cerr << "Failed to load font: assets/fonts/fa-solid-900.ttf" << std::endl;
 	}
 
-	IO.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	IO.Fonts->Build();
 
+	IO.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	IO.ConfigWindowsMoveFromTitleBarOnly = true;
 
-	IO.Fonts->Build();
 
 
 
