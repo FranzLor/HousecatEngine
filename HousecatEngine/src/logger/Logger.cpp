@@ -84,3 +84,21 @@ void Logger::Error(const std::string& message) {
 
 	messages.push_back(logMessage);
 }
+
+
+void Logger::SDLVersion() {
+	SDL_version sdlVersion;
+	SDL_GetVersion(&sdlVersion);
+	std::string message = "SDL Version: " + std::to_string(sdlVersion.major) + "." +
+		std::to_string(sdlVersion.minor) + "." +
+		std::to_string(sdlVersion.patch);
+
+	Logger::Log(message);
+}
+
+void Logger::ImGuiVersion() {
+	std::string message = "ImGui Version: ";
+	message += IMGUI_VERSION;
+
+	Logger::Log(message);
+}

@@ -124,12 +124,12 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 				if (canvasPreviousWidth != canvasWidth) {
 					canvas->SetCanvasWidth(canvasWidth);
-					editManager->Execute(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
+					editManager->ExecuteEdit(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
 					canvasPreviousWidth = canvasWidth;
 				}
 
-				if (canvasWidth <= 960) {
-					canvasWidth = 960;
+				if (canvasWidth <= 32) {
+					canvasWidth = 32;
 					canvas->SetCanvasWidth(canvasWidth);
 					canvasPreviousWidth = canvasWidth;
 				}
@@ -140,12 +140,12 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 				if (canvasPreviousHeight != canvasHeight) {
 					canvas->SetCanvasHeight(canvasHeight);
-					editManager->Execute(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
+					editManager->ExecuteEdit(std::make_shared<EditCanvasSize>(canvas, canvasPreviousWidth, canvasPreviousHeight));
 					canvasPreviousHeight = canvasHeight;
 				}
 
-				if (canvasHeight <= 640) {
-					canvasHeight = 640;
+				if (canvasHeight <= 32) {
+					canvasHeight = 32;
 					canvas->SetCanvasHeight(canvasHeight);
 					canvasPreviousHeight = canvasHeight;
 				}
@@ -191,13 +191,13 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		}
 
 		if (mouse->TileAdded()) {
-			editManager->Execute(std::make_shared<EditAddTile>(mouse));
+			editManager->ExecuteEdit(std::make_shared<EditAddTile>(mouse));
 			mouse->SetTileAdded(false);
 			removedTile = false;
 		}
 
 		if (mouse->TileRemoved()) {
-			editManager->Execute(std::make_shared<EditRemoveTile>(mouse));
+			editManager->ExecuteEdit(std::make_shared<EditRemoveTile>(mouse));
 			mouse->SetRemovedTile(false);
 			removedTile = true;
 		}

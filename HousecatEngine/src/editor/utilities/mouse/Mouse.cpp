@@ -137,8 +137,8 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 
 			//get recent tile
 			tileRecent = newTile.GetID();
-			tileAdded = true;
 			isLeftMouseButton = true;
+			tileAdded = true;
 
 			mousePrevPosTile.x = pos.x;
 			mousePrevPosTile.y = pos.y;
@@ -190,6 +190,9 @@ void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 					mousePosY >= transform.position.y && mousePosY <= transform.position.y + sprite.height * transform.scale.y &&
 					appliedSprite.zIndex == sprite.zIndex) {
 
+					const auto& sprite = entity.GetComponent<SpriteComponent>();
+					const auto& transform = entity.GetComponent<TransformComponent>();
+
 					removedTransform = transform;
 					removedSprite = sprite;
 
@@ -226,6 +229,9 @@ void Mouse::FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 
 	//REMIND
 	//spamming fps drop
+
+	//TODO 
+	//UNDO/REDO
 	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
 		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton) || MultiTile(pos)) {
 

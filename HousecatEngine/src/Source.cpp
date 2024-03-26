@@ -1,7 +1,7 @@
 #include "Source.h"
 #include "logger/Logger.h"
 
-
+#include <SDL.h>
 #include <SDL_ttf.h>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
@@ -19,13 +19,8 @@ Source::Source()
 	rendererSource(nullptr),
 	sourceImGuiContext(0) {
 
-	//REMIND TESTING
-	//remove later on
-	Logger::Lifecycle("TEST");
-	Logger::Debug("TEST");
-	Logger::Log("TEST");
-	Logger::Warning("TEST");
-	Logger::Error("TEST");
+	Logger::SDLVersion();
+	Logger::ImGuiVersion();
 
 	Logger::Lifecycle("Source Constructor Called!");
 }
@@ -78,7 +73,6 @@ void Source::Initialize() {
 	ImGui_ImplSDL2_InitForSDLRenderer(windowSource, rendererSource);
 	ImGui_ImplSDLRenderer2_Init(rendererSource);
 
-	//TODO? Add custom font montserrat | roboto
 }
 
 

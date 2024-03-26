@@ -1,42 +1,22 @@
 #pragma once
 
-#include <stack>
-#include <memory>
+#include <vector>
+
+#include "IEdit.h"
+#include "CompoundEdit.h"
 
 #include "../../../logger/Logger.h"
 
-//-----------------------------------------------------//
-//                       EDIT                          //
-//           base for all edits | commands             //
-//-----------------------------------------------------//
-struct IEdit {
-	virtual ~IEdit() = default;
-
-	virtual void Execute() = 0;
-	virtual void Undo() = 0;
-	virtual void Redo() = 0;
-
-	//TODO?..
-	//virtual void Copy() = 0;
-	//virtual void Paste() = 0;
-	//virtual void Cut() = 0;
-	//virtual void Delete() = 0;
-	//virtual void SelectAll() = 0;
-	//virtual void DeselectAll() = 0;
-	//virtual void InvertSelection() = 0;
-};
-
-typedef std::shared_ptr<IEdit> EditPtr;
-
-
-
 class EditManager {
 private:
-	std::stack<std::shared_ptr<IEdit>> undoStack;
+	EditStack undoStack;
 
-	std::stack<std::shared_ptr<IEdit>> redoStack;
+	EditStack redoStack;
 
-	//...
+	//compound edits
+	bool isBatching = false;
+	std::shared_ptr<CompoundEdit> currentBatch;
+
 public:
 	EditManager() {
 		Logger::Lifecycle("EditManager Constructor Called!");
@@ -46,17 +26,28 @@ public:
 		Logger::Lifecycle("EditManager Destructor Called!");
 	}
 
-	void Execute(std::shared_ptr<IEdit> edit);
+	void ExecuteEdit(std::shared_ptr<IEdit> edit);
 
 	//undo management
 	void Undo();
 
 	//redo management
 	void Redo();
-	void ClearRedoStack();
 
 	void Clear();
 
-	//TODO?..
+	bool CanUndo() const { return !undoStack.empty(); }
+	bool CanRedo() const { return !redoStack.empty(); }
+
+	void StartBatching() {
+		isBatching = true;
+		currentBatch = std::make_shared<CompoundEdit>();
+	}
+
+	void EndBatching() {
+		isBatching = false;
+		ExecuteEdit(currentBatch);
+		currentBatch = nullptr;
+	}
 };
 

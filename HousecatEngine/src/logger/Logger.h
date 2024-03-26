@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 
+#include <SDL.h>
+#include <imgui/imgui.h>
+
 enum LogType {
 	LOG_LIFECYCLE,
 	LOG_DEBUG,
@@ -29,6 +32,10 @@ public:
 	static void Log(const std::string& message);
 	static void Warning(const std::string& message);
 	static void Error(const std::string& message);
+
+	static void SDLVersion();
+
+	static void ImGuiVersion();
 
 	Logger() {}
 	~Logger() {}

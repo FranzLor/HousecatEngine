@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../utilities/editmanager/EditManager.h"
+#include "../utilities/editmanager/IEdit.h"
+
 #include "../utilities/mouse/Mouse.h"
 
 #include "../../components/TransformComponent.h"
@@ -9,7 +10,6 @@
 class EditAddTile : public IEdit {
 private:
 	int tileID;
-	bool initialStateStored;
 
 	std::shared_ptr<class Mouse> mouse;
 
@@ -18,13 +18,14 @@ private:
 
 public:
 	EditAddTile(std::shared_ptr<Mouse>& mouse);
-	~EditAddTile() = default;
 
 	virtual void Execute() override;
 	virtual void Undo() override;
 	virtual void Redo() override;
 
 };
+
+
 
 class EditRemoveTile : public IEdit {
 private:
