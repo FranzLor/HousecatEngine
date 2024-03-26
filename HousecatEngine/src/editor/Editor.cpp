@@ -103,7 +103,7 @@ void Editor::Initialize() {
 		Logger::Error("Failed to load font: assets/fonts/roboto.regular.ttf");
 	}
 
-	float baseFontSize = 20.0f;
+	float baseFontSize = 22.0f;
 	float iconFontSize = baseFontSize * 2.0f / 3.0f;
 
 	ImFontConfig config;

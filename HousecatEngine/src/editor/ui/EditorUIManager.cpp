@@ -58,34 +58,81 @@ void EditorUIManager::InitImGui() {
 	//ImGui UI styling
 	ImGuiStyle& style = ImGui::GetStyle();
 
-	style.FrameRounding = 3.0f;
+	style.FrameRounding = 2.0f;
 	style.FrameBorderSize = 2.0f;
 	style.TabRounding = 0.0f;
-	style.ScrollbarRounding = 1.0f;
+	style.ScrollbarRounding = 2.0f;
 	style.ScrollbarSize = 12.0f;
+	style.TabRounding = 2.0f;
+	style.GrabRounding = 2.0f;
 
 	style.WindowMenuButtonPosition = ImGuiDir_Right;
-}
+	style.Alpha = 1.0f;
+	style.FrameRounding = 3.0f;
+	style.Colors[ImGuiCol_Text] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
 
-void EditorUIManager::Setup() {
-	//TODO
-	//ImGui
+	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
+	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
+	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
+	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 0.94f);
+
+	style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
+	style.Colors[ImGuiCol_Border] = ImVec4(0.00f, 0.00f, 0.00f, 0.39f);
+	style.Colors[ImGuiCol_BorderShadow] = ImVec4(1.00f, 1.00f, 1.00f, 0.10f);
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+
+	style.Colors[ImGuiCol_Button] = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.06f, 0.53f, 0.98f, 1.00f);
+
+	style.ItemSpacing.x = 10;
+	style.ItemSpacing.y = 8;
+	style.FramePadding.x = 5;
+	style.FramePadding.y = 5;
+
+	style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.98f, 0.98f, 0.98f, 0.53f);
+	style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.69f, 0.69f, 0.69f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.59f, 0.59f, 0.59f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
+
+	style.Colors[ImGuiCol_CheckMark] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.24f, 0.52f, 0.88f, 1.00f);
+	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+
+	style.Colors[ImGuiCol_Header] = ImVec4(0.26f, 0.59f, 0.98f, 0.31f);
+	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
+	style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+
+	style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.10f, 0.10f, 0.10f, 1.0f);
+	style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+	style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
+
+	style.Colors[ImGuiCol_PlotLines] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+
 }
 
 //TODO
 //menu bar management
 void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize) {
 	//MENU file interact
-	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_PLUS "New Project", "CTRL+N")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_PLUS "   New Project", "CTRL+N")) {
 		isNewFile = true;
 	}
-	if (ImGui::MenuItem(ICON_FA_FOLDER_OPEN "Open Project", "CTRL+O")) {
+	if (ImGui::MenuItem(ICON_FA_FOLDER_OPEN "   Open Project", "CTRL+O")) {
 		Open(renderer, assetManager, canvas, lua, tileSize);
 	}
-	if (ImGui::MenuItem(ICON_FA_FLOPPY_DISK "Save", "CTRL+S")) {
+	if (ImGui::MenuItem(ICON_FA_FLOPPY_DISK "   Save", "CTRL+S")) {
 		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
 	}
-	if (ImGui::MenuItem(ICON_FA_FILE_PEN "Save As", "CTRL+SHIFT+S")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_PEN "   Save As", "CTRL+SHIFT+S")) {
 		//TODO
 		//file management
 		std::string file;
@@ -97,7 +144,7 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		}
 	}
 
-	if (ImGui::MenuItem(ICON_FA_FILE_EXPORT "Export to Lua Table")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_EXPORT "   Export to Lua Table")) {
 		std::string luaFileName;
 		luaFileName = fileDialog->SaveFile();
 
@@ -108,7 +155,7 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		}
 	}
 
-	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_XMARK "Exit", "ESC")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_XMARK "   Exit", "ESC")) {
 		isExit = true;
 	}
 }
@@ -151,7 +198,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 	//	//TODO
 	//}
 
-	if (ImGui::MenuItem(ICON_FA_BOX_OPEN "Add Tileset")) {
+	if (ImGui::MenuItem(" " ICON_FA_BOX_OPEN "   Add Tileset")) {
 		FileDialogue fileDialog;
 		imageName = fileDialog.OpenTextureFile();
 
@@ -190,7 +237,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 //tileset management
 void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
 
-	if (ImGui::Begin(ICON_FA_TABLE_COLUMNS "Tileset", &loadTileset, ImGuiWindowFlags_HorizontalScrollbar)) {
+	if (ImGui::Begin(ICON_FA_TABLE_COLUMNS "   Tileset", &loadTileset, ImGuiWindowFlags_NoMove)) {
 		//resize on mouse scroll
 		float scrollX = ImGui::GetScrollX();
 		float scrollY = ImGui::GetScrollY();
@@ -244,19 +291,35 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 		return;
 	}
 
-	if (ImGui::Begin(ICON_FA_HAMMER "Tileset Tools")) {
+	if (ImGui::Begin(ICON_FA_HAMMER "   Tileset Tools", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize)) {
 		ImGuiStyle& style = ImGui::GetStyle();
+		//center window text
+		style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+
+		float windowVisibleWidth = ImGui::GetContentRegionAvail().x;
+
+		// Assuming each button + spacing occupies roughly 100 pixels, adjust based on your actual UI
+		float totalButtonsWidth = 3 * 100.0f; // 3 buttons
+		float startingPosX = (windowVisibleWidth - totalButtonsWidth) * 0.5f;
+		startingPosX = startingPosX > 0 ? startingPosX : 0; // Ensure startingPosX is not negative
+
+		// Adjust spacing for aesthetics if needed
 		float originalItemSpacing = style.ItemSpacing.x;
-		style.ItemSpacing.x = 15.0f;
+		style.ItemSpacing.x = 22.0f;
+
+		// Create initial spacing to center buttons
+		ImGui::Dummy(ImVec2(startingPosX, 0));
+		ImGui::SameLine();
+
 
 		//toggle paint
 		bool pushed = false;
 		if (isPaintToolActive) {
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.24f, 0.52f, 0.88f, 1.0f));
 			pushed = true;
 		}
 		//toggle state
-		if (ImGui::Button(ICON_FA_PAINTBRUSH "Paint")) {
+		if (ImGui::Button("     " ICON_FA_PAINTBRUSH "     ")) {
 			isPaintToolActive = !isPaintToolActive;
 			if (isPaintToolActive) {
 				isEraserToolActive = false;
@@ -272,10 +335,10 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 
 		//toggle eraser
 		if (isEraserToolActive) {
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.24f, 0.52f, 0.88f, 1.0f));
 			pushed = true;
 		}
-		if (ImGui::Button(ICON_FA_ERASER "Eraser")) {
+		if (ImGui::Button("     " ICON_FA_ERASER "     ")) {
 			isEraserToolActive = !isEraserToolActive;
 			if (isEraserToolActive) {
 				isPaintToolActive = false;
@@ -290,10 +353,10 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 
 		//toggle fill
 		if (isFillToolActive) {
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.24f, 0.52f, 0.88f, 1.0f));
 			pushed = true;
 		}
-		if (ImGui::Button(ICON_FA_FILL_DRIP "Fill")) {
+		if (ImGui::Button("     " ICON_FA_FILL_DRIP "     ")) {
 			isFillToolActive = !isFillToolActive;
 			if (isFillToolActive) {
 				isPaintToolActive = false;
@@ -312,13 +375,17 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 }
 
 void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow) {
-	std::string tilesetName = "Tileset Attributes";
+	ImGuiStyle& style = ImGui::GetStyle();
+	//center window text
+	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+
+	std::string tilesetName = ICON_FA_SLIDERS "   Tileset Attributes";
 
 	if (!tileWindow) {
 		return;
 	}
 
-	if (ImGui::Begin(tilesetName.c_str())) {
+	if (ImGui::Begin(tilesetName.c_str(), nullptr, ImGuiWindowFlags_NoMove)) {
 
 		if (tileWindow) {
 			static std::string currentTileset = "";
