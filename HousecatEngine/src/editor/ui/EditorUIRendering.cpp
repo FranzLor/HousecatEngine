@@ -297,20 +297,31 @@ void EditorUIRendering::UpdateCanvas() {
 }
 
 void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera) {
+	//center mouse coords.
+	auto AddSpacing = [](int count) { 
+		for (int i = 0; i < count; i++) {
+			ImGui::Spacing(); 
+		} 
+	};
+
 	//show mouse on canvas
 	if (!mouse->MouseOutOfBounds() && (createTiles)) {
 		gridX = static_cast<int>(mouse->GetMousePosition().x) / tileSize;
 		gridY = static_cast<int>(mouse->GetMousePosition().y) / tileSize;
 
-		ImGui::TextColored(ImVec4(0, 255, 255, 1), "Grid: %d, %d", gridX, gridY);
-		ImGui::Spacing();
+		//center in middle
+		AddSpacing(43);
+
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Grid: %d, %d", gridX, gridY);
+
+		AddSpacing(4);
 
 		if (gridSnap) {
-			ImGui::TextColored(ImVec4(0, 255, 255, 1), "Mouse Tile: %d, %d", tileSize * gridX, tileSize * gridY);
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Mouse Tile: %d, %d", tileSize * gridX, tileSize * gridY);
 		}
 		else {
 			ImGui::TextColored(ImVec4
-				(0, 255, 255, 1),
+				(0, 0, 0, 1),
 				"Mouse Tile: %d, %d", 
 				static_cast<int>(mouse->GetMousePosition().x),
 				static_cast<int>(mouse->GetMousePosition().y)
