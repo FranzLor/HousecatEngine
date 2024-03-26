@@ -2,6 +2,8 @@
 
 
 #include "../utilities/SDLUtility.h"
+#include <imgui/imgui_impl_sdlrenderer2.h>
+#include <imgui/imgui_impl_sdl2.h>
 
 #include "EditorUIManager.h"
 
@@ -9,11 +11,13 @@
 #include "EditorUIRendering.h"
 
 #include "../src/logger/Logger.h"
-#include <imgui/imgui_impl_sdlrenderer2.h>
-#include <imgui/imgui_impl_sdl2.h>
+
 #include "../utilities/EditTile.h"
 #include "../utilities/RemoveTile.h"
 #include "../utilities/EditCanvasSize.h"
+
+#include "../ui/IconsFontAwesome6.h"
+
 
 
 EditorUIRendering::EditorUIRendering()
@@ -67,19 +71,19 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 		if (ImGui::BeginMenu("Edit")) {
 			//show edit menu
-			if (ImGui::MenuItem("Undo", "CTRL + Z")) {
+			if (ImGui::MenuItem(ICON_FA_ROTATE_LEFT "Undo", "CTRL + Z")) {
 				editManager->Undo();
 			}
 
 			ImGui::Spacing();
 
-			if (ImGui::MenuItem("Redo", "CTRL + Y")) {
+			if (ImGui::MenuItem(ICON_FA_ROTATE_RIGHT "Redo", "CTRL + SHIFT + Z")) {
 				editManager->Redo();
 			}
 
 			ImGui::Spacing();
 
-			if (ImGui::MenuItem("Clear Canvas")) {
+			if (ImGui::MenuItem(ICON_FA_TRASH "Clear Canvas")) {
 				ClearCanvas();
 			}
 			ImGui::EndMenu();
@@ -88,11 +92,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		if (ImGui::BeginMenu("View")) {
 			//show view menu
 			//call View();
-			ImGui::Checkbox("Show Grid", &gridShow);
+			ImGui::Checkbox(ICON_FA_BORDER_ALL "Show Grid", &gridShow);
 
 			ImGui::Spacing();
 
-			ImGui::Checkbox("Snap to Grid", &gridSnap);
+			ImGui::Checkbox(ICON_FA_HAND_POINTER "Snap to Grid", &gridSnap);
 
 
 			ImGui::EndMenu();
@@ -105,7 +109,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
-			if (ImGui::MenuItem("Tileset Window")) {
+			if (ImGui::MenuItem(ICON_FA_TABLE_COLUMNS "Tileset Window")) {
 				createTiles = !createTiles;
 			}
 

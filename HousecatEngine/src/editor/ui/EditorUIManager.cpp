@@ -8,6 +8,9 @@
 #include "../utilities/SDLUtility.h"
 #include "../utilities/editmanager/EditManager.h"
 
+#include "../ui/IconsFontAwesome6.h"
+
+
 EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 //int tileWidth, tileHeight, scaleX, scaleY, layer, tileOffset, srcRectX, srcRectY
 	: tileAttributes{ 16, 16, 1, 1, 0, {0, 0}, 0, 0 },
@@ -64,16 +67,16 @@ void EditorUIManager::Setup() {
 //menu bar management
 void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize) {
 	//MENU file interact
-	if (ImGui::MenuItem("New Project", "CTRL+N")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_PLUS "New Project", "CTRL+N")) {
 		isNewFile = true;
 	}
-	if (ImGui::MenuItem("Open Project", "CTRL+O")) {
+	if (ImGui::MenuItem(ICON_FA_FOLDER_OPEN "Open Project", "CTRL+O")) {
 		Open(renderer, assetManager, canvas, lua, tileSize);
 	}
-	if (ImGui::MenuItem("Save", "CTRL+S")) {
+	if (ImGui::MenuItem(ICON_FA_FLOPPY_DISK "Save", "CTRL+S")) {
 		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
 	}
-	if (ImGui::MenuItem("Save As", "CTRL+SHIFT+S")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_PEN "Save As", "CTRL+SHIFT+S")) {
 		//TODO
 		//file management
 		std::string file;
@@ -85,7 +88,7 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		}
 	}
 
-	if (ImGui::MenuItem("Export to Lua Table")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_EXPORT "Export to Lua Table")) {
 		std::string luaFileName;
 		luaFileName = fileDialog->SaveFile();
 
@@ -96,7 +99,7 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		}
 	}
 
-	if (ImGui::MenuItem("Exit", "ESC")) {
+	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_XMARK "Exit", "ESC")) {
 		isExit = true;
 	}
 }
@@ -139,7 +142,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 	//	//TODO
 	//}
 
-	if (ImGui::MenuItem("Add Tileset")) {
+	if (ImGui::MenuItem(ICON_FA_BOX_OPEN "Add Tileset")) {
 		FileDialogue fileDialog;
 		imageName = fileDialog.OpenTextureFile();
 
@@ -178,7 +181,7 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 //tileset management
 void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
 
-	if (ImGui::Begin("Tileset", &loadTileset, ImGuiWindowFlags_HorizontalScrollbar)) {
+	if (ImGui::Begin(ICON_FA_TABLE_COLUMNS "Tileset", &loadTileset, ImGuiWindowFlags_HorizontalScrollbar)) {
 		//resize on mouse scroll
 		float scrollX = ImGui::GetScrollX();
 		float scrollY = ImGui::GetScrollY();
@@ -232,7 +235,7 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 		return;
 	}
 
-	if (ImGui::Begin("Tileset Tools")) {
+	if (ImGui::Begin(ICON_FA_HAMMER "Tileset Tools")) {
 		ImGuiStyle& style = ImGui::GetStyle();
 		float originalItemSpacing = style.ItemSpacing.x;
 		style.ItemSpacing.x = 15.0f;
@@ -244,7 +247,7 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 			pushed = true;
 		}
 		//toggle state
-		if (ImGui::Button("Paint")) {
+		if (ImGui::Button(ICON_FA_PAINTBRUSH "Paint")) {
 			isPaintToolActive = !isPaintToolActive;
 			if (isPaintToolActive) {
 				isEraserToolActive = false;
@@ -263,7 +266,7 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
 			pushed = true;
 		}
-		if (ImGui::Button("Eraser")) {
+		if (ImGui::Button(ICON_FA_ERASER "Eraser")) {
 			isEraserToolActive = !isEraserToolActive;
 			if (isEraserToolActive) {
 				isPaintToolActive = false;
@@ -281,7 +284,7 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.6f, 0.4f, 1.0f));
 			pushed = true;
 		}
-		if (ImGui::Button("Fill")) {
+		if (ImGui::Button(ICON_FA_FILL_DRIP "Fill")) {
 			isFillToolActive = !isFillToolActive;
 			if (isFillToolActive) {
 				isPaintToolActive = false;

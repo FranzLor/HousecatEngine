@@ -13,6 +13,9 @@
 #include "../systems/RenderColliderSystem.h"
 #include "../systems/AnimationSystem.h"
 
+#include "ui/IconsFontAwesome6.h"
+
+
 Editor::Editor()
 	: isRunning(true),
 	millisecsPreviousFrame(0),
@@ -89,7 +92,29 @@ void Editor::Initialize() {
 	ImGui_ImplSDL2_InitForSDLRenderer(editorWindow.get(), editorRenderer.get());
 	ImGui_ImplSDLRenderer2_Init(editorRenderer.get());
 
-	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
+	//fonts
+	ImGuiIO& IO = ImGui::GetIO();
+	IO.Fonts->AddFontDefault();
+
+	float baseFontSize = 20.0f;
+	float iconFontSize = baseFontSize * 2.0f / 3.0f;
+
+	ImFontConfig config;
+	config.MergeMode = true;
+	config.PixelSnapH = true;
+	config.GlyphMinAdvanceX = iconFontSize;
+	static const ImWchar icons_ranges[] = { ICON_MIN_FA , ICON_MAX_FA , 0 };
+
+	if (!IO.Fonts->AddFontFromFileTTF("assets/fonts/fa-solid-900.ttf", iconFontSize, &config, icons_ranges)) {
+		std::cerr << "Failed to load font: assets/fonts/fa-solid-900.ttf" << std::endl;
+	}
+
+	IO.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+	IO.ConfigWindowsMoveFromTitleBarOnly = true;
+
+	IO.Fonts->Build();
+
 
 
 	//TODO

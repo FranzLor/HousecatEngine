@@ -741,9 +741,6 @@
     <ClInclude Include="libs\imgui\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="libs\imgui\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="libs\imgui\imgui_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -922,6 +919,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\game\CollisionMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\SFXComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\AddTile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\editmanager\CompoundEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\editmanager\IEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\LuaExporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\utilities\RemoveTile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\SFXEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\SoundSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\imgui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\ui\IconsFontAwesome6.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1429,6 +1456,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game\CollisionMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\AddTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\LuaExporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\utilities\RemoveTile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

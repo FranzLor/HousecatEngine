@@ -133,10 +133,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="libs\imgui\imgui.h" />
     <ClInclude Include="src\components\SFXComponent.h" />
     <ClInclude Include="src\editor\utilities\AddTile.h" />
     <ClInclude Include="src\editor\utilities\editmanager\CompoundEdit.h" />
     <ClInclude Include="src\editor\utilities\editmanager\IEdit.h" />
+    <ClInclude Include="src\editor\ui\IconsFontAwesome6.h" />
     <ClInclude Include="src\editor\utilities\LuaExporter.h" />
     <ClInclude Include="src\editor\utilities\RemoveTile.h" />
     <ClInclude Include="src\events\SFXEvent.h" />
@@ -392,7 +394,6 @@
     <ClInclude Include="libs\glm\vec4.hpp" />
     <ClInclude Include="libs\glm\vector_relational.hpp" />
     <ClInclude Include="libs\imgui\imconfig.h" />
-    <ClInclude Include="libs\imgui\imgui.h" />
     <ClInclude Include="libs\imgui\imgui_impl_sdl2.h" />
     <ClInclude Include="libs\imgui\imgui_impl_sdlrenderer2.h" />
     <ClInclude Include="libs\imgui\imgui_internal.h" />
