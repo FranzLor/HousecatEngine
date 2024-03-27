@@ -9,6 +9,7 @@
 #include "../utilities/editmanager/EditManager.h"
 
 #include "../ui/IconsFontAwesome6.h"
+#include "EditorUIRendering.h"
 
 
 EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
@@ -24,6 +25,7 @@ EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 	isNewFile(false),
 	newCanvas(false),
 	tilesetLoaded(false),
+	isShortcutPressed(false),
 	isPaintToolActive(false),
 	isEraserToolActive(false),
 	isFillToolActive(false),
@@ -565,6 +567,39 @@ void EditorUIManager::Shortcuts(EditorRenderer& renderer, const AssetManagerPtr&
 	else if (!keyState[SDL_SCANCODE_Z] && Redo) {
 		Redo = false;
 	}
+
+	//tools
+	static bool shortcutBPressed = false;
+	static bool shortcutEPressed = false;
+	static bool shortcutFPressed = false;
+
+	bool isBPressed = keyState[SDL_SCANCODE_B];
+	bool isEPressed = keyState[SDL_SCANCODE_E];
+	bool isFPressed = keyState[SDL_SCANCODE_F];
+
+	if (isBPressed && !shortcutBPressed) {
+		isPaintToolActive = !isPaintToolActive;
+
+		isEraserToolActive = false;
+		isFillToolActive = false;
+	}
+	shortcutBPressed = isBPressed;
+
+	if (isEPressed && !shortcutEPressed) {
+		isEraserToolActive = !isEraserToolActive;
+
+		isPaintToolActive = false;
+		isFillToolActive = false;
+	}
+	shortcutEPressed = isEPressed;
+
+	if (isFPressed && !shortcutFPressed) {
+		isFillToolActive = !isFillToolActive;
+
+		isPaintToolActive = false;
+		isEraserToolActive = false;
+	}
+	shortcutFPressed = isFPressed;
 }
 
 

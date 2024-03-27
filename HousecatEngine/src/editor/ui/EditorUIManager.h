@@ -31,6 +31,7 @@ private:
 	bool tilesetLoaded;
 
 	//tileset tools
+	bool isShortcutPressed;
 	bool isPaintToolActive;
 	bool isEraserToolActive;
 	bool isFillToolActive;
