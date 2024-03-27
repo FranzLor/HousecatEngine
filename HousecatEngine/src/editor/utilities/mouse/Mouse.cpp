@@ -109,6 +109,10 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 			int gridX = static_cast<int>(mousePosWindow.x) / tileSize;
 			int gridY = static_cast<int>(mousePosWindow.y) / tileSize;
 
+			if (TileExistsAtPosition(gridX, gridY)) {
+				return;
+			}
+
 			if (gridSnap) {
 				appliedTransform.position.x = gridX * tileSize;
 				appliedTransform.position.y = gridY * tileSize;
@@ -238,33 +242,61 @@ void Mouse::FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 			int canvasWidthInTiles = canvas.GetCanvasWidth() / tileSize;
 			int canvasHeightInTiles = canvas.GetCanvasHeight() / tileSize;
 
+			//checks if all positions have tiles
+			bool allTilesExist = true;
 			for (int x = 0; x < canvasWidthInTiles; ++x) {
 				for (int y = 0; y < canvasHeightInTiles; ++y) {
-					glm::vec2 tilePosition = glm::vec2(x * tileSize, y * tileSize);
+					if (!TileExistsAtPosition(x, y)) {
+						glm::vec2 tilePosition = glm::vec2(x * tileSize, y * tileSize);
 
-					Entity newTile = Housecat::GetInstance().CreateEntity();
-					newTile.Group("tiles");
-					newTile.AddComponent<TransformComponent>(
-						tilePosition,
-						appliedTransform.scale,
-						appliedTransform.rotation
-					);
+						Entity newTile = Housecat::GetInstance().CreateEntity();
+						newTile.Group("tiles");
+						newTile.AddComponent<TransformComponent>(
+							tilePosition,
+							appliedTransform.scale,
+							appliedTransform.rotation
+						);
 
-					newTile.AddComponent<SpriteComponent>(
-						appliedSprite.assetID,
-						tileSize,
-						tileSize,
-						appliedSprite.zIndex, 
-						appliedSprite.isFixed,
-						appliedSprite.srcRect.x,
-						appliedSprite.srcRect.y
-					);
+						newTile.AddComponent<SpriteComponent>(
+							appliedSprite.assetID,
+							tileSize,
+							tileSize,
+							appliedSprite.zIndex,
+							appliedSprite.isFixed,
+							appliedSprite.srcRect.x,
+							appliedSprite.srcRect.y
+						);
+						tileAdded = true;
+
+					}
 				}
 			}
-			tileAdded = true;
 		}
 	}
 }
+
+bool Mouse::TileExistsAtPosition(int x, int y) {
+	if (!Housecat::GetInstance().IsThereGroup("tiles")) {
+		return false;
+	}
+
+	auto tiles = Housecat::GetInstance().GetGroup("tiles");
+	for (const auto& tile : tiles) {
+		const auto& transform = tile.GetComponent<TransformComponent>();
+
+		//calc grid pos
+		int tileGridX = static_cast<int>(transform.position.x) / tileSize;
+		int tileGridY = static_cast<int>(transform.position.y) / tileSize;
+
+		//find tile at pos
+		if (tileGridX == x && tileGridY == y) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 
 bool Mouse::MultiTile(const glm::vec2& pos) {

@@ -127,6 +127,9 @@ public:
 
 	}
 
+	//grid checking
+	bool TileExistsAtPosition(int x, int y);
+
 
 	//update
 	inline void UpdateZoom(const float& mouseZoom) {
