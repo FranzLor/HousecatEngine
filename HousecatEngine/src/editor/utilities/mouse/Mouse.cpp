@@ -6,6 +6,7 @@
 #include "../../ui/EditorCanvas.h"
 
 
+
 Mouse::Mouse()
 	: mousePosX(0),
 	mousePosY(0),
@@ -109,9 +110,6 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 			int gridX = static_cast<int>(mousePosWindow.x) / tileSize;
 			int gridY = static_cast<int>(mousePosWindow.y) / tileSize;
 
-			if (TileExistsAtPosition(gridX, gridY)) {
-				return;
-			}
 
 			if (gridSnap) {
 				appliedTransform.position.x = gridX * tileSize;
@@ -245,7 +243,9 @@ void Mouse::FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 			bool allTilesExist = true;
 			for (int x = 0; x < canvasWidthInTiles; ++x) {
 				for (int y = 0; y < canvasHeightInTiles; ++y) {
-					if (!TileExistsAtPosition(x, y)) {
+
+					auto check = TileExistsAtPosition(x, y);
+					if (check == TileCheckResult::NoTile || check == TileCheckResult::DifferentTile) {
 						glm::vec2 tilePosition = glm::vec2(x * tileSize, y * tileSize);
 
 						Entity newTile = Housecat::GetInstance().CreateEntity();
@@ -274,14 +274,15 @@ void Mouse::FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 	}
 }
 
-bool Mouse::TileExistsAtPosition(int x, int y) {
+TileCheckResult Mouse::TileExistsAtPosition(int x, int y) {
 	if (!Housecat::GetInstance().IsThereGroup("tiles")) {
-		return false;
+		return TileCheckResult::NoTile;
 	}
 
 	auto tiles = Housecat::GetInstance().GetGroup("tiles");
 	for (const auto& tile : tiles) {
 		const auto& transform = tile.GetComponent<TransformComponent>();
+		const auto& sprite = tile.GetComponent<SpriteComponent>();
 
 		//calc grid pos
 		int tileGridX = static_cast<int>(transform.position.x) / tileSize;
@@ -289,11 +290,20 @@ bool Mouse::TileExistsAtPosition(int x, int y) {
 
 		//find tile at pos
 		if (tileGridX == x && tileGridY == y) {
-			return true;
+			//check sprite 
+			if (sprite.assetID == appliedSprite.assetID &&
+				sprite.srcRect.x == appliedSprite.srcRect.x &&
+				sprite.srcRect.y == appliedSprite.srcRect.y) {
+
+				return TileCheckResult::ExactTile;
+			}
+			else {
+				return TileCheckResult::DifferentTile;
+			}
 		}
 	}
 
-	return false;
+	return TileCheckResult::NoTile;
 }
 
 

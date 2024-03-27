@@ -12,6 +12,15 @@
 #include "../../../components/TransformComponent.h"
 #include "../../../components/SpriteComponent.h"
 
+//used for defining if tiles
+//for tile checking method
+enum class TileCheckResult {
+	NoTile,
+	DifferentTile,
+	ExactTile
+};
+
+
 class Mouse {
 private:
 	int mousePosX;
@@ -128,7 +137,7 @@ public:
 	}
 
 	//grid checking
-	bool TileExistsAtPosition(int x, int y);
+	TileCheckResult TileExistsAtPosition(int x, int y);
 
 
 	//update
