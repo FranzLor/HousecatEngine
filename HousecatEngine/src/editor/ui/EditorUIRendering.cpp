@@ -43,7 +43,6 @@ EditorUIRendering::EditorUIRendering()
 
 	//call ImGui setup
 	editorUIManager->InitImGui();
-	editorUIManager->Setup();
 
 	lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::os);
 
@@ -71,19 +70,19 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 		if (ImGui::BeginMenu("Edit")) {
 			//show edit menu
-			if (ImGui::MenuItem(ICON_FA_ROTATE_LEFT "Undo", "CTRL + Z")) {
+			if (ImGui::MenuItem(ICON_FA_ROTATE_LEFT "   Undo", "CTRL + Z")) {
 				editManager->Undo();
 			}
 
 			ImGui::Spacing();
 
-			if (ImGui::MenuItem(ICON_FA_ROTATE_RIGHT "Redo", "CTRL + SHIFT + Z")) {
+			if (ImGui::MenuItem(ICON_FA_ROTATE_RIGHT "   Redo", "CTRL + SHIFT + Z")) {
 				editManager->Redo();
 			}
 
 			ImGui::Spacing();
 
-			if (ImGui::MenuItem(ICON_FA_TRASH "Clear Canvas")) {
+			if (ImGui::MenuItem(ICON_FA_TRASH "   Clear Canvas")) {
 				ClearCanvas();
 			}
 			ImGui::EndMenu();
@@ -92,11 +91,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		if (ImGui::BeginMenu("View")) {
 			//show view menu
 			//call View();
-			ImGui::Checkbox(ICON_FA_BORDER_ALL "Show Grid", &gridShow);
+			ImGui::Checkbox(" " ICON_FA_BORDER_ALL " Show Grid", &gridShow);
 
 			ImGui::Spacing();
 
-			ImGui::Checkbox(ICON_FA_HAND_POINTER "Snap to Grid", &gridSnap);
+			ImGui::Checkbox(" " ICON_FA_HAND_POINTER " Snap to Grid", &gridSnap);
 
 
 			ImGui::EndMenu();
@@ -109,7 +108,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
-			if (ImGui::MenuItem(ICON_FA_TABLE_COLUMNS "Tileset Window")) {
+			if (ImGui::MenuItem(" " ICON_FA_TABLE_COLUMNS "   Tileset Window")) {
 				createTiles = !createTiles;
 			}
 
@@ -118,13 +117,13 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing;
 			ImGui::Spacing;
 
-			if (ImGui::InputInt("Tile Size", &tileSize, 8, 8)) {
+			if (ImGui::InputInt("   Tile Size", &tileSize, 8, 8)) {
 				if (tileSize <= 8) {
 					tileSize = 8;
 				}
 			}
 
-			if (ImGui::InputInt("Canvas Width", &canvasWidth, tileSize, tileSize)) {
+			if (ImGui::InputInt("   Canvas Width", &canvasWidth, tileSize, tileSize)) {
 
 				if (canvasPreviousWidth != canvasWidth) {
 					canvas->SetCanvasWidth(canvasWidth);
@@ -140,7 +139,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 			}
 
-			if (ImGui::InputInt("Canvas Height", &canvasHeight, tileSize, tileSize)) {
+			if (ImGui::InputInt("   Canvas Height", &canvasHeight, tileSize, tileSize)) {
 
 				if (canvasPreviousHeight != canvasHeight) {
 					canvas->SetCanvasHeight(canvasHeight);
@@ -297,20 +296,31 @@ void EditorUIRendering::UpdateCanvas() {
 }
 
 void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera) {
+	//center mouse coords.
+	auto AddSpacing = [](int count) { 
+		for (int i = 0; i < count; i++) {
+			ImGui::Spacing(); 
+		} 
+	};
+
 	//show mouse on canvas
 	if (!mouse->MouseOutOfBounds() && (createTiles)) {
 		gridX = static_cast<int>(mouse->GetMousePosition().x) / tileSize;
 		gridY = static_cast<int>(mouse->GetMousePosition().y) / tileSize;
+		
+		//center in middle
+		AddSpacing(38);
 
-		ImGui::TextColored(ImVec4(0, 255, 255, 1), "Grid: %d, %d", gridX, gridY);
-		ImGui::Spacing();
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Grid: %d, %d", gridX, gridY);
+
+		AddSpacing(4);
 
 		if (gridSnap) {
-			ImGui::TextColored(ImVec4(0, 255, 255, 1), "Mouse Tile: %d, %d", tileSize * gridX, tileSize * gridY);
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Mouse Tile: %d, %d", tileSize * gridX, tileSize * gridY);
 		}
 		else {
 			ImGui::TextColored(ImVec4
-				(0, 255, 255, 1),
+				(0, 0, 0, 1),
 				"Mouse Tile: %d, %d", 
 				static_cast<int>(mouse->GetMousePosition().x),
 				static_cast<int>(mouse->GetMousePosition().y)

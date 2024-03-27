@@ -36,6 +36,9 @@ std::string FileDialogue::SaveFile(const char* filterPath, HWND windowHandle) {
 	std::vector<char> filePath(MAX_PATH);
 	OPENFILENAMEA saveFileDialogStruct = { 0 };
 
+	ZeroMemory(&saveFileDialogStruct, sizeof(OPENFILENAME));
+
+
 	saveFileDialogStruct.lStructSize = sizeof(saveFileDialogStruct);
 	saveFileDialogStruct.hwndOwner = windowHandle;
 	saveFileDialogStruct.lpstrFilter = filterPath;

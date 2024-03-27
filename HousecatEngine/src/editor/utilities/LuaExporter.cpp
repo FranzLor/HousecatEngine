@@ -13,26 +13,22 @@ LuaExporter::LuaExporter()
 
 void LuaExporter::WriteIndent(std::fstream& file) {
 	for (int level = indent; level; level--) {
-		Write("  ", file);
+		Write("    ", file);
 	}
 }
 
 void LuaExporter::WriteNewLine(std::fstream& file) {
-	if (newLine) {
-		return;
-	}
-
-	if (!minimize) {
-		if (suppress) {
-			Write(' ', file);
-		}
-		else {
-			Write('\n', file);
-			WriteIndent(file);
+	if (!newLine) {
+		if (!minimize) {
+			if (suppress) {
+				Write(' ', file);
+			}
+			else {
+				Write('\n', file);
+				WriteIndent(file);
+			}
 		}
 	}
-
-	newLine = true;
 }
 
 void LuaExporter::WriteNewValue(std::fstream& file) {
@@ -49,11 +45,11 @@ void LuaExporter::WriteNewValue(std::fstream& file) {
 
 
 void LuaExporter::StartDocument() {
-	assert(indent = 0);
+	assert(indent == 0);
 }
 
 void LuaExporter::EndDocument(std::fstream& file) {
-	assert(indent = 0);
+	assert(indent == 0);
 	Write('\n', file);
 }
 
