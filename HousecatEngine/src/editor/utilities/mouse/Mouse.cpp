@@ -194,15 +194,14 @@ void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 					mousePosY >= transform.position.y && mousePosY <= transform.position.y + sprite.height * transform.scale.y &&
 					appliedSprite.zIndex == sprite.zIndex) {
 
-					const auto& sprite = entity.GetComponent<SpriteComponent>();
-					const auto& transform = entity.GetComponent<TransformComponent>();
-
+					//storing for undo|redo
 					removedTransform = transform;
 					removedSprite = sprite;
 
 					entity.Kill();
 					isLeftMouseButton = true;
 					tileRemoved = true;
+					break;
 				}
 			}
 		}
