@@ -19,7 +19,7 @@ void ProjectManagement::OpenProject(sol::state& lua, const std::string& fileName
 	const AssetManagerPtr& assetManager, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath,
 	int& tileSize) {
 
-	std::filesystem::path filePath = fileName;
+	std::filesystem::path filePath(fileName);
 	//map check
 	if (filePath.extension() != ".lua") {
 		return;
@@ -79,10 +79,10 @@ void ProjectManagement::OpenProject(sol::state& lua, const std::string& fileName
 		canvas->SetCanvasWidth(std::move(canvasWidth));
 		canvas->SetCanvasHeight(std::move(canvasHeight));
 	}
-	mapManagement->LoadMap(assetManager, fileName);
+	LoadMap(assetManager, mapFile);
 }
 
-void ProjectManagement::SaveProject(const std::string& fileName, const std::vector<std::string>& assetID, const std::vector<std::string>& assetFilePath,
+void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath,
 	const int& canvasWidth, const int& canvasHeight, const int& tileSize) {
 
 	std::fstream projectFile;
@@ -144,7 +144,7 @@ void ProjectManagement::SaveProject(const std::string& fileName, const std::vect
 		return;
 	}
 
-	mapManagement->SaveMap(filePath);
+	SaveMap(filePath);
 
 }
 
@@ -164,14 +164,12 @@ void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::
 
 		luaExport.WriteWords("return {", project, true);
 		luaExport.WriteKeyAndUnquotedValue("id", "id", project, false, false);
-		luaExport.WriteKeyAndUnquotedValue("value", "", project, false, false);
+		luaExport.WriteKeyAndUnquotedValue("name", "", project, false, false);
 		luaExport.WriteKeyAndUnquotedValue("tileWidth", tileSize, project, false, false);
 		luaExport.WriteKeyAndUnquotedValue("tileHeight", tileSize, project, false, false);
-		
-		luaExport.DeclareTable("tiles", project);
 
-		if (Housecat::GetInstance().IsThereGroup("tles")) {
-			int i = 0;
+		if (Housecat::GetInstance().IsThereGroup("tiles")) {
+			int i = 1;
 
 			for (const auto& tile : Housecat::GetInstance().GetGroup("tiles")) {
 				luaExport.WriteStartTable(i, false, project);
@@ -200,8 +198,10 @@ void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::
 				if (tile.HasComponent<SpriteComponent>()) {
 					const auto& sprite = tile.GetComponent<SpriteComponent>();
 
+					std::string fixed = "false";
+
 					if (sprite.isFixed) {
-						//TODO
+						fixed = "true";
 					}
 
 					luaExport.DeclareTable("sprite", project);
@@ -210,7 +210,7 @@ void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::
 					luaExport.WriteKeyAndValue("width", sprite.width, false, project);
 					luaExport.WriteKeyAndValue("height", sprite.height, false, project);
 					luaExport.WriteKeyAndValue("z_index", sprite.zIndex, false, project);
-					//luaExport.WriteKeyAndValue("is_fixed", fixed, true, project);
+					luaExport.WriteKeyAndValue("is_fixed", fixed, true, project);
 
 					luaExport.DeclareTable("src_rect", project);
 					luaExport.WriteKeyAndValue("x", sprite.srcRect.x, false, project);
@@ -228,7 +228,77 @@ void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::
 		luaExport.EndTable(false, project);
 		luaExport.EndTable(false, project);
 		luaExport.EndDocument(project);
-		luaExport.WriteWords("End", project);
+		luaExport.WriteWords("end", project);
 		project.close();
 	}
+	else {
+		return;
+	}
+}
+
+
+
+
+void ProjectManagement::LoadMap(const AssetManagerPtr& assetManager, const std::string& fileName) {
+	std::fstream mapFile;
+	mapFile.open(fileName);
+
+	if (!mapFile.is_open()) {
+		//REMIND
+		//for now
+		std::cerr << "Error: Failed to Open File " << fileName << std::endl;
+		return;
+	}
+
+	std::string group;
+	std::string assetID;
+	int tileWidth;
+	int tileHeight;
+	int srcRectX;
+	int srcRectY;
+	int layer;
+
+	double rotation;
+
+	glm::vec2 transform;
+	glm::vec2 scale;
+
+
+	while (mapFile >> group >> assetID >> tileWidth >> tileHeight >> srcRectX >> srcRectY >>
+		layer >> rotation >> transform.x >> transform.y >> scale.x >> scale.y) {
+
+		Entity tile = Housecat::GetInstance().CreateEntity();
+		tile.Group(group);
+		tile.AddComponent<TransformComponent>(transform, scale, rotation);
+		tile.AddComponent<SpriteComponent>(assetID, tileWidth, tileHeight, layer, false, srcRectX, srcRectY);
+
+	}
+	mapFile.close();
+}
+
+void ProjectManagement::SaveMap(std::filesystem::path fileName) {
+	if (!Housecat::GetInstance().IsThereGroup("tiles")) {
+		return;
+	}
+
+	std::ofstream mapFile;
+	mapFile.open(fileName);
+
+	if (!mapFile.is_open()) {
+		return;
+	}
+
+	auto tiles = Housecat::GetInstance().GetGroup("tiles");
+
+	for (const auto& tile : tiles) {
+		std::string group = "tiles";
+		const auto& transform = tile.GetComponent<TransformComponent>();
+		const auto& sprite = tile.GetComponent<SpriteComponent>();
+
+		mapFile << group << " " << sprite.assetID << " " << sprite.width << " " << sprite.height << " "
+			<< sprite.srcRect.x << " " << sprite.srcRect.y << " " << sprite.zIndex << " " << transform.rotation
+			<< " " << transform.position.x << " " << transform.position.y << " " << transform.scale.x << " " << transform.scale.y << " ";
+
+	}
+	mapFile.close();
 }

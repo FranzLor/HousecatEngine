@@ -14,7 +14,8 @@
 
 class ProjectManagement {
 private:
-	std::unique_ptr<MapManagement> mapManagement;
+	void LoadMap(const AssetManagerPtr& assetManager, const std::string& fileName);
+	void SaveMap(std::filesystem::path fileName);
 
 public:
 	ProjectManagement();
@@ -24,12 +25,10 @@ public:
 		const AssetManagerPtr& assetManager, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath,
 		int& tileSize);
 	 
-	void SaveProject(const std::string& fileName, const std::vector<std::string>& assetID, const std::vector<std::string>& assetFilePath,
+	void SaveProject(const std::string& fileName, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath,
 		const int& canvasWidth, const int& canvasHeight, const int& tileSize);
 
 	void SaveAsLua(const std::string& fileName, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath, const int& tileSize);
 
-	//TODO
-	//save as
 };
 

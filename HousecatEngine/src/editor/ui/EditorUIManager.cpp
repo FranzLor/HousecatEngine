@@ -126,7 +126,7 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_PLUS "   New Project", "CTRL+N")) {
 		isNewFile = true;
 	}
-	if (ImGui::MenuItem(ICON_FA_FOLDER_OPEN "   Open Project", "CTRL+O")) {
+	if (ImGui::MenuItem(ICON_FA_FOLDER_OPEN "   Open", "CTRL+O")) {
 		Open(renderer, assetManager, canvas, lua, tileSize);
 	}
 	if (ImGui::MenuItem(ICON_FA_FLOPPY_DISK "   Save", "CTRL+S")) {
@@ -135,24 +135,24 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 	if (ImGui::MenuItem(ICON_FA_FILE_PEN "   Save As", "CTRL+SHIFT+S")) {
 		//TODO
 		//file management
-		std::string file;
-		file = fileDialog->SaveFile();
+		std::string file = fileDialog->SaveFile();
 
-		if (!file.empty()) {
-			fileName = file;
-			projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
+		if (file == "") {
+			return;
 		}
+		fileName = file;
+		projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
 	}
 
 	if (ImGui::MenuItem(ICON_FA_FILE_EXPORT "   Export to Lua Table")) {
-		std::string luaFileName;
-		luaFileName = fileDialog->SaveFile();
+		std::string file = fileDialog->SaveFile();
 
-		if (!luaFileName.empty()) {
+		if (file == "") {
 			// Set Lua file to the selected filename
-			luaFile = luaFileName;
-			projectManagement->SaveAsLua(luaFile, tilesets, tilesetsTarget, tileSize);
+			return;
 		}
+		luaFile = file;
+		projectManagement->SaveAsLua(luaFile, tilesets, tilesetsTarget, tileSize);
 	}
 
 	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_XMARK "   Exit", "ESC")) {
@@ -470,23 +470,26 @@ void EditorUIManager::NewProject() {
 }
 
 void EditorUIManager::Open(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize) {
-	std::string fileName = fileDialog->OpenFile();
+	fileName = fileDialog->OpenFile();
 
-	if (!fileName.empty()) {
-		projectManagement->OpenProject(lua, fileName, renderer, canvas, assetManager, tilesets, tilesetsTarget, tileSize);
+	if (fileName == "") {
+		return;
 	}
+	projectManagement->OpenProject(lua, fileName, renderer, canvas, assetManager, tilesets, tilesetsTarget, tileSize);
 }
 
 void EditorUIManager::Save(EditorRenderer& renderer, const AssetManagerPtr& assetManager, const int& canvasWidth, const int& canvasHeight, int& tileSize) {
-	if (fileName.empty()) {
+	if (fileName == "") {
 		fileName = fileDialog->SaveFile();
 
-		if (fileName.empty()) {
+		if (fileName == "") {
 			return;
 		}
+		projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvasWidth, canvasHeight, tileSize);
 	}
-	
-	projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvasWidth, canvasHeight, tileSize);
+	else {
+		projectManagement->SaveProject(fileName, tilesets, tilesetsTarget, canvasWidth, canvasHeight, tileSize);
+	}
 }
 
 void EditorUIManager::OpenNewWindow() {
