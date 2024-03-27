@@ -238,17 +238,18 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 //TODO
 //tileset management
 void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
-
-	if (ImGui::Begin(ICON_FA_TABLE_COLUMNS "   Tileset", &loadTileset, ImGuiWindowFlags_NoMove)) {
+	auto tilesetWindowFlags = ImGuiWindowFlags_AlwaysHorizontalScrollbar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysVerticalScrollbar;
+	if (ImGui::Begin(ICON_FA_TABLE_COLUMNS "   Tileset", &loadTileset, tilesetWindowFlags)) {
 		//resize on mouse scroll
 		float scrollX = ImGui::GetScrollX();
 		float scrollY = ImGui::GetScrollY();
 
 		int imageWidth = textureWidth * 2;
 		int imageHeight = textureHeight * 2;
+		ImVec2 imageSize = ImVec2(textureWidth * 2, textureHeight * 2);
 
-		
-		ImGui::Image(assetManager->ReturnEditorTexture(assetID).get(), ImVec2(imageWidth, imageHeight));
+		//display the tileset texture with a border
+		ImGui::Image(assetManager->ReturnEditorTexture(assetID).get(), imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 0, 0, 1));
 
 		int mousePosX = static_cast<int>(ImGui::GetMousePos().x - ImGui::GetWindowPos().x + scrollX);
 		int mousePosY = static_cast<int>(ImGui::GetMousePos().y - ImGui::GetWindowPos().y - titleBar + scrollY);
@@ -256,31 +257,20 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 		int tileCol = imageWidth / static_cast<int>(mouseRect.x * 2);
 		int tileRow = imageHeight / static_cast<int>(mouseRect.y * 2);
 
-		//imgui render grid
-		auto drawList = ImGui::GetWindowDrawList();
-		ImVec2 winPos = ImGui::GetWindowPos();
+		//render tileset
+		for (int i = 0; i < tileCol; i++) {
+			for (int j = 0; j < tileRow; j++) {
+				auto drawList = ImGui::GetWindowDrawList();
 
-		//render grid
-		for (int c = 1; c < tileCol; c++) {
-			drawList->AddLine(
-				ImVec2(winPos.x + c * mouseRect.x * 2 - scrollX, winPos.y),
-				ImVec2(winPos.x + c * mouseRect.x * 2 - scrollX, winPos.y + imageHeight),
-				IM_COL32(125, 125, 125, 100));
-		}
-		for (int r = 1; r < tileRow; r++) {
-			drawList->AddLine(
-				ImVec2(winPos.x, winPos.y + r * mouseRect.y * 2 - scrollY),
-				ImVec2(winPos.x + imageWidth, winPos.y + r * mouseRect.y * 2 - scrollY),
-				IM_COL32(125, 125, 125, 100));
-		}
-		//selection
-		if ((mousePosX >= 0 && mousePosX <= imageWidth) && (mousePosY >= 0 && mousePosY <= imageHeight)) {
-			if (ImGui::IsMouseHoveringRect(winPos, ImVec2(winPos.x + imageWidth, winPos.y + imageHeight))) {
-				if (ImGui::IsMouseClicked(0)) {
-					int selectedCol = mousePosX / (mouseRect.x * 2);
-					int selectedRow = mousePosY / (mouseRect.y * 2);
-					tileAttributes.srcRectX = selectedCol * static_cast<int>(mouseRect.x);
-					tileAttributes.srcRectY = selectedRow * static_cast<int>(mouseRect.y);
+				if ((mousePosX >= (imageWidth / tileCol) * i && mousePosX <= (imageWidth / tileCol) + ((imageWidth / tileCol) * i))
+					&& (mousePosY >= (imageHeight / tileRow) * j && mousePosY <= (imageHeight / tileRow) + ((imageHeight / tileRow) * j))) {
+					if (ImGui::IsItemHovered()) {
+
+						if (ImGui::IsMouseClicked(0)) {
+							tileAttributes.srcRectX = i * mouseRect.x;
+							tileAttributes.srcRectY = j * mouseRect.y;
+						}
+					}
 				}
 			}
 		}
