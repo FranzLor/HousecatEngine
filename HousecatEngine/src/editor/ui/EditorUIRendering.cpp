@@ -277,10 +277,7 @@ void EditorUIRendering::CreateNewCanvas() {
 	canvasWidth = 960;
 	canvasHeight = 640;
 
-	for (auto& entity : GetSystemEntities()) {
-		entity.Kill();
-	}
-
+	ClearCanvas();
 	editManager->Clear();
 }
 
