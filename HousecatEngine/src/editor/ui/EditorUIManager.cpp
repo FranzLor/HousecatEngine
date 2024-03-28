@@ -381,16 +381,30 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 
 		if (tileWindow) {
 			static std::string currentTileset = "";
-			static std::string previousTileset = assetID;
+			static std::string previousTileset = "";
+
+			//currentTileset with the first tileset if it's not already set and if there are tilesets available
+			if (currentTileset.empty() && !tilesets.empty()) {
+				currentTileset = tilesets[0];
+				assetID = currentTileset;
+				SDL_QueryTexture(assetManager->ReturnEditorTexture(assetID).get(), NULL, NULL, &textureWidth, &textureHeight);
+				previousTileset = currentTileset;
+			}
 
 			//changing tilesets 
 			if (ImGui::BeginCombo("Tilesets", currentTileset.c_str())) {
-				for (int set = 0; set < tilesets.size(); set++) {
-					bool selected = (currentTileset == tilesets[set]);
-					if (ImGui::Selectable(tilesets[set].c_str(), selected)) {
-						currentTileset = tilesets[set];
+				for (const auto& set : tilesets) {
+					bool isSelected = (currentTileset == set);
+					if (ImGui::Selectable(set.c_str(), isSelected)) {
+						currentTileset = set;
+						if (previousTileset != currentTileset) {
+							//update texture for the new tileset added
+							assetID = currentTileset;
+							SDL_QueryTexture(assetManager->ReturnEditorTexture(assetID).get(), NULL, NULL, &textureWidth, &textureHeight);
+							previousTileset = currentTileset;
+						}
 					}
-					if (selected) {
+					if (isSelected) {
 						ImGui::SetItemDefaultFocus();
 					}
 				}
@@ -407,8 +421,16 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				}
 			}
 
+			ImGui::Text("Mouse Scale");
+			//clamping to prevent division by 0 at tileset window
+			if (ImGui::InputInt("Tile X", &tileAttributes.mouseRectX, 8, 8)) {
+				tileAttributes.mouseRectX = max(8, (tileAttributes.mouseRectX / 8) * 8);
+			}
+			if (ImGui::InputInt("Tile Y", &tileAttributes.mouseRectY, 8, 8)) {
+				tileAttributes.mouseRectY = max(8, (tileAttributes.mouseRectY / 8) * 8);
+			}
 
-			ImGui::Text("Scaling");
+			ImGui::Text("Sprite Scale");
 			ImGui::SliderInt("Scale X", &tileAttributes.scaleX, 1, 10);
 			ImGui::SliderInt("Scale Y", &tileAttributes.scaleY, 1, 10);
 
@@ -422,17 +444,11 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				}
 			}
 
-			ImGui::Text("Sprite");
-			//clamping to prevent division by 0 at tileset window
-			if (ImGui::InputInt("Tile X", &tileAttributes.mouseRectX, 8, 8)) {
-				tileAttributes.mouseRectX = max(8, (tileAttributes.mouseRectX / 8) * 8);
-			}
-			if (ImGui::InputInt("Tile Y", &tileAttributes.mouseRectY, 8, 8)) {
-				tileAttributes.mouseRectY = max(8, (tileAttributes.mouseRectY / 8) * 8);
-			}
 
 			if (tileWindow) {
 				mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
+				mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
+				mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
 			}
 
 			if (CheckTransform()) {
