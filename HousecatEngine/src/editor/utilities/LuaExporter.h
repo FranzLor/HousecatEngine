@@ -107,7 +107,7 @@ void LuaExporter::WriteStartTable(TName name, bool quoted, std::fstream& file) {
 	Write('[', file);
 	
 	if (quoted) {
-		std::cout << "Quoted" << std::endl;
+		std::cout << "quoted" << std::endl;
 	}
 	else {
 		Write(name, file);

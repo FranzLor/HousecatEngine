@@ -97,6 +97,7 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 	LuaExporter luaExporter;
 
 	luaExporter.StartDocument();
+
 	luaExporter.SeparationLine(projectFile);
 	luaExporter.CommentLine("", projectFile);
 	luaExporter.SeparationLine(projectFile);
@@ -113,6 +114,7 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 		luaExporter.EndTable(false, projectFile);
 		numAssets++;
 	}
+	
 	luaExporter.EndTable(false, projectFile);
 
 	//map
@@ -129,8 +131,10 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 	luaExporter.WriteKeyAndUnquotedValue("canvas_width", canvasWidth, projectFile, false, false);
 	luaExporter.WriteKeyAndUnquotedValue("canvas_height", canvasHeight, projectFile, false, false);
 	luaExporter.WriteKeyAndUnquotedValue("tile_size", tileSize, projectFile, false, false);
+
 	luaExporter.EndTable(false, projectFile);
 	luaExporter.EndTable(false, projectFile);
+
 	luaExporter.EndDocument(projectFile);
 
 	projectFile.close();
@@ -153,87 +157,86 @@ void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::
 
 	project.open(fileName, std::abs(std::ios::out | std::ios::trunc));
 
-	if (project.is_open()) {
-		LuaExporter luaExport;
-
-		luaExport.StartDocument();
-
-		luaExport.SeparationLine(project);
-		luaExport.CommentLine("", project);
-		luaExport.SeparationLine(project);
-
-		luaExport.WriteWords("return {", project, true);
-		luaExport.WriteKeyAndUnquotedValue("id", "id", project, false, false);
-		luaExport.WriteKeyAndUnquotedValue("name", "", project, false, false);
-		luaExport.WriteKeyAndUnquotedValue("tileWidth", tileSize, project, false, false);
-		luaExport.WriteKeyAndUnquotedValue("tileHeight", tileSize, project, false, false);
-
-		if (Housecat::GetInstance().IsThereGroup("tiles")) {
-			int i = 1;
-
-			for (const auto& tile : Housecat::GetInstance().GetGroup("tiles")) {
-				luaExport.WriteStartTable(i, false, project);
-				luaExport.DeclareTable("components", project);
-
-				if (tile.HasComponent<TransformComponent>()) {
-					const auto& transform = tile.GetComponent<TransformComponent>();
-
-					luaExport.DeclareTable("transform", project);
-					luaExport.DeclareTable("position", project);
-					luaExport.WriteKeyAndValue("x", transform.position.x, false, project);
-					luaExport.WriteKeyAndValue("y", transform.position.x, true, project);
-
-					luaExport.EndTable(true, project);
-
-					luaExport.DeclareTable("scale", project);
-					luaExport.WriteKeyAndValue("x", transform.scale.x, false, project);
-					luaExport.WriteKeyAndValue("y", transform.scale.y, true, project);
-
-					luaExport.EndTable(true, project);
-
-					luaExport.WriteKeyAndUnquotedValue("rotation", transform.rotation, project, false, false);
-					luaExport.EndTable(false, project);
-				}
-
-				if (tile.HasComponent<SpriteComponent>()) {
-					const auto& sprite = tile.GetComponent<SpriteComponent>();
-
-					std::string fixed = "false";
-
-					if (sprite.isFixed) {
-						fixed = "true";
-					}
-
-					luaExport.DeclareTable("sprite", project);
-
-					luaExport.WriteKeyAndQuotedValue("asset_id", sprite.assetID, project);
-					luaExport.WriteKeyAndValue("width", sprite.width, false, project);
-					luaExport.WriteKeyAndValue("height", sprite.height, false, project);
-					luaExport.WriteKeyAndValue("z_index", sprite.zIndex, false, project);
-					luaExport.WriteKeyAndValue("is_fixed", fixed, true, project);
-
-					luaExport.DeclareTable("src_rect", project);
-					luaExport.WriteKeyAndValue("x", sprite.srcRect.x, false, project);
-					luaExport.WriteKeyAndValue("y", sprite.srcRect.y, true, project);
-					luaExport.EndTable(true, project);
-					luaExport.EndTable(false, project);
-				}
-
-				luaExport.EndTable(false, project);
-				luaExport.EndTable(false, project);
-				i++;
-			}
-		}
-
-		luaExport.EndTable(false, project);
-		luaExport.EndTable(false, project);
-		luaExport.EndDocument(project);
-		luaExport.WriteWords("end", project);
-		project.close();
-	}
-	else {
+	if (!project.is_open()) {
 		return;
 	}
+	LuaExporter luaExport;
+
+	luaExport.StartDocument();
+
+	luaExport.SeparationLine(project);
+	luaExport.CommentLine("", project);
+	luaExport.SeparationLine(project);
+
+	luaExport.WriteWords("return {", project, true);
+	luaExport.WriteKeyAndUnquotedValue("id", "id", project, false, false);
+	luaExport.WriteKeyAndUnquotedValue("name", "", project, false, false);
+	luaExport.WriteKeyAndUnquotedValue("tileWidth", tileSize, project, false, false);
+	luaExport.WriteKeyAndUnquotedValue("tileHeight", tileSize, project, false, false);
+
+	luaExport.DeclareTable("tiles", project);
+	if (Housecat::GetInstance().IsThereGroup("tiles")) {
+		int i = 1;
+
+		for (const auto& tile : Housecat::GetInstance().GetGroup("tiles")) {
+			luaExport.WriteStartTable(i, false, project);
+			luaExport.DeclareTable("components", project);
+
+			if (tile.HasComponent<TransformComponent>()) {
+				const auto& transform = tile.GetComponent<TransformComponent>();
+
+				luaExport.DeclareTable("transform", project);
+				luaExport.DeclareTable("position", project);
+				luaExport.WriteKeyAndValue("x", transform.position.x, false, project);
+				luaExport.WriteKeyAndValue("y", transform.position.x, true, project);
+
+				luaExport.EndTable(true, project);
+
+				luaExport.DeclareTable("scale", project);
+				luaExport.WriteKeyAndValue("x", transform.scale.x, false, project);
+				luaExport.WriteKeyAndValue("y", transform.scale.y, true, project);
+
+				luaExport.EndTable(true, project);
+
+				luaExport.WriteKeyAndUnquotedValue("rotation", transform.rotation, project, false, false);
+				luaExport.EndTable(false, project);
+			}
+
+			if (tile.HasComponent<SpriteComponent>()) {
+				const auto& sprite = tile.GetComponent<SpriteComponent>();
+
+				std::string fixed = "false";
+
+				if (sprite.isFixed) {
+					fixed = "true";
+				}
+
+				luaExport.DeclareTable("sprite", project);
+
+				luaExport.WriteKeyAndQuotedValue("asset_id", sprite.assetID, project);
+				luaExport.WriteKeyAndValue("width", sprite.width, false, project);
+				luaExport.WriteKeyAndValue("height", sprite.height, false, project);
+				luaExport.WriteKeyAndValue("z_index", sprite.zIndex, false, project);
+				luaExport.WriteKeyAndValue("is_fixed", fixed, true, project);
+
+				luaExport.DeclareTable("src_rect", project);
+				luaExport.WriteKeyAndValue("x", sprite.srcRect.x, false, project);
+				luaExport.WriteKeyAndValue("y", sprite.srcRect.y, true, project);
+				luaExport.EndTable(true, project);
+				luaExport.EndTable(false, project);
+			}
+
+			luaExport.EndTable(false, project);
+			luaExport.EndTable(false, project);
+			i++;
+		}
+	}
+
+	luaExport.EndTable(false, project);
+	luaExport.EndTable(false, project);
+	luaExport.EndDocument(project);
+	luaExport.WriteWords("end", project);
+	project.close();
 }
 
 

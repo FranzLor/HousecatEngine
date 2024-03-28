@@ -3,11 +3,11 @@
 
 LuaExporter::LuaExporter()
 	: indent(0),
+	separator(','),
 	newLine(false), 
 	valueWritten(false),
 	suppress(false),
-	minimize(false),
-	separator(',') {
+	minimize(false) {
 
 }
 
