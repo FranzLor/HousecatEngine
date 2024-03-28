@@ -55,6 +55,8 @@ void EditorUIManager::InitImGui() {
 	ImGui::CreateContext();
 
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
+	//used for new project popup
+	ImFont* robotoFontLarge = IO.Fonts->AddFontFromFileTTF("assets/fonts/roboto.regular.ttf", 30);
 
 
 	//ImGui UI styling
@@ -505,17 +507,42 @@ void EditorUIManager::OpenNewWindow() {
 		return;
 	}
 
-	if (ImGui::Begin("New Canvas")) {
-		ImGui::Text("Are you sure?");
+	//centering window
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	ImGui::SetNextWindowSize(ImVec2(330, 190));
+	ImGuiWindowFlags newWindowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove;
+
+	if (ImGui::Begin("New Project", nullptr, newWindowFlags)) {
+		//padding for top
+		ImGui::Dummy(ImVec2(0.0f, 30.0f));
+		
+		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
+		//center text
+		ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Create New Project?").x) * 0.5f);
+		ImGui::Text("Create New Project?");
+		ImGui::PopFont();
+
 		ImGui::Spacing();
 
-		if (ImGui::Button("Yes")) {
+		//calc button pos
+		float buttonWidth = 100;
+		float buttonHeight = 0;
+		float totalWidth = 2 * buttonWidth + ImGui::GetStyle().ItemSpacing.x;
+		float buttonPosX = (ImGui::GetWindowSize().x - totalWidth) * 0.5f;
+
+		ImGui::SetCursorPosX(buttonPosX);
+		if (ImGui::Button("Yes", ImVec2(buttonWidth, buttonHeight))) {
 			newCanvas = true;
 		}
-		ImGui::SameLine();
-		if (ImGui::Button("No")) {
+
+		ImGui::SameLine(0, 10);
+
+		if (ImGui::Button("No", ImVec2(buttonWidth, buttonHeight))) {
 			isNewFile = false;
 		}
+
 		ImGui::End();
 	}
 
