@@ -18,6 +18,7 @@
 
 Editor::Editor()
 	: isRunning(true),
+	isDarkMode(false),
 	millisecsPreviousFrame(0),
 	deltaTime(0.0f),
 	zoom(1),
@@ -207,6 +208,15 @@ void Editor::Update() {
 
 	Housecat::GetInstance().Update();
 
+	//styling - dark mode
+	if (Housecat::GetInstance().GetSystem<EditorUIRendering>().GetDarkMode()) {
+		isDarkMode = true;
+	}
+	//light mode
+	else {
+		isDarkMode = false;
+	}
+
 	if (Housecat::GetInstance().GetSystem<EditorUIRendering>().GetExit()) {
 		isRunning = false;
 	}
@@ -214,7 +224,13 @@ void Editor::Update() {
 
 
 void Editor::Render() {
-	SDL_SetRenderDrawColor(editorRenderer.get(), 185, 194, 202, 255);
+	//styling
+	if (!isDarkMode) {
+		SDL_SetRenderDrawColor(editorRenderer.get(), 185, 194, 202, 255);
+	}
+	else {
+		SDL_SetRenderDrawColor(editorRenderer.get(), 45, 51, 56, 255);
+	}
 	SDL_RenderClear(editorRenderer.get());
 
 	//render editor

@@ -34,6 +34,7 @@ EditorUIRendering::EditorUIRendering()
 	gridY(0),
 	gridSnap(true),
 	gridShow(true),
+	isDarkMode(false),
 	isExit(false) {
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
@@ -97,6 +98,9 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 			ImGui::Checkbox(" " ICON_FA_HAND_POINTER " Snap to Grid", &gridSnap);
 
+			ImGui::Spacing();
+
+			ImGui::Checkbox(" " ICON_FA_EYE " Dark Mode", &isDarkMode);
 
 			ImGui::EndMenu();
 		}
@@ -228,6 +232,14 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	else {
 		mouse->MouseOverWindow(false);
 	}
+	
+	GetDarkMode();
+	if (isDarkMode) {
+		editorUIManager->DarkMode();
+	}
+	else {
+		editorUIManager->LightMode();
+	}
 
 	SetExit(editorUIManager->GetExit());
 
@@ -308,16 +320,28 @@ void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera)
 		//center in middle
 		AddSpacing(38);
 
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Grid: %d, %d", gridX, gridY);
+		ImVec4 lightBlue = ImVec4(0.24f, 0.52f, 0.88f, 1.0f);
+		ImVec4 black = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 
-		AddSpacing(4);
+		ImVec4 textColor = (gridSnap && !isDarkMode) ? black : lightBlue;
 
-		if (gridSnap) {
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Mouse Tile: %d, %d", tileSize * gridX, tileSize * gridY);
+
+		if (gridSnap)  {
+			ImGui::TextColored(textColor, "Grid: %d, %d", gridX, gridY);
+
+			AddSpacing(4);
+
+			ImGui::TextColored(
+				isDarkMode ? lightBlue : black, 
+				"Mouse Tile: %d, %d", 
+				tileSize * gridX,
+				tileSize * gridY
+			);
 		}
 		else {
-			ImGui::TextColored(ImVec4
-				(0, 0, 0, 1),
+			AddSpacing(4);
+			ImGui::TextColored(
+				textColor,
 				"Mouse Tile: %d, %d", 
 				static_cast<int>(mouse->GetMousePosition().x),
 				static_cast<int>(mouse->GetMousePosition().y)

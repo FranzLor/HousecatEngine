@@ -57,8 +57,10 @@ void EditorUIManager::InitImGui() {
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 	//used for new project popup
 	ImFont* robotoFontLarge = IO.Fonts->AddFontFromFileTTF("assets/fonts/roboto.regular.ttf", 30);
+	LightMode();
+}
 
-
+void EditorUIManager::LightMode() {
 	//ImGui UI styling
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -120,7 +122,12 @@ void EditorUIManager::InitImGui() {
 	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
 	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
 	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+}
 
+void EditorUIManager::DarkMode() {
+	//ImGui UI styling
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImGui::StyleColorsDark();
 }
 
 //TODO

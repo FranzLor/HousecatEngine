@@ -30,6 +30,8 @@ private:
 
 	bool isRunning;
 
+	bool isDarkMode;
+
 	float zoom;
 
 	SDL_Rect mouseTile;
@@ -58,6 +60,14 @@ private:
 
 	void CameraController(SDL_Event& event);
 	void KeyboardCameraController(SDL_Event& event);
+
+	inline const bool& GetDarkMode() const {
+		return isDarkMode; 
+	}
+
+	inline void SetDarkMode(bool darkMode) {
+		isDarkMode = darkMode;
+	}
 
 public:
 	Editor();

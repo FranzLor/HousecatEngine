@@ -29,6 +29,8 @@ private:
 	bool gridSnap;
 	bool gridShow;
 
+	bool isDarkMode;
+
 	bool isExit;
 	
 
@@ -40,6 +42,10 @@ private:
 	sol::state lua;
 
 	const bool MouseOutOfBounds() const;
+
+	void SetDarkMode(bool darkMode) {
+		isDarkMode = darkMode;
+	}
 
 	void SetExit(bool exit) {
 		isExit = exit;
@@ -68,6 +74,10 @@ public:
 
 	inline const bool& GetTileset() const {
 		return isTilesetLoaded;
+	}
+
+	inline const bool& GetDarkMode() const {
+		return isDarkMode;
 	}
 
 	inline const bool& GetExit() const {
