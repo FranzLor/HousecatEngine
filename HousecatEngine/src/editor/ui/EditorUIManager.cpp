@@ -371,7 +371,6 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 		//restore original spacing
 		style.ItemSpacing.x = originalItemSpacing;
 	}
-
 	ImGui::End();
 }
 
@@ -464,11 +463,9 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
 				mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
 			}
-
-			ImGui::End();
-
 		}
 	}
+	ImGui::End();
 }
 
 void EditorUIManager::TilesetLayers(const AssetManagerPtr& assetManager) {
