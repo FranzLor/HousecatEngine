@@ -65,6 +65,8 @@ private:
 
 	std::shared_ptr<class Mouse> mouse;
 
+
+
 public:
 	EditorUIManager(class std::shared_ptr<Mouse>& mouse);
 	~EditorUIManager();
@@ -135,6 +137,9 @@ public:
 	void Shortcuts(EditorRenderer& renderer,  const AssetManagerPtr& assetManager,
 		std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua);
 
+	void LightMode();
+
+	void DarkMode();
 	
 	//exit
 	const bool& GetExit() const {

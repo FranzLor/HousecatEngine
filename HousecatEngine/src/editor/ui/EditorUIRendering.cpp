@@ -34,6 +34,7 @@ EditorUIRendering::EditorUIRendering()
 	gridY(0),
 	gridSnap(true),
 	gridShow(true),
+	isDarkMode(false),
 	isExit(false) {
 
 	canvas = std::make_shared<EditorCanvas>(canvasWidth, canvasHeight);
@@ -97,6 +98,9 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 			ImGui::Checkbox(" " ICON_FA_HAND_POINTER " Snap to Grid", &gridSnap);
 
+			ImGui::Spacing();
+
+			ImGui::Checkbox(" " ICON_FA_EYE " Dark Mode", &isDarkMode);
 
 			ImGui::EndMenu();
 		}
@@ -228,6 +232,14 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	else {
 		mouse->MouseOverWindow(false);
 	}
+	
+	GetDarkMode();
+	if (isDarkMode) {
+		editorUIManager->DarkMode();
+	}
+	else {
+		editorUIManager->LightMode();
+	}
 
 	SetExit(editorUIManager->GetExit());
 
@@ -243,28 +255,43 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 	int xTiles = canvas->GetCanvasWidth() / tileSize;
 	int yTiles = canvas->GetCanvasHeight() / tileSize;
 
-
+	//grid lines
 	if (gridShow) {
-		
-		SDL_SetRenderDrawColor(renderer.get(), 140, 140, 140, SDL_ALPHA_OPAQUE);
+		SDL_SetRenderDrawColor(renderer.get(), 61, 132, 224, SDL_ALPHA_OPAQUE);
 
 		//vertical
-		for (int i = 0; i <= xTiles; i++) {
+		for (int i = 0; i < xTiles; i++) {
 			int x = std::floor(i * tileSize * zoom) - camera.x;
 			SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, (yTiles * tileSize * zoom) - camera.y);
 		}
 
 		//horizontal
-		for (int j = 0; j <= yTiles; j++) {
+		for (int j = 0; j < yTiles; j++) {
 			int y = std::floor(j * tileSize * zoom) - camera.y;
 			SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, (xTiles * tileSize * zoom) - camera.x, y);
 		}
 	}
 
-	//boundary
-	SDL_SetRenderDrawColor(renderer.get(), 37, 39, 41, SDL_ALPHA_OPAQUE);
+	//boundary styling
+	if (!isDarkMode) {
+		SDL_SetRenderDrawColor(renderer.get(), 37, 39, 41, SDL_ALPHA_OPAQUE);
+	}
+	else {
+		SDL_SetRenderDrawColor(renderer.get(), 218, 216, 214, SDL_ALPHA_OPAQUE);
+	}
+
+	//TODO
+	//imgui button option -> changeable thickness w/ slider
+	//thiccness
+	float boundaryThickness = 1.8f;
+
 	SDL_Rect boundaryRect = { 0 - camera.x, 0 - camera.y, xTiles * tileSize * zoom, yTiles * tileSize * zoom };
-	SDL_RenderDrawRect(renderer.get(), &boundaryRect);
+
+	//expands boundary outside
+	for (float i = 0.0f; i < boundaryThickness; ++i) {
+		SDL_Rect expandedBoundary = { boundaryRect.x - i, boundaryRect.y - i, boundaryRect.w + i * 2.0f, boundaryRect.h + i * 2.0f };
+		SDL_RenderDrawRect(renderer.get(), &expandedBoundary);
+	}
 }
 
 
@@ -308,16 +335,28 @@ void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera)
 		//center in middle
 		AddSpacing(38);
 
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Grid: %d, %d", gridX, gridY);
+		ImVec4 lightBlue = ImVec4(0.24f, 0.52f, 0.88f, 1.0f);
+		ImVec4 black = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 
-		AddSpacing(4);
+		ImVec4 textColor = (gridSnap && !isDarkMode) ? black : lightBlue;
 
-		if (gridSnap) {
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Mouse Tile: %d, %d", tileSize * gridX, tileSize * gridY);
+
+		if (gridSnap)  {
+			ImGui::TextColored(textColor, "Grid: %d, %d", gridX, gridY);
+
+			AddSpacing(4);
+
+			ImGui::TextColored(
+				isDarkMode ? lightBlue : black, 
+				"Mouse Tile: %d, %d", 
+				tileSize * gridX,
+				tileSize * gridY
+			);
 		}
 		else {
-			ImGui::TextColored(ImVec4
-				(0, 0, 0, 1),
+			AddSpacing(4);
+			ImGui::TextColored(
+				textColor,
 				"Mouse Tile: %d, %d", 
 				static_cast<int>(mouse->GetMousePosition().x),
 				static_cast<int>(mouse->GetMousePosition().y)

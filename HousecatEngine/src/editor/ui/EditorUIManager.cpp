@@ -57,8 +57,10 @@ void EditorUIManager::InitImGui() {
 	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 	//used for new project popup
 	ImFont* robotoFontLarge = IO.Fonts->AddFontFromFileTTF("assets/fonts/roboto.regular.ttf", 30);
+	LightMode();
+}
 
-
+void EditorUIManager::LightMode() {
 	//ImGui UI styling
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -80,7 +82,7 @@ void EditorUIManager::InitImGui() {
 	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
 	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
-	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
+	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.16f, 0.29f, 0.48f, 1.00f);
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 0.94f);
 
 	style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
@@ -120,7 +122,12 @@ void EditorUIManager::InitImGui() {
 	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
 	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
 	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+}
 
+void EditorUIManager::DarkMode() {
+	//ImGui UI styling
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImGui::StyleColorsDark();
 }
 
 //TODO
@@ -364,7 +371,6 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 		//restore original spacing
 		style.ItemSpacing.x = originalItemSpacing;
 	}
-
 	ImGui::End();
 }
 
@@ -457,11 +463,9 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 				mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
 				mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
 			}
-
-			ImGui::End();
-
 		}
 	}
+	ImGui::End();
 }
 
 void EditorUIManager::TilesetLayers(const AssetManagerPtr& assetManager) {
