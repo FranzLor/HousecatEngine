@@ -34,6 +34,8 @@ EditorUIRendering::EditorUIRendering()
 	gridY(0),
 	gridSnap(true),
 	gridShow(true),
+	isClearPopup(false),
+	isCleared(false),
 	isDarkMode(false),
 	isExit(false) {
 
@@ -84,7 +86,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			ImGui::Spacing();
 
 			if (ImGui::MenuItem(ICON_FA_TRASH "   Clear Canvas")) {
-				ClearCanvas();
+				isCleared = true;
 			}
 			ImGui::EndMenu();
 		}
@@ -168,6 +170,8 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 	editorUIManager->OpenNewWindow();
 
+	ClearPopup();
+
 	if (editorUIManager->FileReset()) {
 		CreateNewCanvas();
 		editorUIManager->SetFileReset(false);
@@ -193,7 +197,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			else if (editorUIManager->IsFillToolActive()) {
 				mouse->FillTiles(renderer, assetManager, camera, mouseTile, event, *canvas);
 			}
-			
+
 
 		}
 
@@ -232,7 +236,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	else {
 		mouse->MouseOverWindow(false);
 	}
-	
+
 	GetDarkMode();
 	if (isDarkMode) {
 		editorUIManager->DarkMode();
@@ -308,6 +312,57 @@ void EditorUIRendering::CreateNewCanvas() {
 	editManager->Clear();
 }
 
+void EditorUIRendering::ClearPopup() {
+	if (!isCleared) {
+		return;
+	}
+
+	//centering window
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	ImGui::SetNextWindowSize(ImVec2(330, 190));
+	ImGuiWindowFlags newWindowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove;
+
+	if (ImGui::Begin("Clear Popup", nullptr, newWindowFlags)) {
+		//padding for top
+		ImGui::Dummy(ImVec2(0.0f, 30.0f));
+
+		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
+		//center text
+		ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Clear Canvas?").x) * 0.5f);
+		ImGui::Text("Clear Canvas?");
+		ImGui::PopFont();
+
+		ImGui::Spacing();
+
+		//calc button pos
+		float buttonWidth = 100;
+		float buttonHeight = 0;
+		float totalWidth = 2 * buttonWidth + ImGui::GetStyle().ItemSpacing.x;
+		float buttonPosX = (ImGui::GetWindowSize().x - totalWidth) * 0.5f;
+
+		ImGui::SetCursorPosX(buttonPosX);
+		if (ImGui::Button("Yes", ImVec2(buttonWidth, buttonHeight))) {
+			isClearPopup = true;
+		}
+
+		ImGui::SameLine(0, 10);
+
+		if (ImGui::Button("No", ImVec2(buttonWidth, buttonHeight))) {
+			isCleared = false;
+		}
+
+		ImGui::End();
+	}
+
+	if (isClearPopup) {
+		ClearCanvas();
+		isClearPopup = false;
+		isCleared = false;
+	}
+}
+
 void EditorUIRendering::ClearCanvas() {
 	for (auto& entity : GetSystemEntities()) {
 		entity.Kill();
@@ -321,17 +376,17 @@ void EditorUIRendering::UpdateCanvas() {
 
 void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera) {
 	//center mouse coords.
-	auto AddSpacing = [](int count) { 
+	auto AddSpacing = [](int count) {
 		for (int i = 0; i < count; i++) {
-			ImGui::Spacing(); 
-		} 
-	};
+			ImGui::Spacing();
+		}
+		};
 
 	//show mouse on canvas
 	if (!mouse->MouseOutOfBounds() && (createTiles)) {
 		gridX = static_cast<int>(mouse->GetMousePosition().x) / tileSize;
 		gridY = static_cast<int>(mouse->GetMousePosition().y) / tileSize;
-		
+
 		//center in middle
 		AddSpacing(38);
 
@@ -341,14 +396,14 @@ void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera)
 		ImVec4 textColor = (gridSnap && !isDarkMode) ? black : lightBlue;
 
 
-		if (gridSnap)  {
+		if (gridSnap) {
 			ImGui::TextColored(textColor, "Grid: %d, %d", gridX, gridY);
 
 			AddSpacing(4);
 
 			ImGui::TextColored(
-				isDarkMode ? lightBlue : black, 
-				"Mouse Tile: %d, %d", 
+				isDarkMode ? lightBlue : black,
+				"Mouse Tile: %d, %d",
 				tileSize * gridX,
 				tileSize * gridY
 			);
@@ -357,7 +412,7 @@ void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera)
 			AddSpacing(4);
 			ImGui::TextColored(
 				textColor,
-				"Mouse Tile: %d, %d", 
+				"Mouse Tile: %d, %d",
 				static_cast<int>(mouse->GetMousePosition().x),
 				static_cast<int>(mouse->GetMousePosition().y)
 			);
