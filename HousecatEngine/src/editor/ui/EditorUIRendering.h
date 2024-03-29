@@ -9,7 +9,7 @@
 #include "../../ecs/ECS.h"
 #include "../../assetmanager/AssetManager.h"
 
-class EditorUIRendering: public System {
+class EditorUIRendering : public System {
 private:
 	int canvasWidth;
 	int canvasHeight;
@@ -29,10 +29,13 @@ private:
 	bool gridSnap;
 	bool gridShow;
 
+	bool isClearPopup;
+	bool isCleared;
+
 	bool isDarkMode;
 
 	bool isExit;
-	
+
 
 	std::shared_ptr<class EditorCanvas> canvas;
 	std::shared_ptr<class EditorUIManager> editorUIManager;
@@ -68,6 +71,8 @@ public:
 
 	void UpdateCanvas();
 
+	void ClearPopup();
+
 	void ClearCanvas();
 
 	void ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera);
@@ -83,7 +88,7 @@ public:
 	inline const bool& GetExit() const {
 		return isExit;
 	}
-	
+
 
 };
 
