@@ -82,7 +82,7 @@ void EditorUIManager::LightMode() {
 	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
 	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
-	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.576f, 0.612f, 0.639f, 1.00f);
+	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.16f, 0.29f, 0.48f, 1.00f);
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 0.94f);
 
 	style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
