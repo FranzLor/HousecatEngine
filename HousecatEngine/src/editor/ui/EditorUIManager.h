@@ -85,6 +85,9 @@ public:
 
 	void ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager);
 
+	void ShowMapMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager);
+
+
 	//TODO
 	//file management
 	void NewProject();
