@@ -43,7 +43,7 @@
 #include "../systems/RenderHealthSystem.h"
 #include "../systems/RenderImGuiSystem.h"
 #include "../systems/SoundSystem.h"
-
+#include "../systems/ScriptSystem.h"
 
 int Game::windowWidth;
 int Game::windowHeight;
@@ -208,8 +208,11 @@ void Game::Setup() {
 	housecat->AddSystem<RenderTextSystem>();
 	housecat->AddSystem<RenderHealthSystem>();
 	housecat->AddSystem<RenderImGuiSystem>();
+	housecat->AddSystem<ScriptSystem>();
 
 	housecat->AddSystem<SoundSystem>(eventManager, assetManager);
+
+	housecat->GetSystem<ScriptSystem>().LuaBinding(lua);
 
 	lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::os);
 	levelManager->LoadLevel(housecat, rendererGame, assetManager, lua, 1);
@@ -245,6 +248,7 @@ void Game::Update() {
 	housecat->GetSystem<CollisionSystem>().Update(eventManager);
 	//housecat->GetSystem<DamageSystem>().Update();
 	housecat->GetSystem<CameraMovementSystem>().Update(camera);
+	housecat->GetSystem<ScriptSystem>().Update(deltaTime, SDL_GetTicks());
 }
 
 void Game::Render() {

@@ -2,6 +2,8 @@
 --            LUA SCRIPT TEST                --
 -----------------------------------------------
 
+--local
+local map_
 
 --define your LEVEL as a table
 Level = {
@@ -51,7 +53,7 @@ Level = {
         --tileset
         tilePerRow = 10
     },
-
+    
 
 
     ----------------------------------------------------
@@ -154,7 +156,7 @@ Level = {
                 },
 
                 rigidbody = {
-                    velocity = { x = 0.0, y = 0.0 }
+                    velocity = { x = 0.0, y = 50.0 }
                 },
 
                 animation = {
@@ -180,7 +182,24 @@ Level = {
                     isFriendly = false,
 	                hitDamage = 20,
 	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        -- this function makes the fighter jet move up and down the map shooting projectiles
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        -- if it reaches the top or the bottom of the map
+                        if current_position_y < 10  or current_position_y > map_height - 32 then
+                            set_velocity(entity, 0, current_velocity_y * -1); -- flip the entity y-velocity
+                        else
+                            set_velocity(entity, 0, current_velocity_y); -- do not flip y-velocity
+                        end
+                    end
                 }
+                
             }
         },
 
@@ -228,6 +247,15 @@ Level = {
                     isFriendly = false,
 	                hitDamage = 20,
 	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function (entity, delta_time, ellapsed_time)
+                        local new_x = ellapsed_time * 0.09
+                        local new_y = 200 + (math.sin(ellapsed_time * 0.001) * 50)
+                        set_position(entity, new_x, new_y)
+                    end
                 }
             }
         },
@@ -1741,4 +1769,10 @@ Level = {
 
 
     }
-} 
+}
+
+
+-- global var
+--for map
+map_width = Level.tilemap.tileCols * Level.tilemap.tileSize * Level.tilemap.tileScale
+map_height = Level.tilemap.tileRows * Level.tilemap.tileSize * Level.tilemap.tileScale

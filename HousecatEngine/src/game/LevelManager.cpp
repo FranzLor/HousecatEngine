@@ -2,6 +2,8 @@
 #include <string>
 #include <sstream>
 
+#include <sol/sol.hpp>
+
 #include "Game.h"
 
 #include "LevelManager.h"
@@ -18,6 +20,7 @@
 #include "../components/DamageAreaComponent.h"
 #include "../components/TextDisplayComponent.h"
 #include "../components/SFXComponent.h"
+#include "../components/ScriptComponent.h"
 
 LevelManager::LevelManager() {}
 
@@ -325,6 +328,13 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 					entity["components"]["sfx"]["loop"].get_or(0),
 					entity["components"]["sfx"]["delay"].get_or(2)
 				);
+			}
+
+			//SCRIPT
+			sol::optional<sol::table> script = entity["components"]["script"];
+			if (script != sol::nullopt) {
+				sol::function function = entity["components"]["script"][0];
+				newEntity.AddComponent<ScriptComponent>(function);
 			}
 		}
 		i++;

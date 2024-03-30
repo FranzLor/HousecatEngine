@@ -906,9 +906,6 @@
     <ClInclude Include="src\editor\utilities\EditTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\editor\utilities\MapManagement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\editor\utilities\ProjectManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -949,6 +946,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\ui\IconsFontAwesome6.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\ScriptComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\systems\ScriptSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1441,9 +1444,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\editor\utilities\EditTile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\editor\utilities\MapManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\editor\utilities\ProjectManagement.cpp">
