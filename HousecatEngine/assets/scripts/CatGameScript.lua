@@ -168,11 +168,11 @@ Level = {
                     isMoving = true
                 },
 
-                boxcollider = {
-                    width = 22,
-                    height = 20,
-                    offset = { x = 20.0, y = 24.0 }
-                },
+--                boxcollider = {
+--                    width = 22,
+--                    height = 20,
+--                    offset = { x = 20.0, y = 24.0 }
+--                },
 
                 health = {
                     healthPercent = 100
@@ -187,15 +187,14 @@ Level = {
                 script = {
                 [0] =
                     function(entity, delta_time, ellapsed_time)
-                        -- this function makes the fighter jet move up and down the map shooting projectiles
                         local current_position_x, current_position_y = get_position(entity)
                         local current_velocity_x, current_velocity_y = get_velocity(entity)
 
-                        -- if it reaches the top or the bottom of the map
-                        if current_position_y < 10  or current_position_y > map_height - 32 then
-                            set_velocity(entity, 0, current_velocity_y * -1); -- flip the entity y-velocity
+                        --define the movement area
+                        if current_position_y < 175  or current_position_y > 520 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
                         else
-                            set_velocity(entity, 0, current_velocity_y); -- do not flip y-velocity
+                            set_velocity(entity, 0, current_velocity_y);
                         end
                     end
                 }
