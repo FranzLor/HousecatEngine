@@ -299,7 +299,8 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 			sol::optional<sol::table> health = entity["components"]["health"];
 			if (health != sol::nullopt) {
 				newEntity.AddComponent<HealthComponent>(
-					static_cast<int>(entity["components"]["health"]["healthPercent"].get_or(100))
+					static_cast<int>(entity["components"]["health"]["healthPercent"].get_or(100)),
+					entity["components"]["health"]["allowText"].get_or(false)
 				);
 			}
 

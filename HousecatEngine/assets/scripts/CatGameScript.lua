@@ -121,7 +121,8 @@ Level = {
 --                },
 
                 health = {
-                    healthPercent = 100
+                    healthPercent = 100,
+                    allowHealth = false
                 },
 
                 camera = {
@@ -175,7 +176,8 @@ Level = {
 --                },
 
                 health = {
-                    healthPercent = 100
+                    healthPercent = 100,
+                    allowHealth = false
                 },
 
                 damageArea = {
