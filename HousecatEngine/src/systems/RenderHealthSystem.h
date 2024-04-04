@@ -27,35 +27,36 @@ public:
 
 			//draws healthbar 
 			SDL_Color healthColor = { 255, 255, 255 };
-			SDL_Color RED = { 255, 0, 0 };
-			SDL_Color YELLOW = { 255, 255, 0 };
-			SDL_Color BLUE = { 0, 0, 255 };
 
 			if (health.healthPercent >= 0 && health.healthPercent < 40) {
-				healthColor = RED;
+				healthColor = health.lowHealth;
 			}
 			if (health.healthPercent >= 40 && health.healthPercent < 80) {
-				healthColor = YELLOW;
+				healthColor = health.mediumHealth;
 			}
 			if (health.healthPercent >= 80 && health.healthPercent <= 100) {
-				healthColor = BLUE;
+				healthColor = health.highHealth;
 			}
 
-			//position health bar
-			int healthBarWidth = 35;
-			int healthBarHeight = 5;
-			int horizontalOffset = 65;
-			int verticalOffset = 0;
-
-			double healthBarPosX = (transform.position.x + (sprite.width * transform.scale.x) - horizontalOffset) - camera.x;
-			double healthBarPosY = (transform.position.y + verticalOffset) - camera.y;
+			double healthBarPosX = (transform.position.x + (sprite.width * transform.scale.x) - health.horizontalOffset) - camera.x;
+			double healthBarPosY = (transform.position.y + health.verticalOffset) - camera.y;
 
 			SDL_Rect healthBarRectangle = {
 				static_cast<int>(healthBarPosX),
 				static_cast<int>(healthBarPosY),
-				static_cast<int>(healthBarWidth * (health.healthPercent / 100.0)),
-				static_cast<int>(healthBarHeight)
+				static_cast<int>(health.healthBarWidth * (health.healthPercent / 100.0)),
+				static_cast<int>(health.healthBarHeight)
 			};
+			SDL_Rect borderRectangle = {
+				healthBarRectangle.x - 1,
+				healthBarRectangle.y - 1,
+				healthBarRectangle.w + 2,
+				healthBarRectangle.h + 2
+			};
+			//render color for border
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_RenderDrawRect(renderer, &borderRectangle);
+			//render color for health
 			SDL_SetRenderDrawColor(renderer, healthColor.r, healthColor.g, healthColor.b, 255);
 			SDL_RenderFillRect(renderer, &healthBarRectangle);
 
