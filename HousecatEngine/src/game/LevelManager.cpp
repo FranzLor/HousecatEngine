@@ -298,9 +298,37 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 			//health
 			sol::optional<sol::table> health = entity["components"]["health"];
 			if (health != sol::nullopt) {
+
+				//lambda for extracting SDL color from lua table / default
+				auto getcolor = [](const sol::table& table, const std::string& key, SDL_Color defaultColor) -> SDL_Color {
+					sol::optional<sol::table> colorTable = table[key];
+					if (!colorTable) return defaultColor;
+
+					SDL_Color color;
+					color.r = (*colorTable).get_or("r", defaultColor.r);
+					color.g = (*colorTable).get_or("g", defaultColor.g);
+					color.b = (*colorTable).get_or("b", defaultColor.b);
+					color.a = (*colorTable).get_or("a", 255); // Assuming default alpha is 255
+					return color;
+				};
+
+				//applying lambda function to extract SDL_Color vals
+				SDL_Color lowHealth = getcolor(*health, "lowHealth", { 255, 0, 0, 255 });
+				SDL_Color mediumHealth = getcolor(*health, "mediumHealth", { 255, 255, 0, 255 });
+				SDL_Color highHealth = getcolor(*health, "highHealth", { 0, 255, 0, 255 });
+
 				newEntity.AddComponent<HealthComponent>(
 					static_cast<int>(entity["components"]["health"]["healthPercent"].get_or(100)),
-					entity["components"]["health"]["allowText"].get_or(false)
+					entity["components"]["health"]["allowText"].get_or(false),
+
+					lowHealth,
+					mediumHealth,
+					highHealth,
+
+					entity["components"]["health"]["healthBarWidth"].get_or(35),
+					entity["components"]["health"]["healthBarHeight"].get_or(5),
+					entity["components"]["health"]["horizontalOffset"].get_or(65),
+					entity["components"]["health"]["verticalOffset"].get_or(0)
 				);
 			}
 

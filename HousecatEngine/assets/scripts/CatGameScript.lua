@@ -115,14 +115,20 @@ Level = {
                 },
 
 --                boxcollider = {
---                    width = 22,
+--                    width = 22, 
 --                    height = 20,
 --                    offset = { x = 16.0, y = 24.0 }
 --                },
 
                 health = {
                     healthPercent = 100,
-                    allowHealth = false
+                    lowHealth = { 255, 0, 0 },
+					mediumHealth = { 255, 255, 0 },
+					highHealth = { 0, 255, 0 },
+					healthBarWidth = 35,
+					healthBarHeight = 5,
+					horizontalOffset = 65,
+					verticalOffset = 0
                 },
 
                 camera = {
@@ -175,10 +181,10 @@ Level = {
 --                    offset = { x = 20.0, y = 24.0 }
 --                },
 
-                health = {
-                    healthPercent = 100,
-                    allowHealth = false
-                },
+--                health = {
+--                    healthPercent = 100,
+--                    allowHealth = false
+--                },
 
                 damageArea = {
                     isFriendly = false,
@@ -240,9 +246,16 @@ Level = {
                     offset = { x = 20.0, y = 24.0 }
                 },
 
-                health = {
-                    healthPercent = 100
-                },
+--                health = {
+--                    healthPercent = 100
+--                    lowHealth = { 255, 0, 0 },
+--					mediumHealth = { 255, 255, 0 },
+--					highHealth = { 0, 255, 0 },
+--					healthBarWidth = 35,
+--					healthBarHeight = 5,
+--					horizontalOffset = 65,
+--					verticalOffset = 0
+--                },
 
                 damageArea = {
                     isFriendly = false,
