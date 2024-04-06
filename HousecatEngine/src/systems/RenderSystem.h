@@ -42,7 +42,7 @@ public:
 			);
 
 			//cull sprites taht are outside the camera view, or not fixed
-			if (isEntityOutsideCameraView && renderableEntity.spriteComponent.isFixed) {
+			if (isEntityOutsideCameraView && !renderableEntity.spriteComponent.isFixed) {
 				continue;
 			}
 

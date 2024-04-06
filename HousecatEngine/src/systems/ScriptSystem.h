@@ -51,6 +51,25 @@ void SetEntityRotation(Entity entity, double rotation) {
 	transform.rotation = rotation;
 }
 
+void SetSpriteFlip(Entity entity, int flipState) {
+	if (!entity.HasComponent<SpriteComponent>()) {
+		return;
+	}
+	auto& sprite = entity.GetComponent<SpriteComponent>();
+	
+	switch (flipState) {
+	case 1:
+		sprite.flip = SDL_FLIP_HORIZONTAL;
+		break;
+	case 2:
+		sprite.flip = SDL_FLIP_VERTICAL;
+		break;
+	default:
+		sprite.flip = SDL_FLIP_NONE;
+		break;
+	}
+}
+
 void SetEntityAnimationFrame(Entity entity, int frame) {
 	if (!entity.HasComponent<AnimationComponent>()) {
 		return;
@@ -82,6 +101,7 @@ public:
 		lua.set_function("set_position", SetEntityPosition);
 		lua.set_function("set_velocity", SetEntityVelocity);
 		lua.set_function("set_rotation", SetEntityRotation);
+		lua.set_function("set_sprite_flip", SetSpriteFlip);
 		lua.set_function("set_animation_frame", SetEntityAnimationFrame);
 	}
 

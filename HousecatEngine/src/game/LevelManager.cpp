@@ -249,7 +249,8 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 					entity["components"]["sprite"]["zIndex"].get_or(1),
 					entity["components"]["sprite"]["fixed"].get_or(false),
 					entity["components"]["sprite"]["srcRectX"].get_or(0),
-					entity["components"]["sprite"]["srcRectY"].get_or(0)
+					entity["components"]["sprite"]["srcRectY"].get_or(0),
+					entity["components"]["sprite"]["flip"].get_or(0)
 				);
 			}
 

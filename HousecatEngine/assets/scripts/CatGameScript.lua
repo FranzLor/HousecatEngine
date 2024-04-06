@@ -145,12 +145,658 @@ Level = {
             }
         },
 
-        --ENEMY
+
+
+
+
+
+        --ENEMY STATIC
+       {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 577, y = 402 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
         {
             group = "enemy",
             components = {
                 transform = {
-                    position = { x = 540, y = 400 },
+                    position = { x = 776, y = 200 },
+                    scale = { x = 2.5, y = 2.5 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+       {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1647, y = 449 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1728, y = 828 },
+                    scale = { x = 1.5, y = 1.5 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1,
+                    flip = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1916, y = 1026 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1217, y = 1066 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1,
+                    flip = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 640, y = 1174 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1,
+                    flip = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 284, y = 1469 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 768, y = 1598 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1594, y = 1537 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1693, y = 2030 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1,
+                    flip = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1729, y = 2235 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1271, y = 2129 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 4,
+                    flip = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1120, y = 2115 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 722, y = 2379 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 261, y = 2370 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "slime",
+                    width = 44,
+                    height = 30,
+                    zIndex = 1,
+                    flip = 1
+                },
+
+                animation = {
+                    numFrames = 10,
+                    frameSpeed = 6
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                }
+            }
+        },
+
+        
+
+
+
+
+
+
+
+
+        --ENEMY MOVING HORIZONTAL
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1800, y = 353 },
                     scale = { x = 2.0, y = 2.0 },
                     rotation = 0.0,
                 },
@@ -159,7 +805,1016 @@ Level = {
                     textureID = "ghost",
                     width = 32,
                     height = 32,
-                    zIndex = 4
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 50.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 1700  or current_position_x > 2050 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1800, y = 645 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 50.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 1795  or current_position_x > 2174 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1100, y = 910 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 100.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 1050  or current_position_x > 1480 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 900, y = 1230 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 50.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 885  or current_position_x > 1555 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 300, y = 1044 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 50.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 213  or current_position_x > 991 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 40, y = 1350 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 100.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 35  or current_position_x > 400 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 640, y = 1475 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 50.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 640  or current_position_x > 1015 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1000, y = 1725 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = -200.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 577  or current_position_x > 1245 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1500, y = 1726 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 100.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 1473  or current_position_x > 2069 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1700, y = 1920 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 50.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 1640  or current_position_x > 2070 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1800, y = 2114 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = -80.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 1664  or current_position_x > 2029 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 400, y = 2200 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = -200.0, y = 0.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_x < 80  or current_position_x > 800 then
+                            set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
+                        end
+                    end
+                }
+                
+            }
+        },
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+        --ENEMY MOVING VERTICAL
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1051, y = 159 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 150.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 160  or current_position_y > 495 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1380, y = 498 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = -50.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 140  or current_position_y > 498 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1569, y = 845 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
                 },
 
                 rigidbody = {
@@ -175,16 +1830,11 @@ Level = {
                     isMoving = true
                 },
 
---                boxcollider = {
---                    width = 22,
---                    height = 20,
---                    offset = { x = 20.0, y = 24.0 }
---                },
-
---                health = {
---                    healthPercent = 100,
---                    allowHealth = false
---                },
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
 
                 damageArea = {
                     isFriendly = false,
@@ -199,7 +1849,137 @@ Level = {
                         local current_velocity_x, current_velocity_y = get_velocity(entity)
 
                         --define the movement area
-                        if current_position_y < 175  or current_position_y > 520 then
+                        if current_position_y < 845  or current_position_y > 1225 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 500, y = 900 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 200.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 900  or current_position_y > 1300 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 500, y = 1369 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 100.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 1369  or current_position_y > 1720 then
                             set_velocity(entity, 0, current_velocity_y * -1);
                         else
                             set_velocity(entity, 0, current_velocity_y);
@@ -210,7 +1990,531 @@ Level = {
             }
         },
 
-        --ENEMY
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 161, y = 1107 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 50.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 1107  or current_position_y > 1637 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1278, y = 1771 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = -50.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 1420  or current_position_y > 1775 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1891, y = 1505 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 200.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 1505  or current_position_y > 2350 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                                --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1567, y = 2143 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 50.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 2140  or current_position_y > 2430 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1413, y = 2200 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 80.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 2140  or current_position_y > 2428 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 1090, y = 2156 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 50.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 2130  or current_position_y > 2430 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 900, y = 2200 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 200.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 2120  or current_position_y > 2420 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+        {
+            group = "enemy",
+            components = {
+                transform = {
+                    position = { x = 495, y = 2096 },
+                    scale = { x = 2.0, y = 2.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "ghost",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2
+                },
+
+                rigidbody = {
+                    velocity = { x = 0.0, y = 50.0 }
+                },
+
+                animation = {
+                    numFrames = 8,
+                    frameSpeed = 10
+                },
+
+                movementState = {
+                    isMoving = true
+                },
+
+                boxcollider = {
+                    width = 22,
+                    height = 20,
+                    offset = { x = 20.0, y = 24.0 }
+                },
+
+                damageArea = {
+                    isFriendly = false,
+	                hitDamage = 20,
+	                damageDelay = 1.0
+                },
+
+                script = {
+                [0] =
+                    function(entity, delta_time, ellapsed_time)
+                        local current_position_x, current_position_y = get_position(entity)
+                        local current_velocity_x, current_velocity_y = get_velocity(entity)
+
+                        --define the movement area
+                        if current_position_y < 2096  or current_position_y > 2460 then
+                            set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                        else
+                            set_velocity(entity, 0, current_velocity_y);
+                        end
+                    end
+                }
+                
+            }
+        },
+
+
+
+
+        --ENEMY SIN
         {
             group = "enemy",
             components = {
