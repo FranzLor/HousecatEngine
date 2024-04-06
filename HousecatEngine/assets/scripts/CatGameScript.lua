@@ -282,7 +282,8 @@ Level = {
                     textureID = "slime",
                     width = 44,
                     height = 30,
-                    zIndex = 1
+                    zIndex = 1,
+                    flip = 1
                 },
 
                 animation = {
@@ -360,7 +361,8 @@ Level = {
                     textureID = "slime",
                     width = 44,
                     height = 30,
-                    zIndex = 1
+                    zIndex = 1,
+                    flip = 1
                 },
 
                 animation = {
@@ -399,7 +401,8 @@ Level = {
                     textureID = "slime",
                     width = 44,
                     height = 30,
-                    zIndex = 1
+                    zIndex = 1,
+                    flip = 1
                 },
 
                 animation = {
@@ -555,7 +558,8 @@ Level = {
                     textureID = "slime",
                     width = 44,
                     height = 30,
-                    zIndex = 1
+                    zIndex = 1,
+                    flip = 1
                 },
 
                 animation = {
@@ -633,7 +637,8 @@ Level = {
                     textureID = "slime",
                     width = 44,
                     height = 30,
-                    zIndex = 4
+                    zIndex = 4,
+                    flip = 1
                 },
 
                 animation = {
@@ -750,7 +755,8 @@ Level = {
                     textureID = "slime",
                     width = 44,
                     height = 30,
-                    zIndex = 1
+                    zIndex = 1,
+                    flip = 1
                 },
 
                 animation = {
@@ -836,8 +842,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 1700  or current_position_x > 2050 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -895,8 +915,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 1795  or current_position_x > 2174 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -954,8 +988,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 1050  or current_position_x > 1480 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1013,8 +1061,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 885  or current_position_x > 1555 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1072,8 +1134,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 213  or current_position_x > 991 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1131,8 +1207,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 35  or current_position_x > 400 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1190,8 +1280,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 640  or current_position_x > 1015 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1249,8 +1353,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 577  or current_position_x > 1245 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1308,8 +1426,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 1473  or current_position_x > 2069 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1367,8 +1499,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 1640  or current_position_x > 2070 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1426,8 +1572,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 1664  or current_position_x > 2029 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1485,8 +1645,22 @@ Level = {
                         --define the movement area
                         if current_position_x < 80  or current_position_x > 800 then
                             set_velocity(entity, current_velocity_x * -1, 0 );
+                            if current_velocity_x * -1 > 0 then
+                                --flip on horizontal axis
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, current_velocity_x, 0);
+                            if current_velocity_x > 0 then
+                                --flip to right
+                                set_sprite_flip(entity, 1);
+                            else
+                                --no flip
+                                set_sprite_flip(entity, 0);
+                            end
                         end
                     end
                 }
@@ -1494,6 +1668,11 @@ Level = {
             }
         },
 
+
+
+
+
+        
 
 
 
@@ -1672,6 +1851,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 845  or current_position_y > 1225 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -1731,6 +1916,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 900  or current_position_y > 1300 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -1849,6 +2040,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 1107  or current_position_y > 1637 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -1967,6 +2164,18 @@ Level = {
                         --define the movement area
                         if current_position_y < 1505  or current_position_y > 2350 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                                --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -2027,6 +2236,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 2140  or current_position_y > 2430 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -2086,6 +2301,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 2140  or current_position_y > 2428 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -2145,6 +2366,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 2130  or current_position_y > 2430 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -2204,6 +2431,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 2120  or current_position_y > 2420 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
@@ -2263,6 +2496,12 @@ Level = {
                         --define the movement area
                         if current_position_y < 2096  or current_position_y > 2460 then
                             set_velocity(entity, 0, current_velocity_y * -1);
+                            --flip sprite vert
+                            if current_velocity_y > 0 then
+                                set_sprite_flip(entity, 1);
+                            else
+                                set_sprite_flip(entity, 0);
+                            end
                         else
                             set_velocity(entity, 0, current_velocity_y);
                         end
