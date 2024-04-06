@@ -21,6 +21,7 @@
 #include "../components/TextDisplayComponent.h"
 #include "../components/SFXComponent.h"
 #include "../components/ScriptComponent.h"
+#include "../components/WinConditionComponent.h"
 
 LevelManager::LevelManager() {}
 
@@ -365,6 +366,11 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 			if (script != sol::nullopt) {
 				sol::function function = entity["components"]["script"][0];
 				newEntity.AddComponent<ScriptComponent>(function);
+			}
+
+			sol::optional<sol::table> winning = entity["components"]["winning"];
+			if (winning != sol::nullopt) {
+				newEntity.AddComponent<WinConditionComponent>();
 			}
 		}
 		i++;

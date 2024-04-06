@@ -44,6 +44,7 @@
 #include "../systems/RenderImGuiSystem.h"
 #include "../systems/SoundSystem.h"
 #include "../systems/ScriptSystem.h"
+#include "../systems/WinConditionSystem.h"
 
 int Game::windowWidth;
 int Game::windowHeight;
@@ -209,6 +210,7 @@ void Game::Setup() {
 	housecat->AddSystem<RenderHealthSystem>();
 	housecat->AddSystem<RenderImGuiSystem>();
 	housecat->AddSystem<ScriptSystem>();
+	housecat->AddSystem<WinConditionSystem>();
 
 	housecat->AddSystem<SoundSystem>(eventManager, assetManager);
 
@@ -237,6 +239,7 @@ void Game::Update() {
 	housecat->GetSystem<KeyboardInputSystem>().ListenToEvents(eventManager);
 	housecat->GetSystem<MovementSystem>().ListenToEvents(eventManager);
 	housecat->GetSystem<SoundSystem>().ListenToEvents(eventManager);
+	housecat->GetSystem<WinConditionSystem>().ListenToEvents(eventManager);
 
 	//update Manager for all entities to be created/killed
 	//(FIXED)
