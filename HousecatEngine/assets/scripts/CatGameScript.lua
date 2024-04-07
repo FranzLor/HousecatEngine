@@ -86,7 +86,7 @@ Level = {
                 },
 
                 transform = {
-                    position = { x = 180, y = 300 },
+                    position = { x = 125, y = 2111 },
                     scale = { x = 3.0, y = 3.0 },
                     rotation = 0.0,
                 },
@@ -145,6 +145,102 @@ Level = {
             }
         },
 
+
+
+
+
+
+        --NPC
+        {
+            group = "npc",
+            components = {
+                transform = {
+                    position = { x = 5, y = 2440 },
+                    scale = { x = 3.0, y = 3.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "npc",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2,
+                    fixed = false,
+                    srcRectX = 0,
+                    srcRectY = 0,
+                    flip = 1
+                },
+
+                animation = {
+                    numFrames = 4,
+                    frameSpeed = 5
+                },
+
+                movementState = {
+                    isMoving = false
+                }
+            }
+        },
+
+        {
+            group = "npc",
+            components = {
+                transform = {
+                    position = { x = 184, y = 2477 },
+                    scale = { x = 3.0, y = 3.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "npc",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2,
+                    fixed = false,
+                    srcRectX = 0,
+                    srcRectY = 0,
+                },
+
+                animation = {
+                    numFrames = 4,
+                    frameSpeed = 5
+                },
+
+                movementState = {
+                    isMoving = false
+                }
+            }
+        },
+
+        {
+            group = "npc",
+            components = {
+                transform = {
+                    position = { x = 100, y = 2477 },
+                    scale = { x = 3.0, y = 3.0 },
+                    rotation = 0.0,
+                },
+
+                sprite = {
+                    textureID = "player",
+                    width = 32,
+                    height = 32,
+                    zIndex = 2,
+                    fixed = false,
+                    srcRectX = 0,
+                    srcRectY = 0
+                },
+
+                animation = {
+                    numFrames = 4,
+                    frameSpeed = 5
+                },
+
+                movementState = {
+                    isMoving = false
+                }
+            }
+        },
 
 
 
@@ -746,7 +842,7 @@ Level = {
             group = "enemy",
             components = {
                 transform = {
-                    position = { x = 261, y = 2370 },
+                    position = { x = 261, y = 2312 },
                     scale = { x = 2.0, y = 2.0 },
                     rotation = 0.0,
                 },
@@ -2516,23 +2612,68 @@ Level = {
 
         --WIN AREA
         {
-            group = "waypoint",
+            group = "win",
             components = {
                 transform = {
-                    position = { x = 0, y = 2366 },
+                    position = { x = 0, y = 2431 },
                     scale = { x = 1.0, y = 1.0 },
                     rotation = 0.0,
                 },
                 boxcollider = {
-                    width = 128,
-                    height = 2366,
+                    width = 256,
+                    height = 2431,
                     offset = { x = 0.0, y = 0.0 }
                 },
                 winning = {
-                
+                --marking
                 }
+
             }
         },
+
+         --WIN TEXT
+        {
+            tag = "winMessage",
+            components = {
+                text = {
+                    fontID = "roboto",
+                    position = {  x = 125, y = 2170 },
+                    isFixed = false,
+                    isVisible = false,
+                    text = "YOU FOUND YOUR COLONY!",
+                    color = { r = 255, g = 255, b = 255, a = 255 }
+                }
+            }
+         },
+
+
+        --TEXT
+        {
+            group = "message",
+            components = {
+                text = {
+                    fontID = "roboto",
+                    position = {  x = 12, y = 144 },
+                    isFixed = false,
+                    text = "Find your colony!",
+                    color = { r = 0, g = 0, b = 0, a = 255 }
+                }
+            }
+         },
+
+         {
+            group = "message",
+            components = {
+                text = {
+                    fontID = "roboto",
+                    position = {  x = 690, y = 329 },
+                    isFixed = false,
+                    text = "Avoid the monsters!",
+                    color = { r = 0, g = 0, b = 0, a = 255 }
+                }
+             }
+         },
+
 
 
 

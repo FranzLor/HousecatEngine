@@ -10,6 +10,8 @@
 #include <iostream>
 
 class WinConditionSystem : public System {
+private:
+    bool winConditionMet = false;
 public:
 	WinConditionSystem() {
 		RequireComponent<WinConditionComponent>();
@@ -21,18 +23,32 @@ public:
 	}
 
     void HandleCollision(CollisionEvent& event) {
+        if (winConditionMet) {
+            return;
+        }
+
         Entity a = event.a;
         Entity b = event.b;
 
         // Check if one of the entities is the player and the other is the win area
         if ((a.HasTag("player") && b.HasComponent<WinConditionComponent>()) ||
             (b.HasTag("player") && a.HasComponent<WinConditionComponent>())) {
-            PlayerWins();
+
+            winConditionMet = true;
+
+            //TODO
+            //stop update
+            auto& housecat = Housecat::GetInstance();
+            for (auto entity : GetSystemEntities()) {
+                auto& text = entity.GetComponent<TextDisplayComponent>();
+                auto& win = entity.GetComponent<WinConditionComponent>();
+                if (entity.HasTag("winMessage")) {
+                    continue;
+				}
+                text.isVisible = true;
+            }
+
         }
     }
 
-    //TODO
-    void PlayerWins() {
-		std::cout << "Player wins!" << std::endl;
-	}
 };

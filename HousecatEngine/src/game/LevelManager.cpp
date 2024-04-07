@@ -310,7 +310,7 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 					color.r = (*colorTable).get_or("r", defaultColor.r);
 					color.g = (*colorTable).get_or("g", defaultColor.g);
 					color.b = (*colorTable).get_or("b", defaultColor.b);
-					color.a = (*colorTable).get_or("a", 255); // Assuming default alpha is 255
+					color.a = (*colorTable).get_or("a", 255);
 					return color;
 				};
 
@@ -368,9 +368,33 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 				newEntity.AddComponent<ScriptComponent>(function);
 			}
 
+			//WIN CONDITION 
 			sol::optional<sol::table> winning = entity["components"]["winning"];
 			if (winning != sol::nullopt) {
 				newEntity.AddComponent<WinConditionComponent>();
+			}
+
+			//TEXT
+			sol::optional<sol::table> text = entity["components"]["text"];
+			if (text != sol::nullopt) {
+				newEntity.AddComponent<TextDisplayComponent>(
+					entity["components"]["text"]["fontID"],
+					glm::vec2(
+						entity["components"]["text"]["position"]["x"],
+						entity["components"]["text"]["position"]["y"]
+					),
+
+					entity["components"]["text"]["isFixed"].get_or(true),
+					entity["components"]["text"]["isVisible"].get_or(true),
+					entity["components"]["text"]["text"],
+
+					SDL_Color{
+						entity["components"]["text"]["color"]["r"],
+						entity["components"]["text"]["color"]["g"],
+						entity["components"]["text"]["color"]["b"],
+						entity["components"]["text"]["color"]["a"]
+					}
+				);
 			}
 		}
 		i++;

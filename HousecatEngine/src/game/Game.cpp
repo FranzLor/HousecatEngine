@@ -198,6 +198,9 @@ void Game::Input() {
 
 
 void Game::Setup() {
+	//assets
+	assetManager->AddFont("roboto", "assets/fonts/roboto.regular.ttf", 30);
+
 	housecat->AddSystem<MovementSystem>();
 	housecat->AddSystem<RenderSystem>();
 	housecat->AddSystem<AnimationSystem>();
@@ -210,6 +213,7 @@ void Game::Setup() {
 	housecat->AddSystem<RenderHealthSystem>();
 	housecat->AddSystem<RenderImGuiSystem>();
 	housecat->AddSystem<ScriptSystem>();
+
 	housecat->AddSystem<WinConditionSystem>();
 
 	housecat->AddSystem<SoundSystem>(eventManager, assetManager);
@@ -218,6 +222,7 @@ void Game::Setup() {
 
 	lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::os);
 	levelManager->LoadLevel(housecat, rendererGame, assetManager, lua, 1);
+
 }
 
 
@@ -278,8 +283,9 @@ void Game::Render() {
 
 
 	}
-	housecat->GetSystem<RenderTextSystem>().Update(rendererGame, assetManager, camera);
 	housecat->GetSystem<RenderHealthSystem>().Update(rendererGame, assetManager, camera);
+	housecat->GetSystem<RenderTextSystem>().Update(rendererGame, assetManager, camera);
+
 	ImGui::EndFrame();
 
 	//render ImGui

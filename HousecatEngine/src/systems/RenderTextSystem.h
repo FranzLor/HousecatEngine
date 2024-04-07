@@ -17,6 +17,10 @@ public:
 		for (auto entity : GetSystemEntities()) {
 			const auto text = entity.GetComponent<TextDisplayComponent>();
 
+			if (!text.isVisible) {
+				continue;
+			}
+
 			SDL_Surface* surface = TTF_RenderText_Blended(
 				assetManager->GetFont(text.assetID),
 				text.text.c_str(),
