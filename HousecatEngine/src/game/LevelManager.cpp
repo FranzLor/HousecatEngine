@@ -385,6 +385,7 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 					),
 
 					entity["components"]["text"]["isFixed"].get_or(true),
+					entity["components"]["text"]["isVisible"].get_or(true),
 					entity["components"]["text"]["text"],
 
 					SDL_Color{
