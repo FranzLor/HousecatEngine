@@ -136,6 +136,7 @@
     <ClInclude Include="libs\imgui\imgui.h" />
     <ClInclude Include="src\components\ScriptComponent.h" />
     <ClInclude Include="src\components\SFXComponent.h" />
+    <ClInclude Include="src\components\WinConditionComponent.h" />
     <ClInclude Include="src\editor\utilities\AddTile.h" />
     <ClInclude Include="src\editor\utilities\editmanager\CompoundEdit.h" />
     <ClInclude Include="src\editor\utilities\editmanager\IEdit.h" />
@@ -446,6 +447,7 @@
     <ClInclude Include="src\systems\RenderTextSystem.h" />
     <ClInclude Include="src\systems\ScriptSystem.h" />
     <ClInclude Include="src\systems\SoundSystem.h" />
+    <ClInclude Include="src\systems\WinConditionSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\scripts\CatGameScript.lua" />

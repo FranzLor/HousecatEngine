@@ -114,11 +114,11 @@ Level = {
                     isMoving = false
                 },
 
---                boxcollider = {
---                    width = 22, 
---                    height = 20,
---                    offset = { x = 16.0, y = 24.0 }
---                },
+                boxcollider = {
+                    width = 22, 
+                    height = 20,
+                    offset = { x = 16.0, y = 24.0 }
+                },
 
                 health = {
                     healthPercent = 100,
@@ -2514,66 +2514,22 @@ Level = {
 
 
 
-        --ENEMY SIN
+        --WIN AREA
         {
-            group = "enemy",
+            group = "waypoint",
             components = {
                 transform = {
-                    position = { x = 800, y = 400 },
-                    scale = { x = 2.0, y = 2.0 },
+                    position = { x = 0, y = 2366 },
+                    scale = { x = 1.0, y = 1.0 },
                     rotation = 0.0,
                 },
-
-                sprite = {
-                    textureID = "slime",
-                    width = 44,
-                    height = 30,
-                    zIndex = 4
-                },
-
-                rigidbody = {
-                    velocity = { x = 0.0, y = 0.0 }
-                },
-
-                animation = {
-                    numFrames = 10,
-                    frameSpeed = 6
-                },
-
-                movementState = {
-                    isMoving = true
-                },
-
                 boxcollider = {
-                    width = 22,
-                    height = 20,
-                    offset = { x = 20.0, y = 24.0 }
+                    width = 128,
+                    height = 2366,
+                    offset = { x = 0.0, y = 0.0 }
                 },
-
---                health = {
---                    healthPercent = 100
---                    lowHealth = { 255, 0, 0 },
---					mediumHealth = { 255, 255, 0 },
---					highHealth = { 0, 255, 0 },
---					healthBarWidth = 35,
---					healthBarHeight = 5,
---					horizontalOffset = 65,
---					verticalOffset = 0
---                },
-
-                damageArea = {
-                    isFriendly = false,
-	                hitDamage = 20,
-	                damageDelay = 1.0
-                },
-
-                script = {
-                [0] =
-                    function (entity, delta_time, ellapsed_time)
-                        local new_x = ellapsed_time * 0.09
-                        local new_y = 200 + (math.sin(ellapsed_time * 0.001) * 50)
-                        set_position(entity, new_x, new_y)
-                    end
+                winning = {
+                
                 }
             }
         },
