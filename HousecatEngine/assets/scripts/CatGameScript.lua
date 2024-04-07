@@ -2516,7 +2516,7 @@ Level = {
 
         --WIN AREA
         {
-            group = "waypoint",
+            group = "message",
             components = {
                 transform = {
                     position = { x = 0, y = 2366 },
@@ -2529,10 +2529,39 @@ Level = {
                     offset = { x = 0.0, y = 0.0 }
                 },
                 winning = {
-                
+                --marking
                 }
             }
         },
+
+
+        --TEXT
+        {
+            group = "waypoint",
+            components = {
+                text = {
+                    fontID = "roboto",
+                    position = {  x = 12, y = 144 },
+                    isFixed = false,
+                    text = "Find a way out!",
+                    color = { r = 0, g = 0, b = 0, a = 255 }
+                }
+            }
+         },
+
+         {
+            group = "message",
+            components = {
+                text = {
+                    fontID = "roboto",
+                    position = {  x = 690, y = 329 },
+                    isFixed = false,
+                    text = "Avoid the monsters!",
+                    color = { r = 0, g = 0, b = 0, a = 255 }
+                }
+             }
+         },
+
 
 
 

@@ -69,6 +69,10 @@ public:
 		return playerEntity;
 	}
 
+	SDL_Rect ReturnCamera() {
+		return camera;
+	}
+
 	void Initialize();
 
 	void Run();
