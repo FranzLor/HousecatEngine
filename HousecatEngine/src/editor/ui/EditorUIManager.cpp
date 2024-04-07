@@ -299,16 +299,16 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 
 		float windowVisibleWidth = ImGui::GetContentRegionAvail().x;
 
-		// Assuming each button + spacing occupies roughly 100 pixels, adjust based on your actual UI
-		float totalButtonsWidth = 3 * 100.0f; // 3 buttons
+		//for 3 buttons
+		float totalButtonsWidth = 3 * 100.0f;
 		float startingPosX = (windowVisibleWidth - totalButtonsWidth) * 0.5f;
-		startingPosX = startingPosX > 0 ? startingPosX : 0; // Ensure startingPosX is not negative
-
-		// Adjust spacing for aesthetics if needed
+		//make sure starting pos is not negative
+		startingPosX = startingPosX > 0 ? startingPosX : 0;
+		//adjust here for spacing
 		float originalItemSpacing = style.ItemSpacing.x;
 		style.ItemSpacing.x = 22.0f;
 
-		// Create initial spacing to center buttons
+		//initial spacing to center buttons
 		ImGui::Dummy(ImVec2(startingPosX, 0));
 		ImGui::SameLine();
 
