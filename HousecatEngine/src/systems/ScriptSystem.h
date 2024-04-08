@@ -105,7 +105,7 @@ public:
 		lua.set_function("set_animation_frame", SetEntityAnimationFrame);
 	}
 
-	void Update(double deltaTime, int ellapsedTime) {
+	void Update(double deltaTime, int ellapsedTime) const {
 		for (auto entity : GetSystemEntities()) {
 			const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
 
