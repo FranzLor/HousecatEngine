@@ -23,6 +23,8 @@ private:
 	bool isDebugRendering;
 	int millisecsPreviousFrame = 0;
 
+	Uint32 quitTime = 0;
+
 	Entity* playerEntity;
 
 	//Main Game window
@@ -47,7 +49,7 @@ private:
 public:
 	Game();
 	~Game();
-
+	
 	const int FPS = 60;
 	const int MILLISECS_PER_FRAME = 1000 / FPS;
 
@@ -72,6 +74,8 @@ public:
 	SDL_Rect ReturnCamera() {
 		return camera;
 	}
+
+	void TriggerGameQuit(Uint32 delayMs);
 
 	void Initialize();
 

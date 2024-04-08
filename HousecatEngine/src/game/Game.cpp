@@ -214,7 +214,7 @@ void Game::Setup() {
 	housecat->AddSystem<RenderImGuiSystem>();
 	housecat->AddSystem<ScriptSystem>();
 
-	housecat->AddSystem<WinConditionSystem>();
+	housecat->AddSystem<WinConditionSystem>(*this);
 
 	housecat->AddSystem<SoundSystem>(eventManager, assetManager);
 
@@ -236,6 +236,11 @@ void Game::Update() {
 	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0;
 	millisecsPreviousFrame = SDL_GetTicks();
 
+	//game quit
+	if (quitTime != 0 && SDL_GetTicks() >= quitTime) {
+		isRunning = false;
+	}
+
 	//resets event handlers for frame
 	eventManager->Reset();
 
@@ -255,9 +260,10 @@ void Game::Update() {
 	housecat->GetSystem<MovementSystem>().Update(deltaTime);
 	housecat->GetSystem<AnimationSystem>().Update();
 	housecat->GetSystem<CollisionSystem>().Update(eventManager);
-	//housecat->GetSystem<DamageSystem>().Update();
 	housecat->GetSystem<CameraMovementSystem>().Update(camera);
 	housecat->GetSystem<ScriptSystem>().Update(deltaTime, SDL_GetTicks());
+	//housecat->GetSystem<DamageSystem>().Update();
+
 }
 
 void Game::Render() {
@@ -304,6 +310,10 @@ void Game::Run() {
 		Update();
 		Render();
 	}
+}
+
+void Game::TriggerGameQuit(Uint32 delayMs) {
+	quitTime = SDL_GetTicks() + delayMs;
 }
 
 void Game::Destroy() {

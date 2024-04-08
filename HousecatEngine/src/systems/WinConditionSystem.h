@@ -11,9 +11,10 @@
 
 class WinConditionSystem : public System {
 private:
-    bool winConditionMet = false;
+    bool winConditionMet = false; 
+    Game& game;
 public:
-	WinConditionSystem() {
+	WinConditionSystem(Game& game) : game(game) {
 		RequireComponent<WinConditionComponent>();
 		RequireComponent<BoxColliderComponent>();
 	}
@@ -34,21 +35,36 @@ public:
         if ((a.HasTag("player") && b.HasComponent<WinConditionComponent>()) ||
             (b.HasTag("player") && a.HasComponent<WinConditionComponent>())) {
 
-            winConditionMet = true;
-
+            
             //TODO
             //stop update
             auto& housecat = Housecat::GetInstance();
             for (auto entity : GetSystemEntities()) {
                 auto& text = entity.GetComponent<TextDisplayComponent>();
-                auto& win = entity.GetComponent<WinConditionComponent>();
                 if (entity.HasTag("winMessage")) {
                     continue;
 				}
                 text.isVisible = true;
+                winConditionMet = true;
+            }
+        }
+
+        if (winConditionMet) {
+            game.TriggerGameQuit(3000);
+            Logger::Log("You Won! \n(Intentional Game Design)");
+		}
+    }
+
+
+    /*void Update() {
+        if (winConditionMet && timeToKill != 0 && SDL_GetTicks() > timeToKill) {
+            for (auto entity : GetSystemEntities()) {
+                entity.Kill();
             }
 
+            winConditionMet = false;
+            timeToKill = 0;
         }
-    }
+    }*/
 
 };
