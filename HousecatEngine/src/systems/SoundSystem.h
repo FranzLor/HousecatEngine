@@ -34,25 +34,23 @@ public:
 
 	void KeyPressed(KeyPressedEvent& event) {
 		if (event.keyPressedSymbol == SDLK_SPACE) {
-			PlaySoundForEvent(event);
-		}
-	}
+			for (auto& entity : GetSystemEntities()) {
+				if (entity.HasTag("player") && entity.HasComponent<SFXComponent>()) {
+					auto& SFX = entity.GetComponent<SFXComponent>();
+					
+					Uint32 currentTime = SDL_GetTicks();
+					Uint32 delayInMS = static_cast<Uint32>(SFX.delay * 1000.0f);
 
-	void PlaySoundForEvent(const KeyPressedEvent& event) {
-		for (auto& entity : GetSystemEntities()) {
-			if (entity.HasTag("player")) {
-				auto& SFX = entity.GetComponent<SFXComponent>();
-				SFX.isPlaying = true;
-				PlaySFX(entity, SFX.soundID);
+					if (currentTime >= SFX.lastPlayed + delayInMS) {
+						PlaySFX(entity, SFX.soundID);
+						SFX.isPlaying = true;
+					}
+				}
 			}
 		}
 	}
 
 	void PlaySFX(Entity& entity, const std::string& soundID) {
-		if (!entity.HasComponent<SFXComponent>()) {
-			return;
-		}
-
 		auto& SFX = entity.GetComponent<SFXComponent>();
 		Uint32 currentTime = SDL_GetTicks();
 
@@ -62,6 +60,7 @@ public:
 			if (currentTime > SFX.lastPlayed + delayInMS) {
 				SFX.lastPlayed = currentTime;
 				assetManager->PlaySound(soundID, SFX.volume, SFX.loop ? -1 : 0);
+				SFX.isPlaying = true;
 				if (!SFX.loop) {
 					SFX.isPlaying = false;
 				}
