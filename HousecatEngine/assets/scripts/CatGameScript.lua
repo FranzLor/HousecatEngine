@@ -151,11 +151,12 @@ Level = {
 
 
         --NPC
+        --LEFT
         {
             group = "npc",
             components = {
                 transform = {
-                    position = { x = 5, y = 2440 },
+                    position = { x = 5, y = 2480 },
                     scale = { x = 3.0, y = 3.0 },
                     rotation = 0.0,
                 },
@@ -166,22 +167,12 @@ Level = {
                     height = 32,
                     zIndex = 2,
                     fixed = false,
-                    srcRectX = 0,
-                    srcRectY = 0,
-                    flip = 1
-                },
-
-                animation = {
-                    numFrames = 4,
-                    frameSpeed = 5
-                },
-
-                movementState = {
-                    isMoving = false
+                    srcRectX = 32,
+                    srcRectY = 32
                 }
             }
         },
-
+        --MIDDLE
         {
             group = "npc",
             components = {
@@ -199,19 +190,10 @@ Level = {
                     fixed = false,
                     srcRectX = 0,
                     srcRectY = 0,
-                },
-
-                animation = {
-                    numFrames = 4,
-                    frameSpeed = 5
-                },
-
-                movementState = {
-                    isMoving = false
                 }
             }
         },
-
+        --RIGHT
         {
             group = "npc",
             components = {
@@ -229,18 +211,11 @@ Level = {
                     fixed = false,
                     srcRectX = 0,
                     srcRectY = 0
-                },
-
-                animation = {
-                    numFrames = 4,
-                    frameSpeed = 5
-                },
-
-                movementState = {
-                    isMoving = false
                 }
             }
         },
+
+
 
 
 
@@ -2619,18 +2594,16 @@ Level = {
                     scale = { x = 1.0, y = 1.0 },
                     rotation = 0.0,
                 },
+
                 boxcollider = {
                     width = 256,
                     height = 2431,
                     offset = { x = 0.0, y = 0.0 }
                 },
-                winning = {
-                --marking
-                }
 
+                winning = {}
             }
         },
-
          --WIN TEXT
         {
             tag = "winMessage",
@@ -2640,11 +2613,22 @@ Level = {
                     position = {  x = 125, y = 2170 },
                     isFixed = false,
                     isVisible = false,
-                    text = "YOU FOUND YOUR COLONY!",
+                    text = "You Found Your Colony!",
                     color = { r = 255, g = 255, b = 255, a = 255 }
+                },
+
+                sfx = {
+                    sfxID = "meow",
+                    volume = 100,
+                    loop = 0,
+                    delay = 0
                 }
             }
          },
+
+
+
+
 
 
         --TEXT
@@ -2686,7 +2670,6 @@ Level = {
         --TREE A layer 2
         -- x,y -> 64,192 (1280,192 -> 1216,-30)
         --top
-        --1
         {
             group = "treeA",
             components = {
@@ -2710,7 +2693,6 @@ Level = {
 
             }
         },
-        --2
         {
             group = "treeA",
             components = {
@@ -2734,7 +2716,6 @@ Level = {
 
             }
         },
-        --3
         {
             group = "treeA",
             components = {
@@ -2758,7 +2739,6 @@ Level = {
 
             }
         },
-        --4
         {
             group = "treeA",
             components = {

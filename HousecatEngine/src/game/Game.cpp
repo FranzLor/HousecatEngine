@@ -262,6 +262,7 @@ void Game::Update() {
 	housecat->GetSystem<CollisionSystem>().Update(eventManager);
 	housecat->GetSystem<CameraMovementSystem>().Update(camera);
 	housecat->GetSystem<ScriptSystem>().Update(deltaTime, SDL_GetTicks());
+	housecat->GetSystem<SoundSystem>().Update();
 	//housecat->GetSystem<DamageSystem>().Update();
 
 }
