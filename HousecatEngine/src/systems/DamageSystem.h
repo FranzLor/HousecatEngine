@@ -68,6 +68,10 @@ public:
 			//reduce health of entity
 			auto& health = entity.GetComponent<HealthComponent>();
 			health.healthPercent -= damageArea.hitPercentDamage;
+			//flash red when hit
+			if (entity.HasTag("player")) {
+				TemporarilyChangeSpriteColor(entity, SDL_Color{ 255, 0, 0, 150 });
+			}
 
 			if (health.healthPercent <= 0) {
 				entity.Kill();
@@ -75,4 +79,28 @@ public:
 		}
 	}
 
+	void TemporarilyChangeSpriteColor(Entity entity, SDL_Color color) {
+		if (entity.HasComponent<SpriteComponent>()) {
+			auto& sprite = entity.GetComponent<SpriteComponent>();
+			//save the current color as the og color
+			sprite.originalColor = sprite.color;
+			sprite.color = color;
+			sprite.colorChangeEndTime = SDL_GetTicks() + 1000;
+		}
+	}
+
+	void Update() {
+		Uint32 currentTime = SDL_GetTicks();
+
+		for (auto& entity : GetSystemEntities()) {
+			if (entity.HasComponent<SpriteComponent>()) {
+				auto& sprite = entity.GetComponent<SpriteComponent>();
+				if (currentTime >= sprite.colorChangeEndTime && sprite.colorChangeEndTime != 0) {
+					//revert and reset
+					sprite.color = sprite.originalColor;
+					sprite.colorChangeEndTime = 0;
+				}
+			}
+		}
+	}
 };

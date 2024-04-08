@@ -13,7 +13,15 @@ struct SpriteComponent {
 	SDL_Rect srcRect;
 	SDL_RendererFlip flip;
 
-	SpriteComponent(std::string assetID = "", int width = 0, int height = 0, int zIndex = 0, bool isFixed =  false, int srcRectX = 0, int srcRectY = 0, int flip = 0) {
+	//used for color changing
+	SDL_Color color;
+	SDL_Color originalColor;
+	Uint32 colorChangeEndTime = 0;
+
+	SpriteComponent(std::string assetID = "", int width = 0, int height = 0, int zIndex = 0, bool isFixed =  false,
+		int srcRectX = 0, int srcRectY = 0, int flip = 0, SDL_Color color = { 255, 255, 255, 255 }) {
+
+
 		this->assetID = assetID;
 		this->width = width;
 		this->height = height;
@@ -21,5 +29,7 @@ struct SpriteComponent {
 		this->isFixed = isFixed;
 		this->srcRect = { srcRectX, srcRectY, width, height };
 		this->flip = static_cast<SDL_RendererFlip>(flip);
+		this->color = color;
+		this->originalColor = color;
 	}
 };
