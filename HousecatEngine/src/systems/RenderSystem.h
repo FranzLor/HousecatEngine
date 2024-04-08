@@ -86,7 +86,7 @@ public:
 	}
 
 
-	void UpdateEditor(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, SDL_Rect& camera, const float& zoom) {
+	void UpdateEditor(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, SDL_Rect& camera, const float& zoom) const {
 		//helper vector that needs transform and sprite
 		struct RenderableEntity {
 			TransformComponent transformComponent;
