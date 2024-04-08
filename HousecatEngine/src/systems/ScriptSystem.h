@@ -30,8 +30,8 @@ void SetEntityPosition(Entity entity, double x, double y) {
 		return;
 	}
 	auto& transform = entity.GetComponent<TransformComponent>();
-	transform.position.x = x;
-	transform.position.y = y;
+	transform.position.x = static_cast<float>(x);
+	transform.position.y = static_cast<float>(y);
 }
 
 void SetEntityVelocity(Entity entity, double x, double y) {
