@@ -19,8 +19,7 @@ public:
 		RequireComponent<SpriteComponent>();
 	}
 
-	//REMIND update for camera 
-	void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, SDL_Rect& camera) {
+	void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, SDL_Rect& camera) const {
 		//helper vector that needs transform and sprite
 		struct RenderableEntity {
 			TransformComponent transformComponent;
