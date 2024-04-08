@@ -89,7 +89,7 @@ public:
 		}
 	}
 
-	void Update() {
+	void Update() const {
 		Uint32 currentTime = SDL_GetTicks();
 
 		for (auto& entity : GetSystemEntities()) {

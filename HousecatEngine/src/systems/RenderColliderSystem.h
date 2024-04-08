@@ -17,9 +17,7 @@ public:
 		RequireComponent<TransformComponent>();
 	}
 
-	//TODO
-	//account for entity scale 
-	void Update(SDL_Renderer* renderer, SDL_Rect& camera) {
+	void Update(SDL_Renderer* renderer, SDL_Rect& camera) const {
 		for (auto entity : GetSystemEntities()) {
 			const auto collider = entity.GetComponent<BoxColliderComponent>();
 			const auto transform = entity.GetComponent<TransformComponent>();

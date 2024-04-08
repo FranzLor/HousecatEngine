@@ -13,7 +13,7 @@ public:
 		RequireComponent<TextDisplayComponent>();
 	}
 
-	void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, const SDL_Rect& camera) {
+	void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, const SDL_Rect& camera) const {
 		for (auto entity : GetSystemEntities()) {
 			const auto text = entity.GetComponent<TextDisplayComponent>();
 

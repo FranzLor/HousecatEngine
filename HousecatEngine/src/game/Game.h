@@ -71,10 +71,6 @@ public:
 		return playerEntity;
 	}
 
-	SDL_Rect ReturnCamera() {
-		return camera;
-	}
-
 	void TriggerGameQuit(Uint32 delayMs);
 
 	void Initialize();
@@ -85,9 +81,6 @@ public:
 	void Update();
 	void Render();
 	void Destroy();
-
-	/*bool IsRunning() const { return isRunning; }
-	void SetRunning(bool running) { isRunning = running; }*/
 
 };
 

@@ -19,7 +19,7 @@ public:
 		RequireComponent<SpriteComponent>();
 	}
 
-	void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, const SDL_Rect& camera) {
+	void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, const SDL_Rect& camera) const {
 		for (auto entity : GetSystemEntities()) {
 			const auto health = entity.GetComponent<HealthComponent>();
 			const auto transform = entity.GetComponent<TransformComponent>();
@@ -80,7 +80,6 @@ public:
 				};
 
 				SDL_RenderCopy(renderer, texture, NULL, &healthBarTextRectangle);
-
 				SDL_DestroyTexture(texture);
 			}
 		}

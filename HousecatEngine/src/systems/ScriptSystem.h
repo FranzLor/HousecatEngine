@@ -30,8 +30,8 @@ void SetEntityPosition(Entity entity, double x, double y) {
 		return;
 	}
 	auto& transform = entity.GetComponent<TransformComponent>();
-	transform.position.x = x;
-	transform.position.y = y;
+	transform.position.x = static_cast<float>(x);
+	transform.position.y = static_cast<float>(y);
 }
 
 void SetEntityVelocity(Entity entity, double x, double y) {
@@ -39,8 +39,8 @@ void SetEntityVelocity(Entity entity, double x, double y) {
 		return;
 	}
 	auto& rigidbody = entity.GetComponent<RigidBodyComponent>();
-	rigidbody.velocity.x = x;
-	rigidbody.velocity.y = y;
+	rigidbody.velocity.x = static_cast<float>(x);
+	rigidbody.velocity.y = static_cast<float>(y);
 }
 
 void SetEntityRotation(Entity entity, double rotation) {
@@ -105,7 +105,7 @@ public:
 		lua.set_function("set_animation_frame", SetEntityAnimationFrame);
 	}
 
-	void Update(double deltaTime, int ellapsedTime) {
+	void Update(double deltaTime, int ellapsedTime) const {
 		for (auto entity : GetSystemEntities()) {
 			const auto& scriptComponent = entity.GetComponent<ScriptComponent>();
 
