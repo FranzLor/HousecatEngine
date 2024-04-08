@@ -306,11 +306,13 @@ void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Rend
 					sol::optional<sol::table> colorTable = table[key];
 					if (!colorTable) return defaultColor;
 
-					SDL_Color color;
+					//init to white
+					SDL_Color color = { 255, 255, 255, 255 };
+
 					color.r = (*colorTable).get_or("r", defaultColor.r);
 					color.g = (*colorTable).get_or("g", defaultColor.g);
 					color.b = (*colorTable).get_or("b", defaultColor.b);
-					color.a = (*colorTable).get_or("a", 255);
+					color.a = (*colorTable).get_or("a", defaultColor.a);
 					return color;
 				};
 
