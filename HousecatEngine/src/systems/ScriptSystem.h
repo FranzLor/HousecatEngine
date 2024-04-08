@@ -39,8 +39,8 @@ void SetEntityVelocity(Entity entity, double x, double y) {
 		return;
 	}
 	auto& rigidbody = entity.GetComponent<RigidBodyComponent>();
-	rigidbody.velocity.x = x;
-	rigidbody.velocity.y = y;
+	rigidbody.velocity.x = static_cast<float>(x);
+	rigidbody.velocity.y = static_cast<float>(y);
 }
 
 void SetEntityRotation(Entity entity, double rotation) {
