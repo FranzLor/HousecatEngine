@@ -42,6 +42,7 @@ public:
 		for (auto& entity : GetSystemEntities()) {
 			if (entity.HasTag("player")) {
 				auto& SFX = entity.GetComponent<SFXComponent>();
+				SFX.isPlaying = true;
 				PlaySFX(entity, SFX.soundID);
 			}
 		}
@@ -57,9 +58,11 @@ public:
 
 		//convert ms to s
 		Uint32 delayInMS = static_cast<Uint32>(SFX.delay * 1000.0f);
-		if (currentTime > SFX.lastPlayed + delayInMS) {
-			SFX.lastPlayed = currentTime;
-			assetManager->PlaySound(soundID, SFX.volume, SFX.loop ? -1 : 0);
+		if (SFX.isPlaying) {
+			if (currentTime > SFX.lastPlayed + delayInMS) {
+				SFX.lastPlayed = currentTime;
+				assetManager->PlaySound(soundID, SFX.volume, SFX.loop ? -1 : 0);
+			}
 		}
 	}
 
@@ -71,10 +74,24 @@ public:
 		Mix_Volume(event.channel, event.volume);
 	}
 
-
-
 	void Update() {
+		Uint32 currentTime = SDL_GetTicks();
 
+		for (auto& entity : GetSystemEntities()) {
+			if (!entity.HasComponent<SFXComponent>()) {
+				continue;
+			}
+
+			auto& SFX = entity.GetComponent<SFXComponent>();
+
+			if (SFX.isPlaying) {
+				Uint32 delayInMS = static_cast<Uint32>(SFX.delay * 1000.0f);
+				if (currentTime >= SFX.lastPlayed + delayInMS) {
+					SFX.lastPlayed = currentTime;
+					assetManager->PlaySound(SFX.soundID, SFX.volume, SFX.loop ? -1 : 0);
+				}
+			}
+		}
 	}
 
 

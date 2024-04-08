@@ -35,17 +35,22 @@ public:
         if ((a.HasTag("player") && b.HasComponent<WinConditionComponent>()) ||
             (b.HasTag("player") && a.HasComponent<WinConditionComponent>())) {
 
-            
-            //TODO
-            //stop update
+
             auto& housecat = Housecat::GetInstance();
+
             for (auto entity : GetSystemEntities()) {
                 auto& text = entity.GetComponent<TextDisplayComponent>();
+                auto& sfx = entity.GetComponent<SFXComponent>();
+
+                winConditionMet = true;
+
+                //display text
                 if (entity.HasTag("winMessage")) {
                     continue;
 				}
                 text.isVisible = true;
-                winConditionMet = true;
+                sfx.isPlaying = true;
+
             }
         }
 
