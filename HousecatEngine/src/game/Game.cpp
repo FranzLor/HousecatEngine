@@ -251,6 +251,7 @@ void Game::Update() {
 	housecat->Update();
 
 	//SYSTEMS - updates here
+	housecat->GetSystem<DamageSystem>().Update();
 	housecat->GetSystem<MovementSystem>().Update(deltaTime);
 	housecat->GetSystem<AnimationSystem>().Update();
 	housecat->GetSystem<CollisionSystem>().Update(eventManager);

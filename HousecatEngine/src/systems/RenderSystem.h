@@ -58,25 +58,31 @@ public:
 			const auto& transform = entity.transformComponent;
 			const auto& sprite = entity.spriteComponent;
 
-			//source of original sprite texture
+			SDL_Texture* texture = assetManager->GetTexture(sprite.assetID);
+
+			//put color mod before render
+			SDL_SetTextureColorMod(texture, sprite.color.r, sprite.color.g, sprite.color.b);
+
 			SDL_Rect srcRect = sprite.srcRect;
-			//destination of original srpite texture
 			SDL_Rect dstRect = {
 				static_cast<int>(transform.position.x - (sprite.isFixed ? 0 : camera.x)),
 				static_cast<int>(transform.position.y - (sprite.isFixed ? 0 : camera.y)),
 				static_cast<int>(sprite.width * transform.scale.x),
 				static_cast<int>(sprite.height * transform.scale.y)
 			};
-			
+
+			//render the sprite
 			SDL_RenderCopyEx(
 				renderer,
-				assetManager->GetTexture(sprite.assetID),
+				texture,
 				&srcRect,
 				&dstRect,
 				transform.rotation,
 				NULL,
 				sprite.flip
 			);
+
+			SDL_SetTextureColorMod(texture, 255, 255, 255);
 		}
 	}
 
