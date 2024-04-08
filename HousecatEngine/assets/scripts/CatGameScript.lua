@@ -139,7 +139,8 @@ Level = {
                     sfxID = "meow",
                     volume = 100,
                     loop = 0,
-                    delay = 5
+                    isPlaying = false,
+                    delay = 4
 
                 }
             }
@@ -2621,7 +2622,8 @@ Level = {
                     sfxID = "meow",
                     volume = 100,
                     loop = 0,
-                    delay = 0
+                    isPlaying = false,
+                    delay = 1
                 }
             }
          },

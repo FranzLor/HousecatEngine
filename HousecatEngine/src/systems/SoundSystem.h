@@ -62,6 +62,9 @@ public:
 			if (currentTime > SFX.lastPlayed + delayInMS) {
 				SFX.lastPlayed = currentTime;
 				assetManager->PlaySound(soundID, SFX.volume, SFX.loop ? -1 : 0);
+				if (!SFX.loop) {
+					SFX.isPlaying = false;
+				}
 			}
 		}
 	}
@@ -89,6 +92,9 @@ public:
 				if (currentTime >= SFX.lastPlayed + delayInMS) {
 					SFX.lastPlayed = currentTime;
 					assetManager->PlaySound(SFX.soundID, SFX.volume, SFX.loop ? -1 : 0);
+					if (!SFX.loop) {
+						SFX.isPlaying = false;
+					}
 				}
 			}
 		}
