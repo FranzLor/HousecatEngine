@@ -328,10 +328,10 @@ void Mouse::UpdateMousePosition(const SDL_Rect& camera) {
 	//acount for camera
 	mousePosX += camera.x;
 	mousePosY += camera.y;
-	mousePosX /= zoom;
-	mousePosY /= zoom;
-	mousePosWindow.x = mousePosX;
-	mousePosWindow.y = mousePosY;
+	mousePosX /= static_cast<int>(zoom);
+	mousePosY /= static_cast<int>(zoom);
+	mousePosWindow.x = static_cast<float>(mousePosX);
+	mousePosWindow.y = static_cast<float>(mousePosY);
 
 }
 
