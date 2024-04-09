@@ -221,7 +221,7 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 
 		int imageWidth = textureWidth * 2;
 		int imageHeight = textureHeight * 2;
-		ImVec2 imageSize = ImVec2(textureWidth * 2, textureHeight * 2);
+		ImVec2 imageSize = ImVec2(static_cast<float>(textureWidth * 2), static_cast<float>(textureHeight * 2));
 
 		//display the tileset texture with a border
 		ImGui::Image(assetManager->ReturnEditorTexture(assetID).get(), imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 0, 0, 1));
@@ -242,8 +242,8 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 					if (ImGui::IsItemHovered()) {
 
 						if (ImGui::IsMouseClicked(0)) {
-							tileAttributes.srcRectX = i * mouseRect.x;
-							tileAttributes.srcRectY = j * mouseRect.y;
+							tileAttributes.srcRectX = static_cast<int>(i * mouseRect.x);
+							tileAttributes.srcRectY = static_cast<int>(j * mouseRect.y);
 						}
 					}
 				}
