@@ -120,7 +120,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 		if (ImGui::BeginMenu("Canvas")) {
 
-			ImGui::Spacing;
+			ImGui::Spacing();
 
 			if (ImGui::InputInt("   Tile Size", &tileSize, 8, 8)) {
 				if (tileSize <= 8) {
@@ -128,7 +128,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 				}
 			}
 
-			ImGui::Spacing;
+			ImGui::Spacing();
 
 			if (ImGui::InputInt("   Canvas Width", &canvasWidth, tileSize, tileSize)) {
 
@@ -145,7 +145,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 				}
 			}
 
-			ImGui::Spacing;
+			ImGui::Spacing();
 
 			if (ImGui::InputInt("   Canvas Height", &canvasHeight, tileSize, tileSize)) {
 
