@@ -325,14 +325,14 @@ void Mouse::UpdateMousePosition(const SDL_Rect& camera) {
 	//SDL mouse pos
 	SDL_GetMouseState(&mousePosX, &mousePosY);
 
-	//acount for camera
-	mousePosX += camera.x;
-	mousePosY += camera.y;
-	mousePosX /= zoom;
-	mousePosY /= zoom;
-	mousePosWindow.x = mousePosX;
-	mousePosWindow.y = mousePosY;
+	float tempMousePosX = static_cast<float>(mousePosX + camera.x) / zoom;
+	float tempMousePosY = static_cast<float>(mousePosY + camera.y) / zoom;
 
+	mousePosX = static_cast<int>(std::round(tempMousePosX));
+	mousePosY = static_cast<int>(std::round(tempMousePosY));
+
+	mousePosWindow.x = tempMousePosX;
+	mousePosWindow.y = tempMousePosY;
 }
 
 const bool Mouse::MouseOutOfBounds() const {
