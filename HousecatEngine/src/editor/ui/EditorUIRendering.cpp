@@ -260,14 +260,26 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 
 		//vertical
 		for (int i = 0; i < xTiles; i++) {
-			int x = std::floor(i * tileSize * zoom) - camera.x;
-			SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, (yTiles * tileSize * zoom) - camera.y);
+			int x = static_cast<int>(std::floor(i * tileSize * zoom)) - camera.x;
+			SDL_RenderDrawLine(
+				renderer.get(),
+				x,
+				static_cast<int>(0 - camera.y),
+				x,
+				static_cast<int>((yTiles * tileSize * zoom) - camera.y)
+			);
 		}
 
 		//horizontal
 		for (int j = 0; j < yTiles; j++) {
-			int y = std::floor(j * tileSize * zoom) - camera.y;
-			SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, (xTiles * tileSize * zoom) - camera.x, y);
+			int y = static_cast<int>(std::floor(j * tileSize * zoom)) - camera.y;
+			SDL_RenderDrawLine(
+				renderer.get(),
+				0 - camera.x,
+				y,
+				static_cast<int>((xTiles * tileSize * zoom) - camera.x),
+				y
+			);
 		}
 	}
 
@@ -281,11 +293,22 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 
 	float boundaryThickness = 1.8f;
 
-	SDL_Rect boundaryRect = { 0 - camera.x, 0 - camera.y, xTiles * tileSize * zoom, yTiles * tileSize * zoom };
+	SDL_Rect boundaryRect = { 
+		0 - camera.x,
+		0 - camera.y,
+		static_cast<int>(xTiles * tileSize * zoom),
+		static_cast<int>(yTiles * tileSize * zoom)
+	};
 
 	//expands boundary outside
 	for (float i = 0.0f; i < boundaryThickness; ++i) {
-		SDL_Rect expandedBoundary = { boundaryRect.x - i, boundaryRect.y - i, boundaryRect.w + i * 2.0f, boundaryRect.h + i * 2.0f };
+		SDL_Rect expandedBoundary = { 
+			static_cast<int>(boundaryRect.x - i),
+			static_cast<int>(boundaryRect.y - i),
+			static_cast<int>(boundaryRect.w + i * 2.0f),
+			static_cast<int>(boundaryRect.h + i * 2.0f)
+		};
+
 		SDL_RenderDrawRect(renderer.get(), &expandedBoundary);
 	}
 }
