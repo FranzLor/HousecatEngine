@@ -30,44 +30,43 @@ Mouse::Mouse()
 	removedTransform(),
 	appliedSprite(),
 	removedSprite() {
-	//Logger::Lifecycle("Mouse Constructor Called!");
 }
 
 //mouse 
 void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile) {
 	//normal
 	if (!gridSnap) {
-		mouseTile.x = (mousePosX * zoom - camera.x - (mouseRect.x * appliedTransform.scale.x * zoom) / 2);
-		mouseTile.y = (mousePosY * zoom - camera.y - (mouseRect.y * appliedTransform.scale.y * zoom) / 2);
+		mouseTile.x = static_cast<int>((mousePosX * zoom - camera.x - (mouseRect.x * appliedTransform.scale.x * zoom) / 2));
+		mouseTile.y = static_cast<int>((mousePosY * zoom - camera.y - (mouseRect.y * appliedTransform.scale.y * zoom) / 2));
 	}
 	//grid snapping
 	else {
-		mousePosTile.x = mousePosX * tileSize;
-		mousePosTile.y = mousePosY * tileSize;
+		mousePosTile.x = static_cast<float>(mousePosX * tileSize);
+		mousePosTile.y = static_cast<float>(mousePosY * tileSize);
 
 		if (mousePosX >= 0) {
-			mousePosTile.x = mousePosX / tileSize;
+			mousePosTile.x = static_cast<float>(mousePosX / tileSize);
 		}
 		if (mousePosY >= 0) {
-			mousePosTile.y = mousePosY / tileSize;
+			mousePosTile.y = static_cast<float>(mousePosY / tileSize);
 		}
-		mouseTile.x = std::round(mousePosTile.x * tileSize * zoom) - camera.x;
-		mouseTile.y = std::round(mousePosTile.y * tileSize * zoom) - camera.y;
+		mouseTile.x = static_cast<int>(std::round(mousePosTile.x * tileSize * zoom) - camera.x);
+		mouseTile.y = static_cast<int>(std::round(mousePosTile.y * tileSize * zoom) - camera.y);
 	}
 
 	if (!MouseOutOfBounds()) {
 		SDL_Rect srcRect = {
-		appliedSprite.srcRect.x,
-		appliedSprite.srcRect.y,
-		mouseRect.x,
-		mouseRect.y
+			static_cast<int>(appliedSprite.srcRect.x),
+			static_cast<int>(appliedSprite.srcRect.y),
+			static_cast<int>(mouseRect.x),
+			static_cast<int>(mouseRect.y)
 		};
 
 		SDL_Rect destRect = {
 			mouseTile.x,
 			mouseTile.y,
-			std::round(mouseTile.w * mouseRect.x * appliedTransform.scale.x * zoom),
-			std::round(mouseTile.h * mouseRect.y * appliedTransform.scale.y * zoom)
+			static_cast<int>(std::round(mouseTile.w * mouseRect.x * appliedTransform.scale.x * zoom)),
+			static_cast<int>(std::round(mouseTile.h * mouseRect.y * appliedTransform.scale.y * zoom))
 		};
 
 		//draw tile from set
