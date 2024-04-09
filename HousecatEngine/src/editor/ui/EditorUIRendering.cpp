@@ -1,14 +1,14 @@
 #include <imgui/imgui.h>
-
-
-#include "../utilities/SDLUtility.h"
 #include <imgui/imgui_impl_sdlrenderer2.h>
 #include <imgui/imgui_impl_sdl2.h>
+
 
 #include "EditorUIManager.h"
 
 #include "EditorCanvas.h"
 #include "EditorUIRendering.h"
+
+#include "../utilities/SDLUtility.h"
 
 #include "../src/logger/Logger.h"
 
@@ -88,19 +88,18 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			if (ImGui::MenuItem(ICON_FA_TRASH "   Clear Canvas")) {
 				isCleared = true;
 			}
+
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("View")) {
-			//show view menu
-			//call View();
 			ImGui::Checkbox(" " ICON_FA_BORDER_ALL " Show Grid", &gridShow);
 
 			ImGui::Spacing();
 
 			ImGui::Checkbox(" " ICON_FA_HAND_POINTER " Snap to Grid", &gridSnap);
 
-			ImGui::Spacing();
+			ImGui::Separator();
 
 			ImGui::Checkbox(" " ICON_FA_EYE " Dark Mode", &isDarkMode);
 
@@ -110,25 +109,18 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		if (ImGui::BeginMenu("Project")) {
 			editorUIManager->ShowProjectMenu(renderer, assetManager);
 
-			ImGui::Spacing;
-			ImGui::Spacing;
-			ImGui::Spacing;
+			ImGui::Spacing();
 
 			if (ImGui::MenuItem(" " ICON_FA_TABLE_COLUMNS "   Tileset Window")) {
 				createTiles = !createTiles;
 			}
-
-			ImGui::Spacing;
-			ImGui::Spacing;
-			ImGui::Spacing;
 
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Canvas")) {
 
-			ImGui::Spacing;
-			ImGui::Spacing;
+			ImGui::Spacing();
 
 			if (ImGui::InputInt("   Tile Size", &tileSize, 8, 8)) {
 				if (tileSize <= 8) {
@@ -136,8 +128,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 				}
 			}
 
-			ImGui::Spacing;
-			ImGui::Spacing;
+			ImGui::Spacing();
 
 			if (ImGui::InputInt("   Canvas Width", &canvasWidth, tileSize, tileSize)) {
 
@@ -154,8 +145,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 				}
 			}
 
-			ImGui::Spacing;
-			ImGui::Spacing;
+			ImGui::Spacing();
 
 			if (ImGui::InputInt("   Canvas Height", &canvasHeight, tileSize, tileSize)) {
 
@@ -172,6 +162,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 				}
 
 			}
+
 			ImGui::EndMenu();
 		}
 
@@ -204,13 +195,9 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 			else if (editorUIManager->IsEraserToolActive()) {
 				mouse->RemoveTile(renderer, assetManager, camera, mouseTile, event);
 			}
-			//TODO
-			//fill
 			else if (editorUIManager->IsFillToolActive()) {
 				mouse->FillTiles(renderer, assetManager, camera, mouseTile, event, *canvas);
 			}
-
-
 		}
 
 		if (mouse->TileAdded()) {
@@ -240,7 +227,6 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 	ImGui::Render();
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
-
 	ImGuiIO& IO = ImGui::GetIO();
 	if (IO.WantCaptureMouse) {
 		mouse->MouseOverWindow(true);
@@ -259,14 +245,11 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 
 	SetExit(editorUIManager->GetExit());
 
-
 	editorUIManager->Shortcuts(renderer, assetManager, canvas, editManager, tileSize, lua);
 	UpdateCanvas();
 }
 
 void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, const float& zoom) {
-	//Logger::Debug("Rendering Grid!");
-
 	//calc full tiles in canvas
 	int xTiles = canvas->GetCanvasWidth() / tileSize;
 	int yTiles = canvas->GetCanvasHeight() / tileSize;
@@ -277,14 +260,26 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 
 		//vertical
 		for (int i = 0; i < xTiles; i++) {
-			int x = std::floor(i * tileSize * zoom) - camera.x;
-			SDL_RenderDrawLine(renderer.get(), x, 0 - camera.y, x, (yTiles * tileSize * zoom) - camera.y);
+			int x = static_cast<int>(std::floor(i * tileSize * zoom)) - camera.x;
+			SDL_RenderDrawLine(
+				renderer.get(),
+				x,
+				static_cast<int>(0 - camera.y),
+				x,
+				static_cast<int>((yTiles * tileSize * zoom) - camera.y)
+			);
 		}
 
 		//horizontal
 		for (int j = 0; j < yTiles; j++) {
-			int y = std::floor(j * tileSize * zoom) - camera.y;
-			SDL_RenderDrawLine(renderer.get(), 0 - camera.x, y, (xTiles * tileSize * zoom) - camera.x, y);
+			int y = static_cast<int>(std::floor(j * tileSize * zoom)) - camera.y;
+			SDL_RenderDrawLine(
+				renderer.get(),
+				0 - camera.x,
+				y,
+				static_cast<int>((xTiles * tileSize * zoom) - camera.x),
+				y
+			);
 		}
 	}
 
@@ -296,16 +291,24 @@ void EditorUIRendering::RenderGrid(EditorRenderer& renderer, SDL_Rect& camera, c
 		SDL_SetRenderDrawColor(renderer.get(), 218, 216, 214, SDL_ALPHA_OPAQUE);
 	}
 
-	//TODO
-	//imgui button option -> changeable thickness w/ slider
-	//thiccness
 	float boundaryThickness = 1.8f;
 
-	SDL_Rect boundaryRect = { 0 - camera.x, 0 - camera.y, xTiles * tileSize * zoom, yTiles * tileSize * zoom };
+	SDL_Rect boundaryRect = { 
+		0 - camera.x,
+		0 - camera.y,
+		static_cast<int>(xTiles * tileSize * zoom),
+		static_cast<int>(yTiles * tileSize * zoom)
+	};
 
 	//expands boundary outside
 	for (float i = 0.0f; i < boundaryThickness; ++i) {
-		SDL_Rect expandedBoundary = { boundaryRect.x - i, boundaryRect.y - i, boundaryRect.w + i * 2.0f, boundaryRect.h + i * 2.0f };
+		SDL_Rect expandedBoundary = { 
+			static_cast<int>(boundaryRect.x - i),
+			static_cast<int>(boundaryRect.y - i),
+			static_cast<int>(boundaryRect.w + i * 2.0f),
+			static_cast<int>(boundaryRect.h + i * 2.0f)
+		};
+
 		SDL_RenderDrawRect(renderer.get(), &expandedBoundary);
 	}
 }
@@ -392,7 +395,7 @@ void EditorUIRendering::ShowMouseLocation(SDL_Rect& mouseTile, SDL_Rect& camera)
 		for (int i = 0; i < count; i++) {
 			ImGui::Spacing();
 		}
-		};
+	};
 
 	//show mouse on canvas
 	if (!mouse->MouseOutOfBounds() && (createTiles)) {

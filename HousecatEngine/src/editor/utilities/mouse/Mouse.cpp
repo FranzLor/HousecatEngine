@@ -30,44 +30,43 @@ Mouse::Mouse()
 	removedTransform(),
 	appliedSprite(),
 	removedSprite() {
-	//Logger::Lifecycle("Mouse Constructor Called!");
 }
 
 //mouse 
 void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile) {
 	//normal
 	if (!gridSnap) {
-		mouseTile.x = (mousePosX * zoom - camera.x - (mouseRect.x * appliedTransform.scale.x * zoom) / 2);
-		mouseTile.y = (mousePosY * zoom - camera.y - (mouseRect.y * appliedTransform.scale.y * zoom) / 2);
+		mouseTile.x = static_cast<int>((mousePosX * zoom - camera.x - (mouseRect.x * appliedTransform.scale.x * zoom) / 2));
+		mouseTile.y = static_cast<int>((mousePosY * zoom - camera.y - (mouseRect.y * appliedTransform.scale.y * zoom) / 2));
 	}
 	//grid snapping
 	else {
-		mousePosTile.x = mousePosX * tileSize;
-		mousePosTile.y = mousePosY * tileSize;
+		mousePosTile.x = static_cast<float>(mousePosX * tileSize);
+		mousePosTile.y = static_cast<float>(mousePosY * tileSize);
 
 		if (mousePosX >= 0) {
-			mousePosTile.x = mousePosX / tileSize;
+			mousePosTile.x = static_cast<float>(mousePosX / tileSize);
 		}
 		if (mousePosY >= 0) {
-			mousePosTile.y = mousePosY / tileSize;
+			mousePosTile.y = static_cast<float>(mousePosY / tileSize);
 		}
-		mouseTile.x = std::round(mousePosTile.x * tileSize * zoom) - camera.x;
-		mouseTile.y = std::round(mousePosTile.y * tileSize * zoom) - camera.y;
+		mouseTile.x = static_cast<int>(std::round(mousePosTile.x * tileSize * zoom) - camera.x);
+		mouseTile.y = static_cast<int>(std::round(mousePosTile.y * tileSize * zoom) - camera.y);
 	}
 
 	if (!MouseOutOfBounds()) {
 		SDL_Rect srcRect = {
-		appliedSprite.srcRect.x,
-		appliedSprite.srcRect.y,
-		mouseRect.x,
-		mouseRect.y
+			static_cast<int>(appliedSprite.srcRect.x),
+			static_cast<int>(appliedSprite.srcRect.y),
+			static_cast<int>(mouseRect.x),
+			static_cast<int>(mouseRect.y)
 		};
 
 		SDL_Rect destRect = {
 			mouseTile.x,
 			mouseTile.y,
-			std::round(mouseTile.w * mouseRect.x * appliedTransform.scale.x * zoom),
-			std::round(mouseTile.h * mouseRect.y * appliedTransform.scale.y * zoom)
+			static_cast<int>(std::round(mouseTile.w * mouseRect.x * appliedTransform.scale.x * zoom)),
+			static_cast<int>(std::round(mouseTile.h * mouseRect.y * appliedTransform.scale.y * zoom))
 		};
 
 		//draw tile from set
@@ -112,12 +111,12 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 
 
 			if (gridSnap) {
-				appliedTransform.position.x = gridX * tileSize;
-				appliedTransform.position.y = gridY * tileSize;
+				appliedTransform.position.x = static_cast<float>(gridX * tileSize);
+				appliedTransform.position.y = static_cast<float>(gridY * tileSize);
 			}
 			else {
-				appliedTransform.position.x = static_cast<int>(mousePosWindow.x - (mouseRect.x * appliedTransform.scale.x / 2));
-				appliedTransform.position.y = static_cast<int>(mousePosWindow.y - (mouseRect.y * appliedTransform.scale.y / 2));
+				appliedTransform.position.x = static_cast<float>(mousePosWindow.x - (mouseRect.x * appliedTransform.scale.x / 2.0f));
+				appliedTransform.position.y = static_cast<float>(mousePosWindow.y - (mouseRect.y * appliedTransform.scale.y / 2.0f));
 			}
 
 			Entity newTile = Housecat::GetInstance().CreateEntity();
@@ -326,14 +325,14 @@ void Mouse::UpdateMousePosition(const SDL_Rect& camera) {
 	//SDL mouse pos
 	SDL_GetMouseState(&mousePosX, &mousePosY);
 
-	//acount for camera
-	mousePosX += camera.x;
-	mousePosY += camera.y;
-	mousePosX /= zoom;
-	mousePosY /= zoom;
-	mousePosWindow.x = mousePosX;
-	mousePosWindow.y = mousePosY;
+	float tempMousePosX = static_cast<float>(mousePosX + camera.x) / zoom;
+	float tempMousePosY = static_cast<float>(mousePosY + camera.y) / zoom;
 
+	mousePosX = static_cast<int>(std::round(tempMousePosX));
+	mousePosY = static_cast<int>(std::round(tempMousePosY));
+
+	mousePosWindow.x = tempMousePosX;
+	mousePosWindow.y = tempMousePosY;
 }
 
 const bool Mouse::MouseOutOfBounds() const {
@@ -351,8 +350,8 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 		//mouse texture
 		SDL_Rect srcRect = { 0, 0, 32, 32 };
 		SDL_Rect dstRect = {
-			mousePosX * zoom - camera.x,
-			mousePosY * zoom - camera.y,
+			mousePosX * static_cast<int>(zoom) - camera.x,
+			mousePosY * static_cast<int>(zoom) - camera.y,
 			32, 32
 		};
 		SDL_RenderCopyEx(
@@ -370,14 +369,14 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 			float deltaX = static_cast<float>((mousePosWindow.x - panX) * zoom * dT * 40.0f);
 			float deltaY = static_cast<float>((mousePosWindow.y - panY) * zoom * dT * 40.0f);
 
-			camera.x -= deltaX;
-			camera.y -= deltaY;
+			camera.x -= static_cast<int>(deltaX);
+			camera.y -= static_cast<int>(deltaY);
 		}
 	}
 	else {
 		SDL_ShowCursor(1);
-		panX = mousePosWindow.x;
-		panY = mousePosWindow.y;
+		panX = static_cast<int>(mousePosWindow.x);
+		panY = static_cast<int>(mousePosWindow.y);
 	}
 }
 

@@ -263,7 +263,7 @@ void Editor::KeyboardCameraController(SDL_Event& event) {
 		case SDLK_SPACE:
 			camera.x = defaultCamX;
 			camera.y = defaultCamY;
-			zoom = defaultZoom;
+			zoom = static_cast<float>(defaultZoom);
 			break;
 		case SDLK_w:
 			camera.y += camSpeed;
@@ -281,7 +281,7 @@ void Editor::KeyboardCameraController(SDL_Event& event) {
 	}
 }
 
-void Editor::AdjustZoom(int direction) {
+void Editor::AdjustZoom(double direction) {
 	constexpr float zoomStep = 0.1f;
 
 	if (direction > 0) {

@@ -40,16 +40,11 @@ EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 
 	fileDialog(std::make_unique<FileDialogue>()),
 	projectManagement(std::make_unique<ProjectManagement>()) {
-
-	//Logger::Lifecycle("ImGuiFunctions Constructor Called!");
 }
 
-EditorUIManager::~EditorUIManager() {
-	//Logger::Lifecycle("ImGuiFunctions Destructor Called!");
-}
+EditorUIManager::~EditorUIManager() {}
 
-//TODO
-//ImGui management
+
 void EditorUIManager::InitImGui() {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -130,8 +125,9 @@ void EditorUIManager::DarkMode() {
 	ImGui::StyleColorsDark();
 }
 
-//TODO
-//menu bar management
+
+
+
 void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize) {
 	//MENU file interact
 	if (ImGui::MenuItem(ICON_FA_FILE_CIRCLE_PLUS "   New Project", "CTRL+N")) {
@@ -144,8 +140,6 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		Save(renderer, assetManager, canvas->GetCanvasWidth(), canvas->GetCanvasHeight(), tileSize);
 	}
 	if (ImGui::MenuItem(ICON_FA_FILE_PEN "   Save As", "CTRL+SHIFT+S")) {
-		//TODO
-		//file management
 		std::string file = fileDialog->SaveFile();
 
 		if (file == "") {
@@ -159,7 +153,6 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 		std::string file = fileDialog->SaveFile();
 
 		if (file == "") {
-			// Set Lua file to the selected filename
 			return;
 		}
 		luaFile = file;
@@ -171,44 +164,10 @@ void EditorUIManager::ShowFileMenu(EditorRenderer& renderer, const AssetManagerP
 	}
 }
 
-//void EditorUIManager::ShowEditMenu() {
-//	//MENU edit interact
-//	if (ImGui::MenuItem("Undo", "CTRL+Z")) {
-//		//Undo = true;
-//	}
-//	if (ImGui::MenuItem("Redo", "CTRL+Y")) {
-//		//Redo = true;
-//	}
-//
-//}
 
-//void EditorUIManager::ShowViewMenu() {
-//	//MENU view interact
-//	if (ImGui::MenuItem("Show Grid", "CTRL+G")) {
-//		//TODO
-//		//grid management
-//	}
-//	if (ImGui::MenuItem("Grid Snapping")) {
-//		//TODO
-//
-//	}
-//	if (ImGui::MenuItem("Zoom In")) {
-//		//TODO
-//
-//	}
-//	if (ImGui::MenuItem("Zoom Out")) {
-//		//TODO
-//
-//	}
-//
-//}
+
 
 void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager) {
-	//MENU project interact
-	//if (ImGui::MenuItem("New Map")) {
-	//	//TODO
-	//}
-
 	if (ImGui::MenuItem(" " ICON_FA_BOX_OPEN "   Add Tileset")) {
 		FileDialogue fileDialog;
 		imageName = fileDialog.OpenTextureFile();
@@ -244,10 +203,17 @@ void EditorUIManager::ShowProjectMenu(EditorRenderer& renderer, const AssetManag
 
 
 
-//TODO
-//tileset management
+
 void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect) {
-	auto tilesetWindowFlags = ImGuiWindowFlags_AlwaysHorizontalScrollbar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysVerticalScrollbar;
+	//styling
+	ImVec2 startPos = ImVec2(1426, 28);
+	ImVec2 startSize = ImVec2(494, 562);
+	//force pos per sesh
+	ImGui::SetNextWindowPos(startPos, ImGuiCond_Once);
+	ImGui::SetNextWindowSize(startSize, ImGuiCond_Once);
+
+	auto tilesetWindowFlags = ImGuiWindowFlags_AlwaysHorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar;
+
 	if (ImGui::Begin(ICON_FA_TABLE_COLUMNS "   Tileset", &loadTileset, tilesetWindowFlags)) {
 		//resize on mouse scroll
 		float scrollX = ImGui::GetScrollX();
@@ -255,7 +221,7 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 
 		int imageWidth = textureWidth * 2;
 		int imageHeight = textureHeight * 2;
-		ImVec2 imageSize = ImVec2(textureWidth * 2, textureHeight * 2);
+		ImVec2 imageSize = ImVec2(static_cast<float>(textureWidth * 2), static_cast<float>(textureHeight * 2));
 
 		//display the tileset texture with a border
 		ImGui::Image(assetManager->ReturnEditorTexture(assetID).get(), imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 0, 0, 1));
@@ -276,8 +242,8 @@ void EditorUIManager::TilesetWindow(const AssetManagerPtr& assetManager, const g
 					if (ImGui::IsItemHovered()) {
 
 						if (ImGui::IsMouseClicked(0)) {
-							tileAttributes.srcRectX = i * mouseRect.x;
-							tileAttributes.srcRectY = j * mouseRect.y;
+							tileAttributes.srcRectX = static_cast<int>(i * mouseRect.x);
+							tileAttributes.srcRectY = static_cast<int>(j * mouseRect.y);
 						}
 					}
 				}
@@ -292,7 +258,14 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 		return;
 	}
 
-	if (ImGui::Begin(ICON_FA_HAMMER "   Tileset Tools", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize)) {
+	//styling
+	ImVec2 startPos = ImVec2(0, 28);
+	ImVec2 startSize = ImVec2(1426, 75);
+	//force pos per sesh
+	ImGui::SetNextWindowPos(startPos, ImGuiCond_Once);
+	ImGui::SetNextWindowSize(startSize, ImGuiCond_Once);
+
+	if (ImGui::Begin(ICON_FA_HAMMER "   Tileset Tools", nullptr)) {
 		ImGuiStyle& style = ImGui::GetStyle();
 		//center window text
 		style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
@@ -385,7 +358,7 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 		return;
 	}
 
-	if (ImGui::Begin(tilesetName.c_str(), nullptr, ImGuiWindowFlags_NoMove)) {
+	if (ImGui::Begin(tilesetName.c_str(), nullptr, ImGuiWindowFlags_NoMove | ImGuiCond_Once)) {
 
 		if (tileWindow) {
 			static std::string currentTileset = "";
