@@ -111,12 +111,12 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 
 
 			if (gridSnap) {
-				appliedTransform.position.x = gridX * tileSize;
-				appliedTransform.position.y = gridY * tileSize;
+				appliedTransform.position.x = static_cast<float>(gridX * tileSize);
+				appliedTransform.position.y = static_cast<float>(gridY * tileSize);
 			}
 			else {
-				appliedTransform.position.x = static_cast<int>(mousePosWindow.x - (mouseRect.x * appliedTransform.scale.x / 2));
-				appliedTransform.position.y = static_cast<int>(mousePosWindow.y - (mouseRect.y * appliedTransform.scale.y / 2));
+				appliedTransform.position.x = static_cast<float>(mousePosWindow.x - (mouseRect.x * appliedTransform.scale.x / 2.0f));
+				appliedTransform.position.y = static_cast<float>(mousePosWindow.y - (mouseRect.y * appliedTransform.scale.y / 2.0f));
 			}
 
 			Entity newTile = Housecat::GetInstance().CreateEntity();
