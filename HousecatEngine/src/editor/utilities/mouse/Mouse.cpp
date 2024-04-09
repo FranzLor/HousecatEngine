@@ -328,10 +328,10 @@ void Mouse::UpdateMousePosition(const SDL_Rect& camera) {
 	//acount for camera
 	mousePosX += camera.x;
 	mousePosY += camera.y;
-	mousePosX /= static_cast<int>(zoom);
-	mousePosY /= static_cast<int>(zoom);
-	mousePosWindow.x = static_cast<float>(mousePosX);
-	mousePosWindow.y = static_cast<float>(mousePosY);
+	mousePosX /= zoom;
+	mousePosY /= zoom;
+	mousePosWindow.x = mousePosX;
+	mousePosWindow.y = mousePosY;
 
 }
 
@@ -350,8 +350,8 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 		//mouse texture
 		SDL_Rect srcRect = { 0, 0, 32, 32 };
 		SDL_Rect dstRect = {
-			mousePosX * zoom - camera.x,
-			mousePosY * zoom - camera.y,
+			mousePosX * static_cast<int>(zoom) - camera.x,
+			mousePosY * static_cast<int>(zoom) - camera.y,
 			32, 32
 		};
 		SDL_RenderCopyEx(
@@ -369,14 +369,14 @@ void Mouse::MousePanCamera(EditorRenderer& renderer, SDL_Rect& camera, const Ass
 			float deltaX = static_cast<float>((mousePosWindow.x - panX) * zoom * dT * 40.0f);
 			float deltaY = static_cast<float>((mousePosWindow.y - panY) * zoom * dT * 40.0f);
 
-			camera.x -= deltaX;
-			camera.y -= deltaY;
+			camera.x -= static_cast<int>(deltaX);
+			camera.y -= static_cast<int>(deltaY);
 		}
 	}
 	else {
 		SDL_ShowCursor(1);
-		panX = mousePosWindow.x;
-		panY = mousePosWindow.y;
+		panX = static_cast<int>(mousePosWindow.x);
+		panY = static_cast<int>(mousePosWindow.y);
 	}
 }
 
