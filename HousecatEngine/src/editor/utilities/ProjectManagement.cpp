@@ -3,6 +3,7 @@
 #include <vector>
 #include <SDL.h>
 #include <glm/glm.hpp>
+#include <iomanip>
 
 #include "ProjectManagement.h"
 
@@ -11,6 +12,8 @@
 
 #include "../../components/TransformComponent.h"
 #include "../../components/SpriteComponent.h"
+
+#include "../../logger/Logger.h"
 
 ProjectManagement::ProjectManagement() {}
 ProjectManagement::~ProjectManagement() {}
@@ -30,6 +33,7 @@ void ProjectManagement::OpenProject(sol::state& lua, const std::string& fileName
 	if (!script.valid()) {
 		sol::error error = script;
 		std::string errorMessage = error.what();
+		Logger::Error("Error Loading Lua File: " + errorMessage);
 		return;
 	}
 
@@ -93,6 +97,7 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 		//err handle
 		return;
 	}
+	Logger::Log("Saving project started: " + fileName);
 
 	LuaExporter luaExporter;
 
@@ -149,6 +154,7 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 	}
 
 	SaveMap(filePath);
+	Logger::Log("Saving project completed: " + fileName);
 
 }
 
@@ -240,47 +246,45 @@ void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::
 }
 
 
-
-
 void ProjectManagement::LoadMap(const AssetManagerPtr& assetManager, const std::string& fileName) {
-	std::fstream mapFile;
-	mapFile.open(fileName);
-
+	std::ifstream mapFile(fileName);
 	if (!mapFile.is_open()) {
-		//REMIND
-		//for now
-		std::cerr << "Error: Failed to Open File " << fileName << std::endl;
+		Logger::Error("Could Not Open Map File: " + fileName);
 		return;
 	}
 
-	std::string group;
-	std::string assetID;
-	int tileWidth;
-	int tileHeight;
-	int srcRectX;
-	int srcRectY;
-	int layer;
+	std::string line;
+	while (std::getline(mapFile, line)) {
+		std::istringstream iss(line);
+		std::string group, assetID;
+		int tileWidth, tileHeight, srcRectX, srcRectY, zIndex;
+		double posX, posY, scaleX, scaleY;
+		//parses with assetID with quotes from saving
+		iss >> group >> std::quoted(assetID) >> tileWidth >> tileHeight >> srcRectX >> srcRectY
+			>> zIndex >> posX >> posY >> scaleX >> scaleY;
 
-	double rotation;
+		if (iss.fail()) {
+			Logger::Error("Failed to parse line in map file: " + line);
+			continue;
+		}
 
-	glm::vec2 transform;
-	glm::vec2 scale;
-
-
-	while (mapFile >> group >> assetID >> tileWidth >> tileHeight >> srcRectX >> srcRectY >>
-		layer >> rotation >> transform.x >> transform.y >> scale.x >> scale.y) {
+		glm::vec2 position(posX, posY);
+		glm::vec2 scale(scaleX, scaleY);
 
 		Entity tile = Housecat::GetInstance().CreateEntity();
 		tile.Group(group);
-		tile.AddComponent<TransformComponent>(transform, scale, rotation);
-		tile.AddComponent<SpriteComponent>(assetID, tileWidth, tileHeight, layer, false, srcRectX, srcRectY);
-
+		tile.AddComponent<TransformComponent>(position, scale, 0.0);
+		tile.AddComponent<SpriteComponent>(assetID, tileWidth, tileHeight, zIndex, false, srcRectX, srcRectY);
 	}
+
+	//Logger::Log("Map data loaded successfully.");
 	mapFile.close();
 }
 
+
 void ProjectManagement::SaveMap(std::filesystem::path fileName) {
 	if (!Housecat::GetInstance().IsThereGroup("tiles")) {
+		Logger::Error("Housecat Could Not Find Group: tiles");
 		return;
 	}
 
@@ -288,8 +292,10 @@ void ProjectManagement::SaveMap(std::filesystem::path fileName) {
 	mapFile.open(fileName);
 
 	if (!mapFile.is_open()) {
+		Logger::Error("Could Not Open Map File: " + fileName.string());
 		return;
 	}
+	//Logger::Log("Saving assets...");
 
 	auto tiles = Housecat::GetInstance().GetGroup("tiles");
 
@@ -298,10 +304,12 @@ void ProjectManagement::SaveMap(std::filesystem::path fileName) {
 		const auto& transform = tile.GetComponent<TransformComponent>();
 		const auto& sprite = tile.GetComponent<SpriteComponent>();
 
-		mapFile << group << " " << sprite.assetID << " " << sprite.width << " " << sprite.height << " "
-			<< sprite.srcRect.x << " " << sprite.srcRect.y << " " << sprite.zIndex << " " << transform.rotation
-			<< " " << transform.position.x << " " << transform.position.y << " " << transform.scale.x << " " << transform.scale.y << " ";
-
+		mapFile << group << " \"" << sprite.assetID << "\" " << sprite.width << " " << sprite.height << " " << sprite.srcRect.x << " " << sprite.srcRect.y << " " << sprite.zIndex << " "
+			<< transform.position.x << " " << transform.position.y << " " << transform.scale.x << " " << transform.scale.y << std::endl;
 	}
+
+	//Logger::Log("Assets saved successfully. Count: " + std::to_string(tiles.size()));
+
 	mapFile.close();
+	//Logger::Log("Map data saved successfully");
 }

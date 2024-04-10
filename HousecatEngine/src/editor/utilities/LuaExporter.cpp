@@ -31,7 +31,7 @@ void LuaExporter::WriteNewLine(std::fstream& file) {
 	}
 }
 
-void LuaExporter::WriteNewValue(std::fstream& file) {
+void LuaExporter::StartNewValue(std::fstream& file) {
 	if (!valueWritten) {
 		WriteNewLine(file);
 	}
@@ -64,7 +64,7 @@ void LuaExporter::CommentLine(const std::string& comment, std::fstream& file) {
 }
 
 void LuaExporter::StartTable(std::fstream& file) {
-	NewLine(file);
+	StartNewLine(file);
 
 	Write('{', file);
 	indent++;
@@ -73,7 +73,7 @@ void LuaExporter::StartTable(std::fstream& file) {
 }
 
 void LuaExporter::DeclareTable(const std::string name, std::fstream& file) {
-	NewLine(file);
+	StartNewLine(file);
 
 	Write(name, file);
 	Write(minimize ? "={" : " = {", file);
@@ -83,7 +83,7 @@ void LuaExporter::DeclareTable(const std::string name, std::fstream& file) {
 }
 
 void LuaExporter::EndTable(std::fstream& file) {
-	NewLine(file);
+	StartNewLine(file);
 
 	indent--;
 	if (valueWritten) {
@@ -115,7 +115,7 @@ void LuaExporter::EndTableSeparation(bool sameLine, std::fstream& file) {
 	valueWritten = true;
 }
 
-void LuaExporter::NewLine(std::fstream& file) {
+void LuaExporter::StartNewLine(std::fstream& file) {
 	if (valueWritten) {
 		Write(separator, file);
 		valueWritten = false;

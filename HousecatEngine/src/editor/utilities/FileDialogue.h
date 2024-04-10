@@ -16,7 +16,5 @@ public:
 
 	static std::string SaveFile(const char* filterPath = "Lua Files (*.lua) |*.lua\0*.lua\0 Tilemap Files (*.map) | *.map\0*.map\0", HWND windowHandle = NULL);
 
-
-
 };
 

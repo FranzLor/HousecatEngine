@@ -14,8 +14,8 @@
 
 EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 //int tileWidth, tileHeight, scaleX, scaleY, layer, tileOffset, srcRectX, srcRectY
-	: tileAttributes{ 32, 32, 1, 1, 0, {0, 0}, 0, 0 },
-	tilePrevAttributes{ 32, 32, 1, 1, 0, {0, 0}, 0, 0 },
+	: tileAttributes(),
+	tilePrevAttributes(),
 	tileWidth(32),
 	tileHeight(32),
 	textureWidth(0),

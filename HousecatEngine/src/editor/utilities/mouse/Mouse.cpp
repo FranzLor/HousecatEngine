@@ -10,7 +10,7 @@
 Mouse::Mouse()
 	: mousePosX(0),
 	mousePosY(0),
-	mouseRect(glm::vec2(16, 16)),
+	mouseRect(glm::vec2(32, 32)),
 	mousePosTile(glm::vec2(0)),
 	mousePrevPosTile(glm::vec2(mousePosX, mousePosY)),
 	mousePosWindow(glm::vec2(0)),
@@ -20,7 +20,7 @@ Mouse::Mouse()
 	tileAdded(false),
 	tileRemoved(false),
 	tileRecent(-1),
-	tileSize(16),
+	tileSize(32),
 	panX(0),
 	panY(0),
 	zoom(0.0f),
