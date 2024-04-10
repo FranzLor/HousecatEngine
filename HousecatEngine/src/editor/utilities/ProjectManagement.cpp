@@ -97,7 +97,7 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 		//err handle
 		return;
 	}
-	Logger::Log("Saving project started: " + fileName);
+	//Logger::Log("Saving project started: " + fileName);
 
 	LuaExporter luaExporter;
 
@@ -154,7 +154,7 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 	}
 
 	SaveMap(filePath);
-	Logger::Log("Saving project completed: " + fileName);
+	//Logger::Log("Saving project completed: " + fileName);
 
 }
 
