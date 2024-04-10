@@ -16,8 +16,10 @@ private:
 	bool suppress;
 
 	void WriteIndent(std::fstream& file);
+
 	void WriteNewLine(std::fstream& file);
-	void WriteNewValue(std::fstream& file);
+
+	void StartNewValue(std::fstream& file);
 
 	template <typename T>
 	void Write(const T value, std::fstream& file);
@@ -39,12 +41,11 @@ public:
 	void DeclareTable(const std::string name, std::fstream& file);
 	
 	void EndTable(std::fstream& file);
-
 	void EndTable(bool sameLine, std::fstream& file);
 
 	void EndTableSeparation(bool sameLine, std::fstream& file);
 
-	void NewLine(std::fstream& file);
+	void StartNewLine(std::fstream& file);
 
 	std::string MakeQuote(const std::string& quote);
 
@@ -103,7 +104,7 @@ void LuaExporter::WriteWords(TValue value, std::fstream& file, bool indent) {
 
 template <typename TName>
 void LuaExporter::WriteStartTable(TName name, bool quoted, std::fstream& file) {
-	NewLine(file);
+	StartNewLine(file);
 	Write('[', file);
 	
 	if (quoted) {
@@ -122,7 +123,7 @@ void LuaExporter::WriteStartTable(TName name, bool quoted, std::fstream& file) {
 
 template <typename TValue> 
 void LuaExporter::WriteUnquotedValue(TValue value, std::fstream& file) {
-	WriteNewValue(file);
+	StartNewValue(file);
 
 	Write(value, file);
 	newLine = false;
@@ -132,7 +133,7 @@ void LuaExporter::WriteUnquotedValue(TValue value, std::fstream& file) {
 template <typename TValue>
 void LuaExporter::WriteUnquotedValue(TValue value, bool newLine, std::fstream& file) {
 	if (newLine) {
-		WriteNewValue(file);
+		StartNewValue(file);
 	}
 
 	Write(value, file);
@@ -142,7 +143,7 @@ void LuaExporter::WriteUnquotedValue(TValue value, bool newLine, std::fstream& f
 
 template <typename TKey, typename TValue> 
 void LuaExporter::WriteQuotedKeyAndValue(TKey key, TValue value, std::fstream& file) {
-	WriteNewValue(file);
+	StartNewValue(file);
 
 	Write('[', file);
 	Write(Quote(key), file);
@@ -152,7 +153,7 @@ void LuaExporter::WriteQuotedKeyAndValue(TKey key, TValue value, std::fstream& f
 
 template <typename TKey, typename TValue> 
 void LuaExporter::WriteKeyAndValue(TKey key, TValue value, std::fstream& file) {
-	WriteNewValue(file);
+	StartNewLine(file);
 
 	Write(' ', file);
 	Write(key, file);
@@ -182,7 +183,7 @@ void LuaExporter::WriteKeyAndValue(TKey key, TValue value, bool finalValue, std:
 template <typename TKey, typename TValue>
 void LuaExporter::WriteKeyAndUnquotedValue(TKey key, TValue value, std::fstream& file, bool sameLine, bool lastValue) {
 	if (!sameLine) {
-		WriteNewValue(file);
+		StartNewLine(file);
 	}
 
 	Write(key, file);
@@ -199,7 +200,7 @@ void LuaExporter::WriteKeyAndUnquotedValue(TKey key, TValue value, std::fstream&
 
 template <typename TKey, typename TValue> 
 void LuaExporter::WriteKeyAndQuotedValue(TKey key, TValue value, std::fstream& file, bool finalValue) {
-	WriteNewValue(file);
+	StartNewLine(file);
 
 	Write(key, file);
 	Write(minimize ? "=" : " = ", file);
