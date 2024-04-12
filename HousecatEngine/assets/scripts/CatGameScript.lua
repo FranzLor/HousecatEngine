@@ -45,7 +45,7 @@ Level = {
     --              MAP CONFIG for game               --
     ----------------------------------------------------s
     tilemap = {
-        mapFilePath = "./assets/tilemaps/Map1Test.map",
+        mapFilePath = "./assets/tilemaps/HauntedForest.map",
         textureID = "tilemap-texture",
         tileSize = 32,
         tileScale = 2.0,
