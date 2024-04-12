@@ -206,13 +206,14 @@ void Game::Setup() {
 	housecat->AddSystem<AnimationSystem>();
 	housecat->AddSystem<CollisionSystem>();
 	housecat->AddSystem<RenderColliderSystem>();
-	housecat->AddSystem<DamageSystem>();
 	housecat->AddSystem<KeyboardInputSystem>();
 	housecat->AddSystem<CameraMovementSystem>();
 	housecat->AddSystem<RenderTextSystem>();
 	housecat->AddSystem<RenderHealthSystem>();
 	housecat->AddSystem<RenderImGuiSystem>();
 	housecat->AddSystem<ScriptSystem>();
+
+	housecat->AddSystem<DamageSystem>(*this);
 
 	housecat->AddSystem<WinConditionSystem>(*this);
 
@@ -263,7 +264,6 @@ void Game::Update() {
 	housecat->GetSystem<CameraMovementSystem>().Update(camera);
 	housecat->GetSystem<ScriptSystem>().Update(deltaTime, SDL_GetTicks());
 	housecat->GetSystem<SoundSystem>().Update();
-	//housecat->GetSystem<DamageSystem>().Update();
 
 }
 

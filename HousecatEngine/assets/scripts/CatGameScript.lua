@@ -34,7 +34,8 @@ Level = {
 
         { type = "music", id = "soundtrack", file = "./assets/sounds/soundtrack.wav" },
         { type = "sound", id = "meow", file = "./assets/sounds/meow.wav" },
-        { type = "sound", id = "damage", file = "./assets/sounds/damage.wav" }
+        { type = "sound", id = "damage", file = "./assets/sounds/damage.wav" },
+        { type = "sound", id = "death", file = "./assets/sounds/death.wav" }
     },
 
 
@@ -141,7 +142,6 @@ Level = {
                     loop = 0,
                     isPlaying = false,
                     delay = 4
-
                 }
             }
         },
@@ -2628,7 +2628,35 @@ Level = {
             }
          },
 
+         --DEATH TEXT
+         {
+            tag = "death",
+            components = {
+                text = {
+                    fontID = "montserrat",
+                    position = {  x = 0, y = 0 },
+                    isFixed = true,
+                    isVisible = false,
+                    text = "You Died!",
+                    color = { r = 255, g = 0, b = 0, a = 255 }
+                },
 
+                sfx = {
+                    sfxID = "death",
+                    volume = 100,
+                    loop = 0,
+                    isPlaying = false,
+                    delay = 1
+                },
+
+                --TODO
+                boxcollider = {
+                    width = 0,
+                    height = 0,
+                    offset = { x = 0.0, y = 0.0 }
+                },
+             },
+         },
 
 
 
@@ -2641,6 +2669,7 @@ Level = {
                     fontID = "roboto",
                     position = {  x = 12, y = 144 },
                     isFixed = false,
+                    isVisible = true,
                     text = "Find your colony!",
                     color = { r = 0, g = 0, b = 0, a = 255 }
                 }
@@ -2652,8 +2681,9 @@ Level = {
             components = {
                 text = {
                     fontID = "roboto",
-                    position = {  x = 690, y = 329 },
+                    position = {  x = 0, y = 0 },
                     isFixed = false,
+                    isVisible = true,
                     text = "Avoid the monsters!",
                     color = { r = 0, g = 0, b = 0, a = 255 }
                 }
@@ -2663,6 +2693,7 @@ Level = {
 
 
 
+         
 
 
 
