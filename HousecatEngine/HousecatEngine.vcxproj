@@ -451,7 +451,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\scripts\CatGameScript.lua" />
-    <None Include="assets\scripts\Level1Test.lua" />
     <None Include="assets\tilemaps\Map1.map" />
     <None Include="assets\tilemaps\Map1Test.map" />
     <None Include="Housecat.aps" />

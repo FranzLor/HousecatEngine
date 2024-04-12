@@ -28,15 +28,12 @@ LevelManager::LevelManager() {}
 LevelManager::~LevelManager() {}
 
 void LevelManager::LoadLevel(const std::unique_ptr<Housecat>& housecat, SDL_Renderer* rendererGame, const std::unique_ptr<AssetManager>& assetManager, sol::state& lua, int level) {
-	
-	//TODO
-	//REMIND
-	//("Level1Test.lua") is a placeholder for now -> ("./assets/scripts/Level" + to_string(level) + ".lua")
-	sol::load_result luaScript = lua.load_file("./assets/scripts/Level1Test.lua");
+	//load your lua script
+	sol::load_result luaScript = lua.load_file("./assets/scripts/CatGameScript.lua");
 	if (!luaScript.valid()) {
 		sol::error err = luaScript;
 		std::string errorMsg = err.what();
-		Logger::Error("Error loading Lua Script: " + errorMsg);
+		Logger::Error("Error loading Lua Script: " + errorMsg + "\nVerify File Name!");
 		return;
 	}
 
