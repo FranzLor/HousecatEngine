@@ -87,7 +87,7 @@ Level = {
                 },
 
                 transform = {
-                    position = { x = 125, y = 2111 },
+                    position = { x = 20, y = 125 },
                     scale = { x = 3.0, y = 3.0 },
                     rotation = 0.0,
                 },
@@ -2681,7 +2681,7 @@ Level = {
             components = {
                 text = {
                     fontID = "roboto",
-                    position = {  x = 0, y = 0 },
+                    position = {  x = 758, y = 319 },
                     isFixed = false,
                     isVisible = true,
                     text = "Avoid the monsters!",
