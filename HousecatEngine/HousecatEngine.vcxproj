@@ -431,7 +431,6 @@
     <ClInclude Include="src\events\KeyPressedEvent.h" />
     <ClInclude Include="src\events\KeyReleasedEvent.h" />
     <ClInclude Include="src\game\Game.h" />
-    <ClInclude Include="src\input\GlobalInputHandler.h" />
     <ClInclude Include="src\logger\Logger.h" />
     <ClInclude Include="src\Source.h" />
     <ClInclude Include="src\systems\AnimationSystem.h" />
@@ -629,7 +628,6 @@
     <ClCompile Include="src\editor\utilities\mouse\Mouse.cpp" />
     <ClCompile Include="src\eventmanager\EventManager.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
-    <ClCompile Include="src\input\GlobalInputHandler.cpp" />
     <ClCompile Include="src\logger\Logger.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Source.cpp" />
