@@ -1,17 +1,23 @@
+#include <SDL_image.h>
+
 #include "AssetManager.h"
 #include "../logger/Logger.h"
 
-#include <SDL_image.h>
 
 AssetManager::AssetManager() {
-	Logger::Lifecycle("AssetManager Constructor Called!");
+	//Logger::Lifecycle("AssetManager Constructor Called!");
 }
 
 AssetManager::~AssetManager() {
 	ClearAssets();
-	Logger::Lifecycle("AssetManager Destructor Called!");
+	//Logger::Lifecycle("AssetManager Destructor Called!");
 }
 
+
+
+//---------------------------------------------------------------------------------------------------------------------// 
+
+//game textures
 SDL_Texture* AssetManager::GetTexture(const std::string& assetID) {
 	return textures[assetID];
 }
@@ -34,45 +40,10 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& assetID
 }
 
 
+//---------------------------------------------------------------------------------------------------------------------// 
 
 
-
-
-
-void AssetManager::AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath) {
-	if (!EditorHasTexture(assetID)) {
-		SDL_Surface* surface = IMG_Load(filePath.c_str());
-		if (!surface) {
-			Logger::Error("Error Loading Surface: " + std::string(IMG_GetError()));
-			return;
-		}
-
-		EditorTexture texture(SDL_CreateTextureFromSurface(renderer.get(), surface));
-		if (!texture) {
-			Logger::Error("Error Creating Texture from Surface: " + std::string(SDL_GetError()));
-			SDL_FreeSurface(surface);
-			return;
-		}
-
-		editorTextures.emplace(assetID, std::move(texture));
-	}
-}
-
-const EditorTexture& AssetManager::ReturnEditorTexture(const std::string& assetID) {
-	return editorTextures[assetID];
-}
-
-bool AssetManager::EditorHasTexture(const std::string& assetID) {
-	return editorTextures.find(assetID) != editorTextures.end();
-}
-
-
-
-
-
-
-
-
+//fonts
 TTF_Font* AssetManager::GetFont(const std::string& assetID) {
 	return fonts[assetID];
 }
@@ -88,9 +59,10 @@ void AssetManager::AddFont(const std::string& assetID, const std::string& filePa
 }
 
 
+//---------------------------------------------------------------------------------------------------------------------// 
 
 
-
+//music
 Mix_Music* AssetManager::GetMusic(const std::string& assetID) {
 	return musics[assetID];
 }
@@ -128,8 +100,10 @@ void AssetManager::StopMusic() {
 
 
 
+//---------------------------------------------------------------------------------------------------------------------// 
 
 
+//sfx
 Mix_Chunk* AssetManager::GetSound(const std::string& assetID) {
 	return sounds[assetID];
 }
@@ -155,11 +129,43 @@ void AssetManager::PlaySound(const std::string& assetID, int volume, int loop) {
 
 
 
+//---------------------------------------------------------------------------------------------------------------------// 
+
+
+//editor textures
+void AssetManager::AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath) {
+	if (!EditorHasTexture(assetID)) {
+		SDL_Surface* surface = IMG_Load(filePath.c_str());
+		if (!surface) {
+			Logger::Error("Error Loading Surface: " + std::string(IMG_GetError()));
+			return;
+		}
+
+		EditorTexture texture(SDL_CreateTextureFromSurface(renderer.get(), surface));
+		if (!texture) {
+			Logger::Error("Error Creating Texture from Surface: " + std::string(SDL_GetError()));
+			SDL_FreeSurface(surface);
+			return;
+		}
+
+		editorTextures.emplace(assetID, std::move(texture));
+	}
+}
+
+const EditorTexture& AssetManager::ReturnEditorTexture(const std::string& assetID) {
+	return editorTextures[assetID];
+}
+
+bool AssetManager::EditorHasTexture(const std::string& assetID) {
+	return editorTextures.find(assetID) != editorTextures.end();
+}
 
 
 
+//---------------------------------------------------------------------------------------------------------------------// 
 
 
+//clearing all assets
 void AssetManager::ClearAssets() {
 	for (auto texture : textures) {
 		//makes sure to deallocate texture!

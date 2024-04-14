@@ -27,15 +27,9 @@ public:
 	AssetManager();
 	~AssetManager();
 
-	//game 
+	//use for game projects
 	SDL_Texture* GetTexture(const std::string& assetID);
 	void AddTexture(SDL_Renderer* renderer, const std::string& assetID, const std::string& filePath);
-
-	//editor
-	void AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath);
-	const EditorTexture& ReturnEditorTexture(const std::string& assetID);
-	bool EditorHasTexture(const std::string& assetID);
-
 
 	TTF_Font* GetFont(const std::string& assetID);
 	void AddFont(const std::string& assetID, const std::string& filePath, int fontSize);
@@ -51,9 +45,23 @@ public:
 	void AddSound(const std::string& assetID, const std::string& filePath);
 	void PlaySound(const std::string& assetID, int volume, int loop);
 
-	void ClearAssets();
 
+
+	//---------------------------------------------------------------------------------------------------------------------// 
+
+	
+	//use for editor projects
+	void AddEditorTexture(EditorRenderer& renderer, const std::string& assetID, const std::string& filePath);
+	const EditorTexture& ReturnEditorTexture(const std::string& assetID);
+	bool EditorHasTexture(const std::string& assetID);
+
+
+	//---------------------------------------------------------------------------------------------------------------------// 
+
+
+	//usable for both
+	void ClearAssets();
 };
 
-//editor method ptr
+//used by the Editor
 typedef std::unique_ptr<AssetManager> AssetManagerPtr;

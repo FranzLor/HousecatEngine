@@ -1374,10 +1374,8 @@
     <None Include="SDL2_image.dll" />
     <None Include="SDL2_mixer.dll" />
     <None Include="SDL2_ttf.dll" />
-    <None Include="assets\scripts\Level1Test.lua" />
-    <None Include="assets\tilemaps\Map1.map" />
-    <None Include="assets\tilemaps\Map1Test.map" />
     <None Include="assets\scripts\CatGameScript.lua" />
+    <None Include="assets\tilemaps\HauntedForest.map" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libs\glm\detail\glm.cpp">
@@ -1473,11 +1471,6 @@
     <ClCompile Include="src\editor\utilities\RemoveTile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="src\assetmanager\Resource.resx">
-      <Filter>Resource Files</Filter>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Housecat.rc">
