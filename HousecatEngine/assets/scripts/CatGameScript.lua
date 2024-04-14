@@ -87,7 +87,7 @@ Level = {
                 },
 
                 transform = {
-                    position = { x = 20, y = 125 },
+                    position = { x = 20, y = 230 },
                     scale = { x = 3.0, y = 3.0 },
                     rotation = 0.0,
                 },
