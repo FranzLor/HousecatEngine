@@ -1,5 +1,13 @@
 #pragma once
 
+//----------------------------------------------------//
+//                     COMPONENT                      //
+//        Manages health-related properties and       //
+//               visualization for entities.          //
+//----------------------------------------------------//
+
+
+
 struct HealthComponent {
 	int healthPercent;
 	//make text optional
@@ -33,3 +41,36 @@ struct HealthComponent {
 
 	}
 };
+
+
+
+
+/**
+ * 
+ * @struct HealthComponent
+ * @brief Manages the health status of entities and controls the visual representation of health bars.
+ *
+ * This component keeps track of an entity's health percentage and provides customizable
+ * visual cues like health bars and optional text to indicate health status. It includes
+ * settings for health bar colors based on health thresholds, dimensions, and positional offsets
+ * relative to the entity's position. It is crucial for gameplay mechanics involving health
+ * management and visual feedback.
+ *
+ * Usage:
+ * - healthPercent: Current health of the entity as a percentage.
+ * - allowText: Enables rendering a text label showing the health percentage alongside the health bar.
+ * - lowHealth, mediumHealth, highHealth: Color codes for different health levels.
+ * - healthBarWidth, healthBarHeight: Dimensions of the health bar.
+ * - horizontalOffset, verticalOffset: Positional adjustments for the health bar relative to the entity's position.
+ *
+ * Example:
+ * 	monster.AddComponent<HealthComponent>(100, false);
+ * 	
+ *  Entity starts at 100% health, with not text (font) displayed, and uses default health bar colors and positioning.
+ *
+ * Note:
+ * - The HealthComponent is utilized by the RenderHealthSystem, which handles the drawing of health bars
+ *   and the associated health text based on the component's properties. This system ensures that health
+ *   visualization is synchronized with the entity's state and location, considering the camera's viewport.
+ * 
+ */
