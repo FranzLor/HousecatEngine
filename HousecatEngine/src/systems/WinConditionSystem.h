@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "../ecs/ECS.h"
 
 #include "../components/WinConditionComponent.h"
@@ -7,7 +9,6 @@
 
 #include "../eventmanager/EventManager.h"
 #include "../events/CollisionEvent.h"
-#include <iostream>
 
 class WinConditionSystem : public System {
 private:
@@ -59,17 +60,4 @@ public:
             Logger::Log("You Won! \n(Intentional Game Design)");
 		}
     }
-
-
-    /*void Update() {
-        if (winConditionMet && timeToKill != 0 && SDL_GetTicks() > timeToKill) {
-            for (auto entity : GetSystemEntities()) {
-                entity.Kill();
-            }
-
-            winConditionMet = false;
-            timeToKill = 0;
-        }
-    }*/
-
 };
