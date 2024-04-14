@@ -626,7 +626,6 @@
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\editor\Editor.cpp" />
     <ClCompile Include="src\editor\utilities\mouse\Mouse.cpp" />
-    <ClCompile Include="src\eventmanager\EventManager.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\logger\Logger.cpp" />
     <ClCompile Include="src\Main.cpp" />
