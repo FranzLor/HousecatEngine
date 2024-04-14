@@ -7,8 +7,18 @@
 #include <functional>
 
 #include "../events/Event.h"
-
 #include "../logger/Logger.h"
+
+
+
+//----------------------------------------------------//
+//                  EVENT MANAGER CLASS               //
+//    Manages events and notifications across various  //
+//       systems and components in the application.   //
+//----------------------------------------------------//
+
+
+
 
 class IEventFunction {
 private:
@@ -53,11 +63,11 @@ private:
 
 public:
 	EventManager() {
-		Logger::Lifecycle("EventManager Constructor Called!");
+		//Logger::Lifecycle("EventManager Constructor Called!");
 	}
 
 	~EventManager() {
-		Logger::Lifecycle("EventManager Destructor Called1");
+		//Logger::Lifecycle("EventManager Destructor Called1");
 	}
 
 	//clears listener list
@@ -101,4 +111,38 @@ public:
 		listeners[typeid(TEvent)]->push_back(std::move(listener));
 	}
 };
+
+
+
+
+
+/**
+ *
+ * @class EventManager
+ * @brief Handles dynamic event subscription and dispatching throughout the application.
+ *
+ * The EventManager facilitates a publish-subscribe (observer) pattern, decoupling the event
+ * sources from the event listeners. It supports dynamic subscription to events using templates
+ * and function pointers, allowing systems to react to specific events without hard dependencies.
+ * The manager uses type safety and run-time efficiency as core principles, utilizing templates
+ * and polymorphism to handle different event types generically.
+ *
+ * Usage:
+ * - Systems or components can subscribe to specific events using the ListenToEvent method,
+ *   specifying the event type and a callback function.
+ * - Events can be triggered using TriggerEvent, which will notify all subscribed listeners
+ *   appropriately.
+ *
+ * General Example:
+ * 	EventManager eventManager;
+ * 
+ * 	eventManager.ListenToEvent<CollisionEvent>(this, &GameSystem::HandleCollision);
+ * 	eventManager.TriggerEvent<CollisionEvent>(entityA, entityB);
+ *
+ * Key Methods:
+ * - ListenToEvent<TEvent>(owner, callback): Subscribes a system to listen for an event of type TEvent.
+ * - TriggerEvent<TEvent>(args...): Dispatches an event of type TEvent to all registered listeners.
+ * - Reset(): Clears all subscriptions, useful for cleanup or reinitializing the event handling.
+ *
+ */
 
