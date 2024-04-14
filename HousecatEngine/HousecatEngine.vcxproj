@@ -635,9 +635,6 @@
     <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="src\assetmanager\Resource.resx" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="Housecat.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
