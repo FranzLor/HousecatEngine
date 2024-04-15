@@ -67,7 +67,6 @@ private:
 	int ID;
 
 public:
-	//Entity() = default;
 	Entity(int ID) : ID(ID), housecat(nullptr) {}
 	Entity(const Entity& entity) = default;
 
@@ -94,8 +93,6 @@ public:
 	}
 	Entity& operator=(const Entity& other) = default;
 
-	//REMIND
-	//might not be needed?
 	bool operator >=(const Entity& other) const {
 		return ID >= other.ID;
 	}
@@ -164,9 +161,7 @@ private:
 	std::unordered_map<int, int> entityIDToIndex;
 	std::unordered_map<int, int> indexToEntityID;
 public:
-	//REMIND
 	Pool(int capacity = 100) {
-		//fix
 		size = 0;
 		data.resize(capacity);
 	}
@@ -239,8 +234,6 @@ public:
 		}
 	}
 
-	//TODO
-	//error handling: entityID[entityID] ?
 	T& Get(int entityID) {
 		int index = entityIDToIndex[entityID];
 		return static_cast<T&>(data[index]);
@@ -291,8 +284,6 @@ private:
 	//lists freed entity IDs
 	std::deque<int> freedIDs;
 
-	//TODO?
-	//std::shared_ptr<Housecat> housecat;
 
 
 
@@ -308,9 +299,6 @@ public:
 	Entity CreateEntity();
 
 	void KillEntity(Entity entity);
-
-	//TODO entity management
-	//freeze?
 
 	//check component signature before adding | removing to system
 	void AddEntityToSystems(Entity entity);
@@ -441,7 +429,6 @@ void Housecat::AddComponent(Entity entity, TArgs&& ...args) {
 	}
 	//using index vector, create new pool for component type
 	if (!componentPools[componentID]) {
-		//TODO: use smart pointers
 		std::shared_ptr<Pool<TComponent>> newComponentPool = std::make_shared<Pool<TComponent>>();
 		componentPools[componentID] = newComponentPool;
 	}
