@@ -18,6 +18,13 @@
 #include "../Components/AnimationComponent.h"
 
 
+//----------------------------------------------------//
+//                   RENDER IMGUI SYSTEM              //
+//    Provides a debugging interface using ImGui to   //
+//    interact with and manipulate game entities.     //
+//----------------------------------------------------//
+
+
 
 class RenderImGuiSystem : public System {
 public:
@@ -189,3 +196,44 @@ public:
 
 	}
 };
+
+
+
+
+/**
+ *
+ * @class RenderImGuiSystem
+ * @brief A system for integrating ImGui into the game to provide debugging tools and real-time editing of entity components.
+ *
+ * This system facilitates on-the-fly editing of entity attributes and states through ImGui windows and widgets. It allows
+ * developers and testers to modify components such as Transform, Rigidbody, Sprite, BoxCollider, Health, DamageArea,
+ * MovementState, and Animation directly in the game during runtime, enhancing debugging and testing capabilities.
+ *
+ * Usage:
+ * - Add this system to your game engine to enable ImGui rendering.
+ * - It should be called during the game's rendering phase when debugging is enabled to render ImGui windows.
+ *
+ * Example:
+ * 	housecat->AddSystem<RenderImGuiSystem>();
+ * 
+ *  Adding RenderImGuiSystem to the game
+ *
+ * 	if (isDebugging) {
+ * 	    housecat->GetSystem<RenderImGuiSystem>().Update(housecat, camera);
+ * 	}
+ * 
+ *  Rendering ImGui interface in the game's render loop
+ *
+ * Key Features:
+ * - Dynamic entity creation: Allows for the configuration and spawning of new entities with specified components.
+ * - Real-time component editing: Adjust properties of existing entities such as position, scale, health, and more.
+ * - Debugging overlays: Provides additional information like map coordinates directly on the game screen.
+ *
+ * The RenderImGuiSystem is invaluable for rapid development and iterative testing, providing powerful tools for
+ * adjusting game mechanics and visualizing changes immediately.
+ * 
+ * Note:
+ * - Add this system after the main RenderSystem to ensure that ImGui windows are rendered on top of the game.
+ * - ImGui must be initialized before using this system, and the ImGui context should be passed to the renderer.
+ * 
+ */
