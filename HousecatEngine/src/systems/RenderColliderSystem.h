@@ -7,6 +7,14 @@
 #include "../components/BoxColliderComponent.h"
 #include "../components/TransformComponent.h"
 
+
+//----------------------------------------------------//
+//             RENDER COLLIDER SYSTEM                 //
+// Visualizes colliders and debug grids in the game.  //
+//----------------------------------------------------//
+
+
+
 class RenderColliderSystem : public System {
 private:
 	bool isRendering = false;
@@ -69,3 +77,47 @@ public:
 		return isRendering;
 	}
 };
+
+
+
+
+/**
+ *
+ * @class RenderColliderSystem
+ * @brief A system for rendering collider outlines and debug grids to visualize the physical boundaries of entities.
+ *
+ * This system assists in debugging by allowing developers to visually confirm the extents and interactions
+ * of colliders associated with entities. It draws rectangles around entities with BoxColliderComponent and
+ * TransformComponent to show their bounding boxes in the game world relative to the camera view.
+ *
+ * Usage:
+ * - This system should be added to your game if debugging visualizations are needed for development.
+ * - It should be activated or deactivated through UI controls or developer inputs to toggle rendering of colliders.
+ *
+ * Example:
+ * 	housecat->AddSystem<RenderColliderSystem>();
+ * 
+ *  Adding RenderColliderSystem to the game using Housecat
+ *
+ * 	if (isDebugging) {
+ * 	    auto& renderColliderSystem = housecat->GetSystem<RenderColliderSystem>();
+ * 	    if (renderColliderSystem.GetRenderingState()) {
+ * 	        renderColliderSystem.ToggleRenderingState();
+ * 	    }
+ * 	}
+ * 
+ *  Toggling the collider rendering in response to a debug mode toggle
+ *
+ * Key Methods:
+ * - Update(renderer, camera): Called within the rendering loop to draw collider outlines for visible entities.
+ * - RenderDebugGrid(renderer, camera, tileWidth, tileHeight, windowWidth, windowHeight): Optionally draws a grid overlay
+ *   for further spatial context in debugging modes.
+ * - ToggleRenderingState(): Toggles the rendering state of colliders to either show or hide them.
+ * - GetRenderingState(): Returns the current rendering state to determine if colliders are being shown.
+ *
+ * This system plays a crucial role in development phases, especially when fine-tuning physical interactions and ensuring
+ * that entity boundaries are correctly set and respected within the game environment.
+ * 
+ * Note:
+ * - This system should be called after the main Rendering System.
+ */
