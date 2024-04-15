@@ -9,9 +9,6 @@ int main(int argc, char* argv[]) {
     source.Initialize();
     source.Run();
     source.Destroy();
-
-    //TODO: improve error handling, use Logger
-    // initializer handling
     
     //game launcher
     if (source.LaunchGame()) {
