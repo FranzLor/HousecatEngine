@@ -3,6 +3,15 @@
 #include "editor/Editor.h"
 
 
+//----------------------------------------------------//
+//                    MAIN                            //
+//     Entry point for the Housecat game engine.      //
+// Manages the initial launch, directing to the game  //
+//      or the editor based on user interaction.      //
+//----------------------------------------------------//
+
+
+
 int main(int argc, char* argv[]) {
     Source source;
 
