@@ -14,6 +14,14 @@
 #include "../events/KeyPressedEvent.h"
 
 
+//----------------------------------------------------//
+//                   SOUND SYSTEM                     //
+// Manages and responds to sound playback requests    //
+// through the ECS framework and event system.        //
+//----------------------------------------------------//
+
+
+
 class SoundSystem : public System {
 private:
 	std::unique_ptr<EventManager>& eventManager;
@@ -98,6 +106,39 @@ public:
 			}
 		}
 	}
-
-
 };
+
+
+
+
+/**
+ *
+ * @class SoundSystem
+ * @brief Manages audio playback for entities, processing sound-related events and updating sound states.
+ *
+ * The SoundSystem interfaces with the EventManager to handle sound-related events and uses the AssetManager
+ * to access and control audio assets. It is responsible for initializing, playing, stopping, and managing
+ * sound effects based on entity interactions and game events. Entities with an SFXComponent can trigger
+ * sound effects that are controlled for timing, looping, and volume.
+ *
+ * Usage:
+ * - Entities with SFXComponents trigger sounds based on gameplay logic (e.g., collisions, actions).
+ * - The system listens to key events to trigger sounds and manages playback including volume and looping.
+ *
+ * Example:
+ * 	housecat->AddSystem<SoundSystem>(eventManager, assetManager);
+ * 
+ *  Adding the SoundSystem to the game
+ *
+ * 	housecat->GetSystem<SoundSystem>().ListenToEvents(eventManager);
+ * 	housecat->GetSystem<SoundSystem>().Update();
+ * 
+ *  Listening to events and updating the system in the game loop
+ *
+ * Key Functions:
+ * - ListenToEvents(eventManager): Sets up event listeners for sound-related events.
+ * - Update(): Processes current sound playback states and triggers new sounds as necessary based on the entity's SFXComponent settings.
+ *
+ * The SoundSystem enhances dynamic audio responses to game events, significantly improving the game's interactivity and immersion.
+ * 
+ */
