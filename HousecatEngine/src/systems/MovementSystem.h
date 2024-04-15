@@ -11,6 +11,14 @@
 
 #include "../game/CollisionMap.h"
 
+//----------------------------------------------------//
+//                MOVEMENT SYSTEM                     //
+// Manages the movement and collision interactions    //
+// for entities with physical presence in the game.   //
+//----------------------------------------------------//
+
+
+
 class MovementSystem: public System {
 public:
 	MovementSystem() {
@@ -114,3 +122,43 @@ public:
 
 };
 
+
+
+
+/**
+ *
+ * @class MovementSystem
+ * @brief Manages the physics and movement of entities based on their velocity and interactions with the environment.
+ *
+ * This system updates the positions of entities based on their velocity while considering environmental
+ * constraints like collisions with barriers and map boundaries. It handles basic physics by responding to
+ * collisions, potentially reversing movement directions, and adjusting entity positions according to
+ * walkable and non-walkable areas defined in the CollisionMap.
+ *
+ * Usage:
+ * - This system should be added to your game engine to manage physical movement and collision handling.
+ * - It must be updated regularly each frame to ensure entity movements are processed.
+ * - It listens to collision events to handle interactions between entities dynamically during the game.
+ *
+ * Example:
+ * 	housecat->AddSystem<MovementSystem>();
+ * 
+ *  Adding MovementSystem to the game using Housecat
+ *
+ * 	housecat->GetSystem<MovementSystem>().ListenToEvents(eventManager);
+ * 
+ *  Listening to events in your game 
+ *
+ * 	housecat->GetSystem<MovementSystem>().Update(deltaTime);
+ * 
+ *  Updating the MovementSystem each frame
+ *
+ * Key Methods:
+ * - Update(deltaTime): Computes and updates the positions of entities based on their velocities and handles collisions.
+ * - HandleCollision(event): Responds to collision events by adjusting entity velocities and positions.
+ * - EntityHitsBarrier(entity, barrier): Adjusts entity movement when colliding with barriers to simulate physical responses.
+ *
+ * This system is critical for implementing responsive and realistic physics behavior in the game,
+ * affecting gameplay through dynamic interaction and movement adjustments based on the game environment and entity interactions.
+ * 
+ */
