@@ -40,13 +40,6 @@ bool Entity::HasGroup(const std::string& group) const {
 	return housecat->HasGroup(*this, group);
 }
 
-//REMIND
-//TODO
-
-//freeze
-//tag and? group
-//Tag(), NeedsTag(), GetTag(), HasTag()
-
 
 
 
@@ -101,18 +94,9 @@ Entity Housecat::CreateEntity() {
 	entity.housecat = this;
 	entitiesToAdd.insert(entity);
 
-	//TODO smart ptr
-	//entity.housecat = std::weak_ptr<Housecat>(std::shared_ptr<Housecat>());
-
 	if (static_cast<unsigned int>(entityID) >= entityComponentSignatures.size()) {
 		entityComponentSignatures.resize(entityID + 1);
 	}
-
-	//TODO
-	//try entity ID reusability design?
-
-	//REMIND TESTING remove latr
-	//Logger::Log("Entity [" + std::to_string(entityID) + "] Created!");
 
 	return entity;
 }
@@ -242,9 +226,3 @@ Housecat& Housecat::GetInstance() {
 	static Housecat instance;
 	return instance;
 }
-
-//TODO
-//adding entity Kill(), Tag()
-//use housecat for management
-
-//Housecat::KillEntity()
