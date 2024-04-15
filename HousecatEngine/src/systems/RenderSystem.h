@@ -12,6 +12,14 @@
 #include "../components/SpriteComponent.h"
 
 
+//----------------------------------------------------//
+//                  RENDER SYSTEM                     //
+//    Manages the rendering of entities with sprite   //
+//    components relative to the camera's viewport.   //
+//----------------------------------------------------//
+
+
+
 class RenderSystem : public System {
 public:
 	RenderSystem() {
@@ -143,3 +151,43 @@ public:
 	}
 
 };
+
+
+
+
+
+/**
+ *
+ * @class RenderSystem
+ * @brief A system for rendering entities with TransformComponent and SpriteComponent, considering their visibility relative to the camera.
+ *
+ * This system is responsible for drawing entities that are equipped with both Transform and Sprite components,
+ * rendering only those within the bounds of the camera's view. It sorts entities by their z-index to manage
+ * render order, ensuring correct layering in the scene. Entities can optionally be fixed in the camera's viewport,
+ * which makes them ignore camera movements, suitable for UI elements.
+ *
+ * Usage:
+ * - Add this system to your game to manage the rendering of all sprite-based entities.
+ * - It should be updated in the main game loop to draw all active entities based on their current state and camera visibility.
+ *
+ * Example:
+ * 	housecat->AddSystem<RenderSystem>();
+ * 
+ *  Adding RenderSystem to the game
+ *
+ * 	housecat->GetSystem<RenderSystem>().Update(rendererGame, assetManager, camera);
+ * 
+ *  Calling in the main rendering loop
+ *
+ * Key Methods:
+ * - Update(renderer, assetManager, camera): Processes and renders all entities that have TransformComponent and SpriteComponent.
+ *   It adjusts the rendering based on the entity's position relative to the camera and applies texture modifications as needed.
+ * - UpdateEditor(renderer, assetManager, camera, zoom): Similar to Update but tailored for editor mode, it allows for zooming
+ *   and other modifications ideal for a game editor environment.
+ *
+ * The RenderSystem ensures efficient rendering by culling off-screen entities and applying z-index based sorting,
+ * crucial for maintaining performance and visual correctness in complex scenes.
+ * 
+ * Note:
+ * - This system should be called before any other rendering operations to ensure proper layering and visibility.
+ */

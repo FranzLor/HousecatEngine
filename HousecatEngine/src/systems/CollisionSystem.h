@@ -7,6 +7,15 @@
 
 #include "../events/CollisionEvent.h"
 
+
+//----------------------------------------------------//
+//                COLLISION SYSTEM                    //
+//  Handles the detection of collisions between       //
+//  entities using axis-aligned bounding boxes (AABB).//
+//----------------------------------------------------//
+
+
+
 class CollisionSystem : public System {
 public:
 	CollisionSystem() {
@@ -62,13 +71,47 @@ public:
 					colliderB.height * transformB.scale.y
 				);
 
-				//REMIND TESTING
 				if (hasCollided) {
 					//Logger::Log("Entity [" + std::to_string(entityA.GetID()) + "] Collided With [" + std::to_string(entityB.GetID()) + "]");
-
 					eventManager->TriggerEvent<CollisionEvent>(entityA, entityB);
 				}
 			}
 		}
 	}
 };
+
+
+
+
+/**
+ *
+ * @class CollisionSystem
+ * @brief Manages collision detection and response for entities with BoxColliderComponent and TransformComponent.
+ *
+ * This system utilizes the Axis-Aligned Bounding Box (AABB) algorithm to detect collisions between entities
+ * in the game. When a collision is detected, it triggers a CollisionEvent, allowing other systems to handle
+ * the collision effects such as damage, physics responses, or gameplay logic.
+ *
+ * Usage:
+ * - Add this system to the game engine to handle collisions for entities that include physical interactions.
+ * - Update this system every frame to check for and respond to collisions.
+ *
+ * Example:
+ * 	housecat->AddSystem<CollisionSystem>();
+ * 
+ *  Adding CollisionSystem to the game project using housecat
+ * 
+ * 	housecat->GetSystem<CollisionSystem>().Update(eventManager);
+ * 
+ *  Updating the CollisionSystem each frame to check for collisions with the EventManager
+ *
+ * Key Methods:
+ * - Update(eventManager): Checks for collisions between entities and triggers CollisionEvent for each detected collision.
+ * - CheckCollision(aX, aY, aW, aH, bX, bY, bW, bH): Determines if two entities' bounding boxes are overlapping.
+ *
+ * This system is essential for games that require dynamic interaction between entities, ensuring that collisions
+ * are handled efficiently and accurately. It forms the foundation for physical interactions within the game world.
+ * 
+ * Note:
+ * - Use the EventManager to handle collision by listening and triggering responses.
+ */

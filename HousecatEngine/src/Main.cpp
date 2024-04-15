@@ -3,15 +3,21 @@
 #include "editor/Editor.h"
 
 
+//----------------------------------------------------//
+//                    MAIN                            //
+//     Entry point for the Housecat game engine.      //
+// Manages the initial launch, directing to the game  //
+//      or the editor based on user interaction.      //
+//----------------------------------------------------//
+
+
+
 int main(int argc, char* argv[]) {
     Source source;
 
     source.Initialize();
     source.Run();
     source.Destroy();
-
-    //TODO: improve error handling, use Logger
-    // initializer handling
     
     //game launcher
     if (source.LaunchGame()) {

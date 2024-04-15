@@ -10,6 +10,12 @@
 #include "../components/TransformComponent.h"
 #include "../components/SpriteComponent.h"
 
+//----------------------------------------------------//
+//              RENDER HEALTH SYSTEM                  //
+// Displays health bars for entities based on their   //
+// health component values.                           //
+//----------------------------------------------------//
+
 
 class RenderHealthSystem : public System {
 public:
@@ -85,3 +91,38 @@ public:
 		}
 	}
 };
+
+
+
+/**
+ *
+ * @class RenderHealthSystem
+ * @brief Manages the rendering of health bars for entities to visually represent their health status.
+ *
+ * This system uses HealthComponent to draw health bars on the game screen, reflecting each entity's current health.
+ * The system adjusts the color of the health bar based on the health percentage, providing a visual indicator that
+ * enhances player feedback and game aesthetics. It supports optional text rendering of the health percentage.
+ *
+ * Usage:
+ * - Add this system to your game engine for entities that require a visual representation of health.
+ * - It should be updated every frame within the game's render loop to reflect any changes in health.
+ *
+ * Example:
+ * 	housecat->AddSystem<RenderHealthSystem>();
+ * 
+ *  Adding RenderHealthSystem to the game using Housecat
+ *
+ * 	housecat->GetSystem<RenderHealthSystem>().Update(rendererGame, assetManager, camera);
+ * 
+ *  Updating and rendering the health bars in the game's render method
+ *
+ * Key Methods:
+ * - Update(renderer, assetManager, camera): Renders health bars according to entity health data, positioning,
+ *   and camera view, ensuring the bars appear correctly on screen relative to their entities.
+ *
+ * The RenderHealthSystem is essential for games where health management is critical, allowing players to visually
+ * monitor the health status of characters or units dynamically during gameplay.
+ * 
+ * Note: 
+ * - Call this system after the RenderSystem to ensure health bars are drawn on top of entities.
+ */

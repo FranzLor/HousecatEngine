@@ -8,6 +8,13 @@
 #include "../components/RigidBodyComponent.h"
 #include "../components/AnimationComponent.h"
 
+//----------------------------------------------------//
+//                    SCRIPT SYSTEM                   //
+//  Integrates Lua scripting with entity components   //
+//       to provide dynamic behaviors at runtime.     //
+//----------------------------------------------------//
+
+
 
 std::tuple<double, double> GetEntityPosition(Entity entity) {
 	if (!entity.HasComponent<TransformComponent>()) {
@@ -121,3 +128,43 @@ public:
 	}
 
 };
+
+
+
+
+/**
+ *
+ * @class ScriptSystem
+ * @brief Manages the integration of Lua scripting to control and manipulate entity behaviors dynamically.
+ *
+ * The ScriptSystem allows scripts written in Lua to directly interact with the components of entities,
+ * enabling dynamic behavior modifications based on script logic. It binds C++ functions to Lua,
+ * allowing scripts to get and set properties related to position, velocity, rotation, sprite flipping,
+ * and animation frame management. This system enhances gameplay flexibility and allows non-hardcoded,
+ * creative gameplay mechanics and interactions.
+ *
+ * Usage:
+ * - Add the system to your engine to enable scripting capabilities for entities with a ScriptComponent.
+ * - Bind Lua context to enable Lua scripts to access entity components and manipulate them during runtime.
+ * - Regularly update the system within the game loop to execute the attached Lua scripts per entity.
+ *
+ * Example:
+ * 	housecat->AddSystem<ScriptSystem>();
+ * 
+ *  Adding ScriptSystem to the engine using Housecat
+ *
+ * 	housecat->GetSystem<ScriptSystem>().LuaBinding(lua);
+ * 
+ *  Binding Lua state for function access
+ *
+ * 	housecat->GetSystem<ScriptSystem>().Update(deltaTime, SDL_GetTicks());
+ * 
+ *  Updating the ScriptSystem in the game loop
+ *
+ * Key Functions:
+ * - LuaBinding(lua): Binds Lua functions to allow scripts to manipulate entity components like Transform, RigidBody, Sprite, etc.
+ * - Update(deltaTime, elapsedTime): Processes each entity with a ScriptComponent, executing the bound Lua script and handling errors.
+ *
+ * This system is critical for games requiring complex interactions and behaviors that are too cumbersome to hard code entirely in C++.
+ * 
+ */
