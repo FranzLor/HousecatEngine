@@ -11,7 +11,15 @@
 
 #include "../logger/Logger.h"
 
-//REMIND
+
+//----------------------------------------------------//
+//                    ECS FRAMEWORK                   //
+//   Entity Component System (ECS) architecture for   //
+//   efficient game object and component management   //
+//   in the Housecat game engine.                     //
+//----------------------------------------------------//
+
+
 //change later (if past 32 comps.)
 const unsigned int MAX_COMPONENTS = 32;
 
@@ -59,7 +67,6 @@ private:
 	int ID;
 
 public:
-	//Entity() = default;
 	Entity(int ID) : ID(ID), housecat(nullptr) {}
 	Entity(const Entity& entity) = default;
 
@@ -86,8 +93,6 @@ public:
 	}
 	Entity& operator=(const Entity& other) = default;
 
-	//REMIND
-	//might not be needed?
 	bool operator >=(const Entity& other) const {
 		return ID >= other.ID;
 	}
@@ -156,9 +161,7 @@ private:
 	std::unordered_map<int, int> entityIDToIndex;
 	std::unordered_map<int, int> indexToEntityID;
 public:
-	//REMIND
 	Pool(int capacity = 100) {
-		//fix
 		size = 0;
 		data.resize(capacity);
 	}
@@ -231,8 +234,6 @@ public:
 		}
 	}
 
-	//TODO
-	//error handling: entityID[entityID] ?
 	T& Get(int entityID) {
 		int index = entityIDToIndex[entityID];
 		return static_cast<T&>(data[index]);
@@ -283,8 +284,6 @@ private:
 	//lists freed entity IDs
 	std::deque<int> freedIDs;
 
-	//TODO?
-	//std::shared_ptr<Housecat> housecat;
 
 
 
@@ -300,9 +299,6 @@ public:
 	Entity CreateEntity();
 
 	void KillEntity(Entity entity);
-
-	//TODO entity management
-	//freeze?
 
 	//check component signature before adding | removing to system
 	void AddEntityToSystems(Entity entity);
@@ -433,7 +429,6 @@ void Housecat::AddComponent(Entity entity, TArgs&& ...args) {
 	}
 	//using index vector, create new pool for component type
 	if (!componentPools[componentID]) {
-		//TODO: use smart pointers
 		std::shared_ptr<Pool<TComponent>> newComponentPool = std::make_shared<Pool<TComponent>>();
 		componentPools[componentID] = newComponentPool;
 	}
@@ -463,3 +458,53 @@ void Housecat::RemoveComponent(Entity entity) {
 
 	//Logger::Log("Component ID [" + std::to_string(componentID) + "] Removed from Component ID [" + std::to_string(entityID) + "]");
 }
+
+
+
+
+
+/**
+ *
+ * @ECS
+ * @brief Central ECS framework for managing game entities, components, and systems.
+ *
+ * The ECS framework provides an efficient way to organize game state and logic using
+ * Entities, Components, and Systems. Entities are individual game objects that can be
+ * assigned components which encapsulate data and behavior. Systems handle the logic
+ * and manipulate entities that have specific component signatures.
+ *
+ * Components:
+ * - Base class for all components. Components store data.
+ *
+ * Entities:
+ * - Game object that can hold  multiple components (32 default max).
+ *
+ * Systems:
+ * - Logic handler that operates on entities with specific components.
+ *
+ * Pool:
+ * - Manages storage of components of a particular type.
+ *
+ * Housecat:
+ * - Manages creation, destruction, and organization of entities,
+ *   components, and systems. Acts as the central ECS registry or manager.
+ *
+ * Usage:
+ * - An entity can be created and components can be added to it. Systems will process
+ *   entities based on the components they possess.
+ * - Example:
+ *   Entity player = housecat.CreateEntity();
+ *   player.AddComponent<TransformComponent>(position, rotation);
+ *   player.AddComponent<HealthComponent>(100);
+ * 
+ *   This example creates a player entity with a TransformComponent and HealthComponent.
+ *
+ *   housecat.GetSystem<MovementSystem>().Update(deltaTime);
+ * 
+ *   This example updates the MovementSystem with the deltaTime using Housecat.
+ * 
+ *
+ * The ECS architecture allows for high flexibility and decouples data from behavior,
+ * making it easier to extend and maintain game functionality.
+ * 
+ */
