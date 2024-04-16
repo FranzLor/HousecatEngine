@@ -16,6 +16,16 @@
 #include "../../ecs/ECS.h"
 #include "../../assetmanager/AssetManager.h"
 
+
+//-----------------------------------------------------//
+//                  EditorUIManager                    //
+//   Manages user interface interactions within the   //
+//   game editor. This includes managing UI elements,  //
+//   processing user inputs, and integrating various   //
+//   editor functionalities like file and edit        //
+//   management, tileset tools, and project settings.  //
+//-----------------------------------------------------//
+
 class EditorUIManager {
 private:
 	int tileWidth;
@@ -71,24 +81,15 @@ public:
 	EditorUIManager(class std::shared_ptr<Mouse>& mouse);
 	~EditorUIManager();
 
-	//TODO
 	//ImGui
 	void InitImGui();
 
-	//TODO
 	//project management
 	void ShowFileMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager, std::shared_ptr<EditorCanvas>& canvas, sol::state& lua, int& tileSize);
 
-	void ShowEditMenu();
-
-	void ShowViewMenu();
-
 	void ShowProjectMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager);
 
-	void ShowMapMenu(EditorRenderer& renderer, const AssetManagerPtr& assetManager);
 
-
-	//TODO
 	//file management
 	void NewProject();
 
@@ -125,8 +126,6 @@ public:
 		return isFillToolActive;
 	}
 
-	//TODO
-	//tileset management
 	void TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect);
 
 	void TilesetTools(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow);
@@ -135,8 +134,6 @@ public:
 
 	void TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow);
 
-	//TODO
-	//shortcut management
 	void Shortcuts(EditorRenderer& renderer,  const AssetManagerPtr& assetManager,
 		std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua);
 
@@ -150,10 +147,26 @@ public:
 	}
 
 
-	//comopnents
+	//component
 	bool CheckTransform();
 
-	bool CheckSprite();
 };
 
 
+
+
+/**
+ * @file EditorUIManager.h
+ * @brief Manages all UI-related functionalities in the Housecat game editor.
+ *
+ * The EditorUIManager class handles the display and interaction of various UI components
+ * within the editor using ImGui. It integrates functionalities from multiple utility classes
+ * to provide a cohesive user experience. It supports operations such as opening, saving,
+ * and creating new projects, managing tilesets, and adjusting editor settings.
+ *
+ * Functions:
+ * - Manage file dialog operations for opening and saving files.
+ * - Handle editor commands like undo, redo, and canvas resizing.
+ * - Provide tools for tileset manipulation and attribute adjustments.
+ * - Offer theme customization for the editor interface.
+ */

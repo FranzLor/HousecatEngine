@@ -137,12 +137,10 @@
     <ClInclude Include="src\components\ScriptComponent.h" />
     <ClInclude Include="src\components\SFXComponent.h" />
     <ClInclude Include="src\components\WinConditionComponent.h" />
-    <ClInclude Include="src\editor\utilities\AddTile.h" />
     <ClInclude Include="src\editor\utilities\editmanager\CompoundEdit.h" />
     <ClInclude Include="src\editor\utilities\editmanager\IEdit.h" />
     <ClInclude Include="src\editor\ui\IconsFontAwesome6.h" />
     <ClInclude Include="src\editor\utilities\LuaExporter.h" />
-    <ClInclude Include="src\editor\utilities\RemoveTile.h" />
     <ClInclude Include="src\events\SFXEvent.h" />
     <ClInclude Include="src\game\CollisionMap.h" />
     <ClInclude Include="src\game\LevelManager.h" />
@@ -601,9 +599,7 @@
     <None Include="SDL2_ttf.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\editor\utilities\AddTile.cpp" />
     <ClCompile Include="src\editor\utilities\LuaExporter.cpp" />
-    <ClCompile Include="src\editor\utilities\RemoveTile.cpp" />
     <ClCompile Include="src\game\CollisionMap.cpp" />
     <ClCompile Include="src\game\LevelManager.cpp" />
     <ClCompile Include="src\editor\utilities\EditCanvasSize.cpp" />

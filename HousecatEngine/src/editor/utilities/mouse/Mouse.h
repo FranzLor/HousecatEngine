@@ -12,6 +12,15 @@
 #include "../../../components/TransformComponent.h"
 #include "../../../components/SpriteComponent.h"
 
+
+//-----------------------------------------------------//
+//                       Mouse                         //
+// Manages the mouse interactions for tile editing in  //
+// the editor environment, including creation, removal,//
+// and manipulation of tiles via mouse actions.        //
+//-----------------------------------------------------//
+
+
 //used for defining if tiles
 //for tile checking method
 enum class TileCheckResult {
@@ -174,3 +183,26 @@ public:
 
 };
 
+
+
+
+/**
+ * @file Mouse.h
+ * @brief Handles mouse-based tile editing operations in the editor.
+ *
+ * The Mouse class is integral to the editor, allowing the user to interact directly
+ * with the canvas via the mouse for operations like placing, deleting, and filling
+ * tiles. It integrates deeply with the AssetManager to manage tile textures and with
+ * the ECS to handle tile entities.
+ *
+ * Key Functionalities:
+ * - MouseTile: Visualize potential tile placements based on current mouse position.
+ * - CreateTile: Place a new tile at the mouse location.
+ * - RemoveTile: Remove a tile at the mouse location.
+ * - FillTiles: Fill an area with tiles based on specific conditions.
+ * - UpdateMousePosition: Update mouse position relative to the camera and scaling.
+ * - MousePanCamera: Handle camera panning via mouse dragging.
+ *
+ * The class also supports undo/redo functionalities indirectly by managing states
+ * that can be captured by command objects (not implemented here).
+ */

@@ -4,8 +4,9 @@
 #include <memory>
 
 //-----------------------------------------------------//
-//                       EDIT                          //
-//           base for all edits | commands             //
+//                       IEdit                         //
+//    Interface for implementing edit commands in the  //
+//    editor. Supports undo and redo operations.       //
 //-----------------------------------------------------//
 struct IEdit {
 	virtual ~IEdit() {}
@@ -33,3 +34,22 @@ struct IEdit {
 };
 
 typedef std::stack<std::shared_ptr<IEdit>> EditStack;
+
+
+
+/**
+ * @file IEdit.h
+ * @brief Defines the interface for edit commands.
+ *
+ * The IEdit interface provides the necessary methods to execute, undo,
+ * and redo editing commands within the editor. Implementations of this interface
+ * must provide their own mechanisms for executing commands and handling undo/redo
+ * capabilities, enabling a flexible command pattern.
+ *
+ * Methods:
+ * - Execute: Perform the command.
+ * - Undo: Revert the command.
+ * - Redo: Re-execute the command after an undo.
+ * - CanUndo: Check if the undo operation is possible.
+ * - CanRedo: Check if the redo operation is possible.
+ */

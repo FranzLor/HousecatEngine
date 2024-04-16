@@ -13,7 +13,6 @@
 #include "../src/logger/Logger.h"
 
 #include "../utilities/EditTile.h"
-#include "../utilities/RemoveTile.h"
 #include "../utilities/EditCanvasSize.h"
 
 #include "../ui/IconsFontAwesome6.h"
