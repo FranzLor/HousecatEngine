@@ -9,6 +9,15 @@
 #include "../../ecs/ECS.h"
 #include "../../assetmanager/AssetManager.h"
 
+
+//-----------------------------------------------------//
+//                  EditorUIRendering                  //
+//   Handles rendering and updating of UI elements in  //
+//   the Housecat game editor. It manages the canvas,  //
+//   tile settings, and user interactions for editing  //
+//   the game environment.                             //
+//-----------------------------------------------------//
+
 class EditorUIRendering : public System {
 private:
 	int canvasWidth;
@@ -92,3 +101,20 @@ public:
 
 };
 
+
+
+/**
+ * @file EditorUIRendering.h
+ * @brief Handles rendering and UI updates in the Housecat game editor.
+ *
+ * The EditorUIRendering class extends from the System class, integrating with the entity-component system
+ * to provide visual updates and interact with the game editor's functionalities. It manages the rendering
+ * of grids, updating of canvas dimensions, and the interactions for creating, removing, or modifying tiles.
+ * This class also interfaces with the EditorUIManager for managing UI states and interactions.
+ *
+ * Key functionalities include:
+ * - Rendering grid lines and the editor's canvas.
+ * - Managing canvas size and tile settings.
+ * - Handling user input for direct tile manipulation.
+ * - Providing visual feedback for mouse location and tile attributes.
+ */
