@@ -5,6 +5,17 @@
 #include <string>
 #include <vector>
 
+
+//-----------------------------------------------------//
+//                    LuaExporter                      //
+//  Utility class for exporting data to Lua scripts.   //
+//  It allows structured writing of Lua tables and     //
+//  supports features like indentation, comments,      //
+//  minimizing output, and suppression of certain      //
+//  format features for compact file generation.       //
+//-----------------------------------------------------//
+
+
 class LuaExporter {
 private:
 	int indent;
@@ -213,3 +224,34 @@ void LuaExporter::WriteKeyAndQuotedValue(TKey key, TValue value, std::fstream& f
 	newLine = false;
 	valueWritten = true;
 }
+
+
+
+
+/**
+ * @file LuaExporter.h
+ * @brief Utility class for exporting structured data to Lua script format.
+ *
+ * The LuaExporter class offers a structured way to write data into Lua table
+ * format, which can be particularly useful for game settings, level designs, or
+ * any application that uses Lua for configuration. This class provides methods
+ * to handle different types of data input, support for indentation, line breaks,
+ * minimizing text output, and suppression of optional format features.
+ *
+ * Key Features:
+ * - Writing key-value pairs in Lua table format.
+ * - Support for nested tables.
+ * - Options to minimize output and suppress certain formatting features.
+ * - Methods to handle comments and separators for readability.
+ *
+ * Usage:
+ * - Use `StartDocument` and `EndDocument` to manage document bounds.
+ * - `WriteValue`, `WriteKeyAndValue`, etc., to write data.
+ * - Control format with `SetMinimize` and `SetSupress`.
+ * 
+ * Examples:
+ * - luaExporter.StartDocument();
+ * - luaExporter.SeparationLine(projectFile);
+ * - luaExporter.CommentLine("", projectFile);
+ * 
+ */
