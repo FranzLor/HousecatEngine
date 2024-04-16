@@ -828,9 +828,6 @@
     <ClInclude Include="src\game\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\input\GlobalInputHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\logger\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -921,9 +918,6 @@
     <ClInclude Include="src\components\SFXComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\editor\utilities\AddTile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\editor\utilities\editmanager\CompoundEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -931,9 +925,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\utilities\LuaExporter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\editor\utilities\RemoveTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\events\SFXEvent.h">
@@ -1402,13 +1393,7 @@
     <ClCompile Include="src\editor\Editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\eventmanager\EventManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input\GlobalInputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\logger\Logger.cpp">
@@ -1462,13 +1447,7 @@
     <ClCompile Include="src\game\CollisionMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor\utilities\AddTile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\editor\utilities\LuaExporter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\editor\utilities\RemoveTile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
