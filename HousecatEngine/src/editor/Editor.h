@@ -9,6 +9,14 @@
 
 #include "../assetmanager/AssetManager.h"
 
+
+//-----------------------------------------------------//
+//                      Editor                         //
+//    Main class for the Housecat game editor that     //
+//    handles initialization, input processing,       //
+//    updating, and rendering.                         //
+//-----------------------------------------------------//
+
 class Editor {
 private:
 	//editor window
@@ -40,9 +48,6 @@ private:
 
 	SDL_Event event;
 
-
-	//SDL_Window* windowEditor;
-	//SDL_Renderer* rendererEditor;
 	EditorWindow editorWindow;
 	EditorRenderer editorRenderer;
 
@@ -51,12 +56,6 @@ private:
 
 	//AssetManager ptr
 	AssetManagerPtr assetManager;
-
-
-	//TODO
-	//mouse
-	//camera
-	//events?
 
 	void CameraController(SDL_Event& event);
 	void KeyboardCameraController(SDL_Event& event);
@@ -87,3 +86,21 @@ public:
 
 };
 
+
+
+/**
+ * @file Editor.h
+ * @brief Manages the lifecycle of the Housecat game editor.
+ *
+ * The Editor class initializes and manages the SDL and ImGui contexts,
+ * orchestrates the main loop, handles user input, updates game/editor state,
+ * and performs rendering. It serves as the entry point for the editor's
+ * operations and integrates various subsystems such as rendering, UI management,
+ * and asset management.
+ *
+ * Key Responsibilities:
+ * - Initialize and configure SDL and ImGui.
+ * - Handle main event loop including input processing.
+ * - Update game/editor states and manage rendering calls.
+ * - Clean up and shut down the editor properly.
+ */
