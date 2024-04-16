@@ -17,13 +17,6 @@ struct TileAttributes {
 	int mouseRectX;
 	int mouseRectY;
 
-	//TODO
-	//animated tiles
-	//int numFrames;
-	//int frameSpeed;
-
-	//bool isLooped;
-
 	TileAttributes(int tileWidth = 32, int tileHeight = 32, int scaleX = 1, int scaleY = 1,
 		int layer = 0, glm::vec2 tileOffset = { 0, 0 }, int srcRectX = 0, int srcRectY = 0,
 		int mouseRectX = 32, int mouseRectY = 32) {
