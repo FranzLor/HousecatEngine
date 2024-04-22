@@ -216,7 +216,7 @@ Here is a list of the features that this project has to offer to game developers
 
 # Documentation
 The `Housecat` Wiki page is still in development. But it's worth checking out for updates!<br/>
-[Housecat Wiki](https://github.com/FRLor/Housecat/wiki).<br/><br/>
+[Housecat Wiki](https://github.com/ZeroCalBacon/HousecatEngine/wiki).<br/><br/>
 The wiki will help you get the most out of the engine and streamline your game development process.<br/>
 
 For those who want to get started right away, in the Source folder, each file will contain Documentation on its purpose, usage, and other useful commentary.
@@ -225,11 +225,11 @@ For those who want to get started right away, in the Source folder, each file wi
 # Contributions
    Any contributions to improve and extend `Housecat` are all welcome!<br/><br/>
    However, I cannot guarantee that each contribution will be accepted.<br/>
-   If you have any requests for more features, bug fixes, and even constructive criticism, feel free to DM me through my [GitHub](https://github.com/FRLor).
+   If you have any requests for more features, bug fixes, and even constructive criticism, feel free to DM me through my [GitHub](https://github.com/ZeroCalBacon).
 
 
 # License
-   `Housecat` is licensed under the MIT License. See the [MIT License](https://github.com/FRLor/Housecat/blob/master/LICENSE.txt) file for more information.<br/><br/>
+   `Housecat` is licensed under the MIT License. See the [MIT License](https://github.com/ZeroCalBacon/HousecatEngine/blob/master/LICENSE.txt) file for more information.<br/><br/>
    Each asset used for the Cat Game project were all free and downloaded from [itch.io](https://itch.io/). The owners granted expressive use for their respective assets.
    However, I have also provided some of their Licenses, that were provided, as a way to credit their 
  creative work.
