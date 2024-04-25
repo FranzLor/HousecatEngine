@@ -11,6 +11,7 @@
 
 #include "../../../components/TransformComponent.h"
 #include "../../../components/SpriteComponent.h"
+#include "../../../components/BoxColliderComponent.h"
 
 
 //-----------------------------------------------------//
@@ -55,6 +56,7 @@ private:
 	float zoom;
 	bool gridSnap;
 
+	bool isCollider;
 
 	//component management
 	TransformComponent appliedTransform;
@@ -62,6 +64,9 @@ private:
 
 	SpriteComponent appliedSprite;
 	SpriteComponent removedSprite;
+
+	BoxColliderComponent appliedCollider;
+	BoxColliderComponent removedCollider;
 
 
 	//mouse buttons SDL
@@ -84,13 +89,15 @@ public:
 
 
 	//mouse 
-	void MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile);
+	void MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, bool collider = false);
 
 	void CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 
 	void RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 
 	void FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event, const EditorCanvas& canvas);
+
+	void CreateCollider(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 
 	//TODO
 	//void FillTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
@@ -166,11 +173,19 @@ public:
 	}
 
 
+	//collder
+	inline void SetCollider(bool collider) {
+		isCollider = collider;
+	}
+
+
 
 	//components
 	void ApplyTransform(const int scaleX, const int scaleY);
 
 	void ApplySprite(const std::string& assetID, const int width, const int height, const int layer, const int srcRectX, const int srcRectY);
+
+	void ApplyBoxCollider(const int width, const int height, const int offsetX, const int offsetY);
 
 	
 
@@ -180,6 +195,10 @@ public:
 	const SpriteComponent& GetRemovedSprite() {
 		return removedSprite;
 	}
+	const BoxColliderComponent& GetRemovedCollider() {
+		return removedCollider;
+	}
+
 
 };
 
