@@ -29,7 +29,6 @@ private:
 	bool isDebugging;
 	bool isDebugRendering;
 	int millisecsPreviousFrame = 0;
-	float fps = 0.0f;
 
 	Uint32 quitTime = 0;
 
@@ -60,11 +59,6 @@ public:
 	
 	const int FPS = 60;
 	const int MILLISECS_PER_FRAME = 1000 / FPS;
-
-	//fps
-	float GetFPS() {
-		return fps;
-	}
 
 	static int windowWidth;
 	static int windowHeight;
