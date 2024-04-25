@@ -101,9 +101,8 @@ public:
 			SpriteComponent spriteComponent;
 		};
 
-
 		std::vector<RenderableEntity> renderableEntities;
-		for (auto entity : GetSystemEntities()) {
+		for (const auto& entity : GetSystemEntities()) {
 			RenderableEntity renderableEntity;
 			renderableEntity.transformComponent = entity.GetComponent<TransformComponent>();
 			renderableEntity.spriteComponent = entity.GetComponent<SpriteComponent>();
@@ -114,16 +113,11 @@ public:
 				renderableEntity.transformComponent.position.x > camera.x + camera.w ||
 				renderableEntity.transformComponent.position.y + (renderableEntity.transformComponent.scale.y * renderableEntity.spriteComponent.height) < camera.y ||
 				renderableEntity.transformComponent.position.y > camera.y + camera.h
-				);
+			);
 
-			//cull sprites taht are outside the camera view, or not fixed
-			if (isEntityOutsideCameraView && !renderableEntity.spriteComponent.isFixed) {
-				continue;
-			}
 
 			renderableEntities.emplace_back(renderableEntity);
 		}
-
 
 		//sort by z index
 		std::sort(renderableEntities.begin(), renderableEntities.end(), [](const RenderableEntity& a, const RenderableEntity& b) {

@@ -27,13 +27,8 @@
 
 
 class RenderImGuiSystem : public System {
-private:
-	Game& game;
-
 public:
-	RenderImGuiSystem(Game& game) : game(game) {
-
-	}
+	RenderImGuiSystem() = default;
 
 	void Update(const std::unique_ptr<Housecat>& housecat, const SDL_Rect& camera) {
 
@@ -198,10 +193,7 @@ public:
 		}
 		ImGui::End();
 
-		if (ImGui::Begin("FPS", NULL, windowMouseFlags)) {
-			ImGui::Text("FPS: %.1f", game.GetFPS());
-			ImGui::End();
-		}
+
 	}
 };
 

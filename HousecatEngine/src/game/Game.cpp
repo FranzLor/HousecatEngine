@@ -118,7 +118,7 @@ void Game::Initialize() {
 		return;
 	}
 
-	rendererGame = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	rendererGame = SDL_CreateRenderer(window, -1, 0);
 
 	if (!rendererGame) {
 		Logger::Error("Error Creating Main Renderer!");
@@ -210,9 +210,8 @@ void Game::Setup() {
 	housecat->AddSystem<CameraMovementSystem>();
 	housecat->AddSystem<RenderTextSystem>();
 	housecat->AddSystem<RenderHealthSystem>();
+	housecat->AddSystem<RenderImGuiSystem>();
 	housecat->AddSystem<ScriptSystem>();
-
-	housecat->AddSystem<RenderImGuiSystem>(*this);
 
 	housecat->AddSystem<DamageSystem>(*this);
 
@@ -235,11 +234,8 @@ void Game::Update() {
 	if (waitingTime > 0 && waitingTime <= MILLISECS_PER_FRAME) {
 		SDL_Delay(waitingTime);
 	}
-	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0f;
+	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0;
 	millisecsPreviousFrame = SDL_GetTicks();
-
-	//fps counter
-	fps = 1.0f / deltaTime;
 
 	//game quit
 	if (quitTime != 0 && SDL_GetTicks() >= quitTime) {
@@ -280,7 +276,7 @@ void Game::Render() {
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
-	  
+
 	//SYSTEMS - calls update rendering
 	housecat->GetSystem<RenderSystem>().Update(rendererGame, assetManager, camera);
 	//[TAB] key for debugging
