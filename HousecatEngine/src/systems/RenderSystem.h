@@ -115,6 +115,10 @@ public:
 				renderableEntity.transformComponent.position.y > camera.y + camera.h
 			);
 
+			//cull sprites taht are outside the camera view, or not fixed
+			if (isEntityOutsideCameraView && !renderableEntity.spriteComponent.isFixed) {
+				continue;
+			}
 
 			renderableEntities.emplace_back(renderableEntity);
 		}

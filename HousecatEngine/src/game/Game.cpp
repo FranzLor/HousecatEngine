@@ -210,8 +210,9 @@ void Game::Setup() {
 	housecat->AddSystem<CameraMovementSystem>();
 	housecat->AddSystem<RenderTextSystem>();
 	housecat->AddSystem<RenderHealthSystem>();
-	housecat->AddSystem<RenderImGuiSystem>();
 	housecat->AddSystem<ScriptSystem>();
+
+	housecat->AddSystem<RenderImGuiSystem>(*this);
 
 	housecat->AddSystem<DamageSystem>(*this);
 
@@ -236,6 +237,9 @@ void Game::Update() {
 	}
 	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0;
 	millisecsPreviousFrame = SDL_GetTicks();
+
+	//FPS counter
+	fps = 1.0f / deltaTime;
 
 	//game quit
 	if (quitTime != 0 && SDL_GetTicks() >= quitTime) {
