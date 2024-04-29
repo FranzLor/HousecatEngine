@@ -40,6 +40,8 @@ private:
 
 	bool tilesetLoaded;
 
+	bool isCollider;
+
 	//tileset tools
 	bool isShortcutPressed;
 	bool isPaintToolActive;
@@ -126,13 +128,14 @@ public:
 		return isFillToolActive;
 	}
 
+
 	void TilesetWindow(const AssetManagerPtr& assetManager, const glm::vec2& mouseRect);
 
 	void TilesetTools(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow);
 
 	void TilesetLayers(const AssetManagerPtr& assetManager);
 
-	void TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow);
+	void TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow, bool collider);
 
 	void Shortcuts(EditorRenderer& renderer,  const AssetManagerPtr& assetManager,
 		std::shared_ptr<EditorCanvas>& canvas, const std::unique_ptr<EditManager>& editManager, int& tileSize, sol::state& lua);
@@ -149,7 +152,7 @@ public:
 
 	//component
 	bool CheckTransform();
-
+	bool CheckCollider();
 };
 
 

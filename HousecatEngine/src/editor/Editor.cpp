@@ -22,6 +22,7 @@ Editor::Editor()
 	millisecsPreviousFrame(0),
 	deltaTime(0.0f),
 	zoom(1),
+	isColliders(true),
 	mouseTile(),
 	camera(),
 	event(),
@@ -173,6 +174,10 @@ void Editor::ProcessInput() {
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				isRunning = false;
 			}
+
+			if (event.key.keysym.sym == SDLK_TAB) {
+				isColliders = !isColliders;
+			}
 			break;
 		}
 
@@ -235,12 +240,15 @@ void Editor::Render() {
 
 	//render editor
 	Housecat::GetInstance().GetSystem<EditorUIRendering>().RenderGrid(editorRenderer, camera, zoom);
-
 	Housecat::GetInstance().GetSystem<RenderSystem>().UpdateEditor(editorRenderer.get(), assetManager, camera, zoom);
+
+	//collides
+	if (isColliders) {
+		Housecat::GetInstance().GetSystem<RenderColliderSystem>().UpdateEditor(editorRenderer.get(), camera, zoom);
+	}
 
 
 	//TODO
-	//render collider
 	//render animation
 
 

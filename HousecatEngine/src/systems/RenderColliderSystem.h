@@ -76,11 +76,35 @@ public:
 	bool GetRenderingState() const {
 		return isRendering;
 	}
+
+
+
+	//EDITOR
+	void UpdateEditor(SDL_Renderer* renderer, SDL_Rect& camera, const float& zoom) {
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+		for (const auto& entity : GetSystemEntities()) {
+			const auto& transform = entity.GetComponent<TransformComponent>();
+			const auto& collider = entity.GetComponent<BoxColliderComponent>();
+
+			const SDL_Rect srcRect = {
+				std::floor((transform.position.x + collider.offset.x) * zoom) - camera.x,
+				std::floor((transform.position.y + collider.offset.y) * zoom) - camera.y,
+				std::ceil(collider.width * transform.scale.x * zoom),
+				std::ceil(collider.height * transform.scale.y * zoom)
+			};
+
+			SDL_SetRenderDrawColor(renderer, 255, 10, 10, 100);
+			SDL_RenderFillRect(renderer, &srcRect);
+			SDL_RenderDrawRect(renderer, &srcRect);
+		}
+	}
 };
 
 
 
 
+//TODO - EDITOR RENDERING
 /**
  *
  * @class RenderColliderSystem
