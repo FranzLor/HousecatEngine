@@ -42,6 +42,8 @@ private:
 
 	float zoom;
 
+	bool isColliders;
+
 	SDL_Rect mouseTile;
 
 	SDL_Rect camera;

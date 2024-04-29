@@ -86,7 +86,7 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 		}
 		//draw collider
 		else {
-			SDL_SetRenderDrawColor(renderer.get(), 255, 0, 0, 50);
+			SDL_SetRenderDrawColor(renderer.get(), 255, 105, 105, 90);
 			SDL_RenderFillRect(renderer.get(), &destRect);
 			SDL_RenderDrawRect(renderer.get(), &destRect);
 		}
@@ -96,7 +96,7 @@ void Mouse::MouseTile(EditorRenderer& renderer, const AssetManagerPtr& assetMana
 
 void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
 
-	MouseTile(renderer, assetManager, camera, mouseTile);
+	MouseTile(renderer, assetManager, camera, mouseTile, false);
 
 	//only draws if mouse is in bounds
 	if (MouseOutOfBounds()) {
@@ -114,11 +114,26 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 		isLeftMouseButton = false;
 	}
 
+	//update grid
+	int gridX = static_cast<int>(mousePosWindow.x) / tileSize;
+	int gridY = static_cast<int>(mousePosWindow.y) / tileSize;
+
+
+	// Check for existing tile at position
+	TileCheckResult result = TileExistsAtPosition(gridX, gridY);
+	if (result == TileCheckResult::ExactTile) {
+		// Exact tile already exists, no need to add another
+		return;
+	}
+
+	if (ColliderExistsAtPosition(gridX, gridY)) {
+		// Collider exists, prevent creating another collider
+		return;
+	}
+
 	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
 		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton) || MultiTile(pos)) {
-			//update grid
-			int gridX = static_cast<int>(mousePosWindow.x) / tileSize;
-			int gridY = static_cast<int>(mousePosWindow.y) / tileSize;
+
 
 
 			if (gridSnap) {
@@ -148,6 +163,7 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 				appliedSprite.srcRect.x,
 				appliedSprite.srcRect.y
 			);
+
 
 			if (isCollider) {
 				newTile.AddComponent<BoxColliderComponent>(
@@ -207,15 +223,13 @@ void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 			for (auto& entity : entities) {
 				const auto& transform = entity.GetComponent<TransformComponent>();
 				const auto& sprite = entity.GetComponent<SpriteComponent>();
-				const auto& collider = entity.GetComponent<BoxColliderComponent>();
 
 				if (mousePosX >= transform.position.x && mousePosX <= transform.position.x + sprite.width * transform.scale.x &&
 					mousePosY >= transform.position.y && mousePosY <= transform.position.y + sprite.height * transform.scale.y &&
 					appliedSprite.zIndex == sprite.zIndex) {
 
-					//storing for undo|redo
-					removedTransform = transform;
-					removedSprite = sprite;
+					auto& collider = entity.GetComponent<BoxColliderComponent>();
+					const auto& sprite = entity.GetComponent<SpriteComponent>();	
 
 					if (entity.HasComponent<BoxColliderComponent>()) {
 						removedCollider = entity.GetComponent<BoxColliderComponent>();
@@ -223,6 +237,10 @@ void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 					else {
 						removedCollider = collider;
 					}
+
+					//storing for undo|redo
+					removedTransform = transform;
+					removedSprite = sprite;
 
 					entity.Kill();
 					isLeftMouseButton = true;
@@ -234,46 +252,6 @@ void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 	}
 }
 
-void Mouse::CreateCollider(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
-	//draw collider box
-	MouseTile(renderer, assetManager, camera, mouseTile, true);
-
-	//prevent outside bounds
-	if (MouseOutOfBounds()) {
-		return;
-	}
-
-	appliedTransform.position = glm::vec2(
-		mouseTile.x + camera.x,
-		mouseTile.y + camera.y
-	);
-
-	//reset mouse press
-	if (!LeftMouseButton()) {
-		isLeftMouseButton = false;
-	}
-
-	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
-		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton)) {
-			Entity boxCollider = Housecat::GetInstance().CreateEntity();
-			boxCollider.Group("colliders");
-
-			boxCollider.AddComponent<TransformComponent>(
-				glm::vec2(appliedTransform.position.x, appliedTransform.position.y),
-				appliedTransform.scale,
-				appliedTransform.rotation
-			);
-
-			boxCollider.AddComponent<BoxColliderComponent>(
-				appliedCollider.width,
-				appliedCollider.height,
-				appliedCollider.offset
-			);
-
-			isLeftMouseButton = true;
-		}
-	}
-}
 
 
 void Mouse::FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event, const EditorCanvas& canvas) {
@@ -374,6 +352,28 @@ TileCheckResult Mouse::TileExistsAtPosition(int x, int y) {
 	}
 
 	return TileCheckResult::NoTile;
+}
+
+bool Mouse::ColliderExistsAtPosition(int x, int y) {
+	//no colliders
+	if (!Housecat::GetInstance().IsThereGroup("colliders")) {
+		return false;
+	}
+
+	auto colliders = Housecat::GetInstance().GetGroup("colliders");
+	for (const auto& colliderEntity : colliders) {
+		const auto& transform = colliderEntity.GetComponent<TransformComponent>();
+
+		// Calculate grid positions
+		int colliderGridX = static_cast<int>(transform.position.x) / tileSize;
+		int colliderGridY = static_cast<int>(transform.position.y) / tileSize;
+
+		//already exists at this position
+		if (colliderGridX == x && colliderGridY == y) {
+			return true;
+		}
+	}
+	return false;
 }
 
 

@@ -97,8 +97,6 @@ public:
 
 	void FillTiles(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event, const EditorCanvas& canvas);
 
-	void CreateCollider(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
-
 	//TODO
 	//void FillTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event);
 
@@ -154,6 +152,8 @@ public:
 
 	//grid checking
 	TileCheckResult TileExistsAtPosition(int x, int y);
+
+	bool ColliderExistsAtPosition(int x, int y);
 
 
 	//update

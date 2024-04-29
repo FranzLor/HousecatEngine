@@ -25,6 +25,7 @@ EditorUIManager::EditorUIManager(std::shared_ptr<Mouse>& mouse)
 	isNewFile(false),
 	newCanvas(false),
 	tilesetLoaded(false),
+	isCollider(false),
 	isShortcutPressed(false),
 	isPaintToolActive(false),
 	isEraserToolActive(false),
@@ -286,8 +287,9 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 		ImGui::SameLine();
 
 
-		//toggle paint
 		bool pushed = false;
+
+		//toggle paint
 		if (isPaintToolActive) {
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.24f, 0.52f, 0.88f, 1.0f));
 			pushed = true;
@@ -339,7 +341,9 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 		}
 		if (pushed) {
 			ImGui::PopStyleColor(1);
+			pushed = false;
 		}
+		ImGui::SameLine();
 
 		//restore original spacing
 		style.ItemSpacing.x = originalItemSpacing;
@@ -347,7 +351,7 @@ void EditorUIManager::TilesetTools(const AssetManagerPtr& assetManager, std::sha
 	ImGui::End();
 }
 
-void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow) {
+void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::shared_ptr<class Mouse>& mouse, bool tileWindow, bool collider) {
 	ImGuiStyle& style = ImGui::GetStyle();
 	//center window text
 	style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
@@ -415,21 +419,51 @@ void EditorUIManager::TileAttributes(const AssetManagerPtr& assetManager, std::s
 			ImGui::SliderInt("Scale X", &tileAttributes.scaleX, 1, 10);
 			ImGui::SliderInt("Scale Y", &tileAttributes.scaleY, 1, 10);
 
-			//REMIND
-			if (ImGui::InputInt("Layer", &tileAttributes.layer, 1, 50)) {
-				if (tileAttributes.layer <= 0) {
-					tileAttributes.layer = 0;
-				}
-				if (tileAttributes.layer >= 50) {
-					tileAttributes.layer = 50;
+			if (!collider) {
+				if (ImGui::InputInt("Layer", &tileAttributes.layer, 1, 50)) {
+					if (tileAttributes.layer <= 0) {
+						tileAttributes.layer = 0;
+					}
+					if (tileAttributes.layer >= 50) {
+						tileAttributes.layer = 50;
+					}
 				}
 			}
 
+			if (collider) {
+				isCollider = true;
+			}
+			else {
+				ImGui::Checkbox("Box Collider", &isCollider);
+			}
 
-			if (tileWindow) {
+			mouse->SetCollider(isCollider);
+
+			if (isCollider) {
+				ImGui::InputInt("Box Width", &tileAttributes.tileWidth, 8);
+				ImGui::InputInt("Box Height", &tileAttributes.tileHeight, 8);
+				ImGui::InputInt("Box Offset X", &tileAttributes.offsetX, 1);
+				ImGui::InputInt("Box Offset Y", &tileAttributes.offsetY, 1);
+
+				//clamp values
+				tileAttributes.tileWidth = max(tileAttributes.tileWidth, 1);
+				tileAttributes.tileHeight = max(tileAttributes.tileHeight, 1);
+			}
+
+			//apply changes to mouse
+			if (isCollider) {
+				mouse->ApplyBoxCollider(tileAttributes.tileWidth, tileAttributes.tileHeight, tileAttributes.offsetX, tileAttributes.offsetY);
+			}
+
+
+			if (!collider) {
 				mouse->ApplySprite(assetID, tileWidth, tileHeight, tileAttributes.layer, tileAttributes.srcRectX, tileAttributes.srcRectY);
 				mouse->ApplyTransform(tileAttributes.scaleX, tileAttributes.scaleY);
 				mouse->SetMouseTileRect(tileAttributes.mouseRectX, tileAttributes.mouseRectY);
+			}
+
+			if (isCollider && CheckCollider()) {
+				mouse->ApplyBoxCollider(tileAttributes.tileWidth, tileAttributes.tileHeight, tileAttributes.offsetX, tileAttributes.offsetY);
 			}
 
 			if (CheckTransform()) {
@@ -592,6 +626,7 @@ void EditorUIManager::Shortcuts(EditorRenderer& renderer, const AssetManagerPtr&
 
 		isEraserToolActive = false;
 		isFillToolActive = false;
+
 	}
 	shortcutBPressed = isBPressed;
 
@@ -600,6 +635,7 @@ void EditorUIManager::Shortcuts(EditorRenderer& renderer, const AssetManagerPtr&
 
 		isPaintToolActive = false;
 		isFillToolActive = false;
+
 	}
 	shortcutEPressed = isEPressed;
 
@@ -617,30 +653,52 @@ bool EditorUIManager::CheckTransform() {
 	//changes from current attributes to previous attributes
 	bool statusChanged = false;
 
-	if (tileAttributes.scaleX != tilePrevAttributes.scaleX)
-	{
+	if (tileAttributes.scaleX != tilePrevAttributes.scaleX) {
 		tilePrevAttributes.scaleX = tileAttributes.scaleX;
 		statusChanged = true;
 	}
 
-	if (tileAttributes.scaleY != tilePrevAttributes.scaleY)
-	{
+	if (tileAttributes.scaleY != tilePrevAttributes.scaleY) {
 		tilePrevAttributes.scaleY = tileAttributes.scaleY;
 		statusChanged = true;
 	}
 
-	if (tileAttributes.mouseRectX != tilePrevAttributes.mouseRectX)
-	{
+	if (tileAttributes.mouseRectX != tilePrevAttributes.mouseRectX) {
 		tilePrevAttributes.mouseRectX = tileAttributes.mouseRectX;
 		tileWidth = tileAttributes.mouseRectX;
 		statusChanged = true;
 	}
 
-	if (tileAttributes.mouseRectY != tilePrevAttributes.mouseRectY)
-	{
+	if (tileAttributes.mouseRectY != tilePrevAttributes.mouseRectY) {
 		tilePrevAttributes.mouseRectY = tileAttributes.mouseRectY;
 		tileHeight = tileAttributes.mouseRectY;
 		statusChanged = true;
+	}
+
+	return statusChanged;
+}
+
+bool EditorUIManager::CheckCollider() {
+	bool statusChanged = false;
+	if (tileAttributes.tileWidth != tilePrevAttributes.tileWidth) {
+		tilePrevAttributes.tileWidth = tileAttributes.tileWidth;
+		statusChanged = true;
+	}
+
+	if (tileAttributes.tileHeight != tilePrevAttributes.tileHeight) {
+		tilePrevAttributes.tileHeight = tileAttributes.tileHeight;
+		statusChanged = true;
+	}
+
+	if (tileAttributes.offsetX != tilePrevAttributes.offsetX) {
+		tilePrevAttributes.offsetX = tileAttributes.offsetX;
+		statusChanged = true;
+	}
+
+	if (tileAttributes.offsetY != tilePrevAttributes.offsetY) {
+		tilePrevAttributes.offsetY = tileAttributes.offsetY;
+		statusChanged = true;
+
 	}
 
 	return statusChanged;

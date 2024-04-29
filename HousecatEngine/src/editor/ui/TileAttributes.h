@@ -18,7 +18,8 @@ struct TileAttributes {
 	int scaleY;
 
 	int layer;
-	glm::vec2 tileOffset;
+	int offsetX;
+	int offsetY;
 
 	int srcRectX;
 	int srcRectY;
@@ -26,7 +27,7 @@ struct TileAttributes {
 	int mouseRectY;
 
 	TileAttributes(int tileWidth = 32, int tileHeight = 32, int scaleX = 1, int scaleY = 1,
-		int layer = 0, glm::vec2 tileOffset = { 0, 0 }, int srcRectX = 0, int srcRectY = 0,
+		int layer = 0, int offsetX = 0, int offsetY = 0, int srcRectX = 0, int srcRectY = 0,
 		int mouseRectX = 32, int mouseRectY = 32) {
 
 		this->tileWidth = tileWidth;
@@ -34,7 +35,8 @@ struct TileAttributes {
 		this->scaleX = scaleX;
 		this->scaleY = scaleY;
 		this->layer = layer;
-		this->tileOffset = tileOffset;
+		this->offsetX = offsetX;
+		this->offsetY = offsetY;
 		this->srcRectX = srcRectX;
 		this->srcRectY = srcRectY;
 		this->mouseRectX = mouseRectX;

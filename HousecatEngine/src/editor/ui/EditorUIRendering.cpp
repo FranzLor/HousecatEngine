@@ -183,7 +183,7 @@ void EditorUIRendering::Update(EditorRenderer& renderer, const AssetManagerPtr& 
 		editorUIManager->TilesetWindow(assetManager, mouse->GetMouseRect());
 
 		if (GetTileset()) {
-			editorUIManager->TileAttributes(assetManager, mouse, true);
+			editorUIManager->TileAttributes(assetManager, mouse, true, false);
 			editorUIManager->TilesetTools(assetManager, mouse, true);
 		}
 
