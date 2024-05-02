@@ -80,7 +80,7 @@ public:
 
 
 	//EDITOR
-	void UpdateEditor(SDL_Renderer* renderer, SDL_Rect& camera, const float& zoom) {
+	void UpdateEditor(SDL_Renderer* renderer, SDL_Rect& camera, const float& zoom) const {
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 		for (const auto& entity : GetSystemEntities()) {
@@ -88,10 +88,10 @@ public:
 			const auto& collider = entity.GetComponent<BoxColliderComponent>();
 
 			const SDL_Rect srcRect = {
-				std::floor((transform.position.x + collider.offset.x) * zoom) - camera.x,
-				std::floor((transform.position.y + collider.offset.y) * zoom) - camera.y,
-				std::ceil(collider.width * transform.scale.x * zoom),
-				std::ceil(collider.height * transform.scale.y * zoom)
+				static_cast<int>(std::floor((transform.position.x + collider.offset.x) * zoom) - camera.x),
+				static_cast<int>(std::floor((transform.position.y + collider.offset.y) * zoom) - camera.y),
+				static_cast<int>(std::ceil(collider.width * transform.scale.x * zoom)),
+				static_cast<int>(std::ceil(collider.height * transform.scale.y * zoom))
 			};
 
 			SDL_SetRenderDrawColor(renderer, 255, 10, 10, 100);
