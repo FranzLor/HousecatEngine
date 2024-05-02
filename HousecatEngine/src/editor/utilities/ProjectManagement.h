@@ -40,10 +40,12 @@ public:
 
 	void SaveAsLua(const std::string& fileName, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath, const int& tileSize);
 
+	void SaveColliders(std::filesystem::path fileName);
+
 };
 
 
-
+//TODO - coliders
 /**
  * @file ProjectManagement.h
  * @brief Manages project file operations in the Housecat game engine.

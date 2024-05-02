@@ -14,6 +14,7 @@
 #include "../../components/SpriteComponent.h"
 
 #include "../../logger/Logger.h"
+#include "../../components/BoxColliderComponent.h"
 
 ProjectManagement::ProjectManagement() {}
 ProjectManagement::~ProjectManagement() {}
@@ -312,4 +313,39 @@ void ProjectManagement::SaveMap(std::filesystem::path fileName) {
 
 	mapFile.close();
 	//Logger::Log("Map data saved successfully");
+}
+
+
+
+
+
+void ProjectManagement::SaveColliders(std::filesystem::path fileName) {
+	//verify collider components
+	if (!Housecat::GetInstance().IsThereGroup("colliders")) {
+		return;
+	}
+
+	std::ofstream mapFile;
+	mapFile.open(fileName);
+
+	if (!mapFile.is_open()) {
+		Logger::Error("Could Not Open Map File: " + fileName.string());
+		return;
+	}
+
+	auto colliders = Housecat::GetInstance().GetGroup("colliders");
+
+	for (const auto& collider : colliders) {
+		std::string group = "colliders";
+
+		const auto& transformComponent = collider.GetComponent<TransformComponent>();
+		const auto& colliderComponent = collider.GetComponent<BoxColliderComponent>();
+
+		// Save to the map file
+		mapFile << group << " " << transformComponent.position.x << " " << transformComponent.position.y << " " << transformComponent.scale.x << " " << transformComponent.scale.y
+			<< " " << colliderComponent.width << " " << colliderComponent.height << " " << colliderComponent.offset.x << " " << colliderComponent.offset.y << " " << std::endl;
+
+	}
+
+	mapFile.close();
 }
