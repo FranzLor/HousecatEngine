@@ -6,6 +6,7 @@
 
 #include "../../components/TransformComponent.h"
 #include "../../components/SpriteComponent.h"
+#include "../../components/BoxColliderComponent.h"
 
 
 //-----------------------------------------------------//
@@ -18,11 +19,13 @@
 class EditAddTile : public IEdit {
 private:
 	int tileID;
+	bool isCollider;
 
 	std::shared_ptr<class Mouse> mouse;
 
 	TransformComponent transformComponent;
 	SpriteComponent spriteComponent;
+	BoxColliderComponent colliderComponent;
 
 public:
 	EditAddTile(std::shared_ptr<Mouse>& mouse);
@@ -63,11 +66,13 @@ public:
 class EditRemoveTile : public IEdit {
 private:
 	int tileID;
+	bool isCollider;
 
 	std::shared_ptr<class Mouse> mouse;
 
 	TransformComponent transformComponent;
 	SpriteComponent spriteComponent;
+	BoxColliderComponent colliderComponent;
 
 public:
 	EditRemoveTile(std::shared_ptr<Mouse>& mouse);
