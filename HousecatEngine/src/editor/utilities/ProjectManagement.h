@@ -24,6 +24,8 @@
 
 class ProjectManagement {
 private:
+	bool isCollider = false;
+
 	void LoadMap(const AssetManagerPtr& assetManager, const std::string& fileName);
 	void SaveMap(std::filesystem::path fileName);
 
@@ -40,10 +42,12 @@ public:
 
 	void SaveAsLua(const std::string& fileName, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath, const int& tileSize);
 
+	void SaveColliders(std::filesystem::path fileName);
+
 };
 
 
-
+//TODO - coliders
 /**
  * @file ProjectManagement.h
  * @brief Manages project file operations in the Housecat game engine.

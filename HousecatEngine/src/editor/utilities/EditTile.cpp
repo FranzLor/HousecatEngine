@@ -4,9 +4,11 @@
 
 EditAddTile::EditAddTile(std::shared_ptr<Mouse>& mouse)
 	: tileID(-1),
+	isCollider(false),
 	mouse(mouse),
 	transformComponent(),
-	spriteComponent() {
+	spriteComponent(),
+	colliderComponent() {
 
 }
 
@@ -21,6 +23,12 @@ void EditAddTile::Undo() {
 		if (entity.GetID() == tileID) {
 			transformComponent = entity.GetComponent<TransformComponent>();
 			spriteComponent = entity.GetComponent<SpriteComponent>();
+			
+			if (entity.HasComponent<BoxColliderComponent>()) {
+				isCollider = true;
+				const auto& boxCollider = entity.GetComponent<BoxColliderComponent>();
+				colliderComponent = boxCollider;
+			}
 
 			entity.Kill();
 			break;
@@ -35,6 +43,10 @@ void EditAddTile::Redo() {
 	recreateEntity.AddComponent<TransformComponent>(transformComponent);
 	recreateEntity.AddComponent<SpriteComponent>(spriteComponent);
 
+	if (isCollider) {
+		recreateEntity.AddComponent<BoxColliderComponent>(colliderComponent);
+	}
+
 	tileID = recreateEntity.GetID();
 }
 
@@ -45,13 +57,24 @@ void EditAddTile::Redo() {
 
 EditRemoveTile::EditRemoveTile(std::shared_ptr<Mouse>& mouse)
 	: tileID(-1),
+	isCollider(false),
 	mouse(mouse),
 	transformComponent(),
-	spriteComponent() {
+	spriteComponent(),
+	colliderComponent() {
 
 }
 
 void EditRemoveTile::Execute() {
+	colliderComponent = mouse->GetRemovedCollider();
+
+	if (colliderComponent.width == 0 && colliderComponent.height == 0 && colliderComponent.offset == glm::vec2(0)) {
+		isCollider = false;
+	}
+	else {
+		isCollider = true;
+	}
+
 	transformComponent = mouse->GetRemovedTransform();
 	spriteComponent = mouse->GetRemovedSprite();
 }
@@ -61,6 +84,10 @@ void EditRemoveTile::Undo() {
 	recreateEntity.Group("tiles");
 	recreateEntity.AddComponent<TransformComponent>(transformComponent);
 	recreateEntity.AddComponent<SpriteComponent>(spriteComponent);
+
+	if (isCollider) {
+		recreateEntity.AddComponent<BoxColliderComponent>(colliderComponent);
+	}
 	tileID = recreateEntity.GetID();
 }
 

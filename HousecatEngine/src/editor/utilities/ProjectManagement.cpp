@@ -14,8 +14,12 @@
 #include "../../components/SpriteComponent.h"
 
 #include "../../logger/Logger.h"
+#include "../../components/BoxColliderComponent.h"
 
-ProjectManagement::ProjectManagement() {}
+ProjectManagement::ProjectManagement() 
+	: isCollider(false) {
+}
+
 ProjectManagement::~ProjectManagement() {}
 
 void ProjectManagement::OpenProject(sol::state& lua, const std::string& fileName, EditorRenderer& renderer, std::shared_ptr<EditorCanvas>& canvas,
@@ -155,7 +159,26 @@ void ProjectManagement::SaveProject(const std::string& fileName, std::vector<std
 
 	SaveMap(filePath);
 	//Logger::Log("Saving project completed: " + fileName);
+	
 
+	//check colliders
+	if (!Housecat::GetInstance().IsThereGroup("colliders")) {
+		return;
+	}
+
+	std::fstream colliderFile;
+	std::string newCollider = filePath.stem().string() += "_collider.map";
+
+	filePath.replace_filename(newCollider);
+
+	colliderFile.open(filePath, std::ios::out);
+
+	if (!colliderFile.is_open()) {
+		Logger::Error("Could Not Open Collider File: " + filePath.string());
+		return;
+	}
+
+	SaveColliders(filePath);
 }
 
 void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::string>& assetID, std::vector<std::string>& assetFilePath, const int& tileSize) {
@@ -232,6 +255,24 @@ void ProjectManagement::SaveAsLua(const std::string& fileName, std::vector<std::
 				luaExport.EndTable(false, project);
 			}
 
+			//collider
+			if (tile.HasComponent<BoxColliderComponent>()) {
+				const auto& colliderComponent = tile.GetComponent<BoxColliderComponent>();
+
+				luaExport.DeclareTable("box_collider", project);
+				luaExport.WriteKeyAndValue("width", colliderComponent.width, false, project);
+				luaExport.WriteKeyAndValue("height", colliderComponent.height, false, project);
+
+				luaExport.DeclareTable("offset", project);
+				luaExport.WriteKeyAndValue("x", colliderComponent.offset.x, false, project);
+				luaExport.WriteKeyAndValue("y", colliderComponent.offset.y, true, project);
+
+				luaExport.EndTable(true, project);
+
+				luaExport.WriteKeyAndUnquotedValue("is_collider", "true", project);
+				luaExport.EndTable(false, project);
+			}
+
 			luaExport.EndTable(false, project);
 			luaExport.EndTable(false, project);
 			i++;
@@ -257,15 +298,27 @@ void ProjectManagement::LoadMap(const AssetManagerPtr& assetManager, const std::
 	while (std::getline(mapFile, line)) {
 		std::istringstream iss(line);
 		std::string group, assetID;
-		int tileWidth, tileHeight, srcRectX, srcRectY, zIndex;
+		int tileWidth, tileHeight, srcRectX, srcRectY, zIndex, colliderWidth, colliderHeight = 0;
 		double posX, posY, scaleX, scaleY;
+		glm::vec2 offset = glm::vec2(0, 0);
+
+		isCollider = false;
+
 		//parses with assetID with quotes from saving
 		iss >> group >> std::quoted(assetID) >> tileWidth >> tileHeight >> srcRectX >> srcRectY
-			>> zIndex >> posX >> posY >> scaleX >> scaleY;
+			>> zIndex >> posX >> posY >> scaleX >> scaleY >> isCollider;
 
 		if (iss.fail()) {
 			Logger::Error("Failed to parse line in map file: " + line);
 			continue;
+		}
+
+		if (isCollider) {
+			iss >> colliderWidth >> colliderHeight >> offset.x >> offset.y;
+			if (iss.fail()) {
+				Logger::Error("Failed to parse collider data in map file: " + line);
+				continue;
+			}
 		}
 
 		glm::vec2 position(posX, posY);
@@ -275,6 +328,10 @@ void ProjectManagement::LoadMap(const AssetManagerPtr& assetManager, const std::
 		tile.Group(group);
 		tile.AddComponent<TransformComponent>(position, scale, 0.0);
 		tile.AddComponent<SpriteComponent>(assetID, tileWidth, tileHeight, zIndex, false, srcRectX, srcRectY);
+
+		if (isCollider) {
+			tile.AddComponent<BoxColliderComponent>(colliderWidth, colliderHeight, offset);
+		}
 	}
 
 	//Logger::Log("Map data loaded successfully.");
@@ -304,12 +361,64 @@ void ProjectManagement::SaveMap(std::filesystem::path fileName) {
 		const auto& transform = tile.GetComponent<TransformComponent>();
 		const auto& sprite = tile.GetComponent<SpriteComponent>();
 
+		isCollider = false;
+
 		mapFile << group << " \"" << sprite.assetID << "\" " << sprite.width << " " << sprite.height << " " << sprite.srcRect.x << " " << sprite.srcRect.y << " " << sprite.zIndex << " "
-			<< transform.position.x << " " << transform.position.y << " " << transform.scale.x << " " << transform.scale.y << std::endl;
+			<< transform.position.x << " " << transform.position.y << " " << transform.scale.x << " " << transform.scale.y << " ";
+
+		//colliders
+		if (tile.HasComponent<BoxColliderComponent>()) {
+			isCollider = true;
+		}
+
+		if (isCollider) {
+			const auto& colliderComponent = tile.GetComponent<BoxColliderComponent>();
+			mapFile << isCollider << " " << colliderComponent.width << " " << colliderComponent.height << " " << colliderComponent.offset.x << " " << colliderComponent.offset.y << std::endl;
+		}
+		else {
+			isCollider = false;
+			mapFile << isCollider << " " << std::endl;
+		}
+
 	}
 
 	//Logger::Log("Assets saved successfully. Count: " + std::to_string(tiles.size()));
 
 	mapFile.close();
 	//Logger::Log("Map data saved successfully");
+}
+
+
+
+
+
+void ProjectManagement::SaveColliders(std::filesystem::path fileName) {
+	//verify collider components
+	if (!Housecat::GetInstance().IsThereGroup("colliders")) {
+		return;
+	}
+
+	std::ofstream mapFile;
+	mapFile.open(fileName);
+
+	if (!mapFile.is_open()) {
+		Logger::Error("Could Not Open Map File: " + fileName.string());
+		return;
+	}
+
+	auto colliders = Housecat::GetInstance().GetGroup("colliders");
+
+	for (const auto& collider : colliders) {
+		std::string group = "colliders";
+
+		const auto& transformComponent = collider.GetComponent<TransformComponent>();
+		const auto& colliderComponent = collider.GetComponent<BoxColliderComponent>();
+
+		// Save to the map file
+		mapFile << group << " " << transformComponent.position.x << " " << transformComponent.position.y << " " << transformComponent.scale.x << " " << transformComponent.scale.y
+			<< " " << colliderComponent.width << " " << colliderComponent.height << " " << colliderComponent.offset.x << " " << colliderComponent.offset.y << " " << std::endl;
+
+	}
+
+	mapFile.close();
 }

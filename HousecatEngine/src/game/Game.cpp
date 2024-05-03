@@ -239,7 +239,7 @@ void Game::Update() {
 	millisecsPreviousFrame = SDL_GetTicks();
 
 	//FPS counter
-	fps = 1.0f / deltaTime;
+	fps = 1.0f / static_cast<float>(deltaTime);
 
 	//game quit
 	if (quitTime != 0 && SDL_GetTicks() >= quitTime) {
