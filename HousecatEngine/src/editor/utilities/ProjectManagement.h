@@ -24,6 +24,8 @@
 
 class ProjectManagement {
 private:
+	bool isCollider = false;
+
 	void LoadMap(const AssetManagerPtr& assetManager, const std::string& fileName);
 	void SaveMap(std::filesystem::path fileName);
 
