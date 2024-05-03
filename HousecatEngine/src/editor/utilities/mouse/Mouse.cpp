@@ -185,14 +185,13 @@ void Mouse::CreateTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 }
 
 void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetManager, SDL_Rect& camera, SDL_Rect& mouseTile, SDL_Event& event) {
+	if (MouseOutOfBounds() || !LeftMouseButton() || !Housecat::GetInstance().IsThereGroup("tiles")) {
+		return;
+	}
+
 	//TODO
 	// RENDER ERASER ICON
 	//MouseTile(renderer, assetManager, camera, mouseTile);
-
-	////only draws if mouse is in bounds
-	//if (MouseOutOfBounds()) {
-	//	return;
-	//}
 
 	//multi tiles
 	glm::vec2 pos = glm::vec2(mouseTile.x + camera.x / tileSize, mouseTile.y + camera.y / tileSize);
@@ -200,55 +199,28 @@ void Mouse::RemoveTile(EditorRenderer& renderer, const AssetManagerPtr& assetMan
 	//set transform account camera
 	appliedTransform.position = glm::vec2(mouseTile.x + camera.x, mouseTile.y + camera.y);
 
-	//reset mouse press
-	if (!LeftMouseButton()) {
-		isLeftMouseButton = false;
-	}
+	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && MultiTile(pos)) {
+		auto entities = Housecat::GetInstance().GetGroup("tiles");
+		std::vector<std::reference_wrapper<Entity>> toRemove;
 
-	if ((event.type == SDL_MOUSEBUTTONDOWN || LeftMouseButton()) && !isMouseOutOfBounds) {
-		if ((event.button.button == SDL_BUTTON_LEFT && !isLeftMouseButton) || MultiTile(pos)) {
-			if (!Housecat::GetInstance().IsThereGroup("tiles")) {
-				return;
-			}
+		for (auto& entity : entities) {
+			const auto& transform = entity.GetComponent<TransformComponent>();
+			const auto& sprite = entity.GetComponent<SpriteComponent>();
 
-			//help for non precise removing on tile
-			glm::vec2 subtract = glm::vec2(
-				(mouseRect.x * appliedTransform.scale.x) / 2,
-				(mouseRect.y * appliedTransform.scale.y) / 2
-			);
+			if (mousePosX >= transform.position.x && mousePosX <= transform.position.x + sprite.width * transform.scale.x &&
+				mousePosY >= transform.position.y && mousePosY <= transform.position.y + sprite.height * transform.scale.y &&
+				appliedSprite.zIndex == sprite.zIndex) {
 
-			auto entities = Housecat::GetInstance().GetGroup("tiles");
-
-			//remove tiles on hover
-			for (auto& entity : entities) {
-				const auto& transform = entity.GetComponent<TransformComponent>();
-				const auto& sprite = entity.GetComponent<SpriteComponent>();
-
-				if (mousePosX >= transform.position.x && mousePosX <= transform.position.x + sprite.width * transform.scale.x &&
-					mousePosY >= transform.position.y && mousePosY <= transform.position.y + sprite.height * transform.scale.y &&
-					appliedSprite.zIndex == sprite.zIndex) {
-
-					auto& collider = entity.GetComponent<BoxColliderComponent>();
-					const auto& sprite = entity.GetComponent<SpriteComponent>();	
-
-					if (entity.HasComponent<BoxColliderComponent>()) {
-						removedCollider = entity.GetComponent<BoxColliderComponent>();
-					}
-					else {
-						removedCollider = collider;
-					}
-
-					//storing for undo|redo
-					removedTransform = transform;
-					removedSprite = sprite;
-
-					entity.Kill();
-					isLeftMouseButton = true;
-					tileRemoved = true;
-					break;
-				}
+				toRemove.push_back(entity);
 			}
 		}
+
+		for (auto& entity : toRemove) {
+			entity.get().Kill();
+		}
+
+		isLeftMouseButton = true;
+		tileRemoved = true;
 	}
 }
 
