@@ -173,11 +173,17 @@ Here is a list of the features that this project has to offer to game developers
   - **ImGui-Powered UI:** Utilizes ImGui to create a user-friendly, responsive, and highly customizable editor interface, enhancing the overall development experience.
   - **FontAwesome6 Icons:** Integrates FontAwesome6 to style the UI with scalable icons, improving visual clarity and aesthetic appeal of the editor's interface.
  
+    ![housecat-editor](https://github.com/user-attachments/assets/726bb117-0858-4175-9273-4252d6cb096a)
+
+ 
 - **Cat Game:**
   - **2D Game:** Showcases the capabilities of the `Housecat` game engine through an engaging and developed 2D game.
   - **Customizable Gameplay:** Developers can extend and customize the game using Lua script, allowing for dynamic gameplay changes and enhancements.
   - **Integrated Level Management:** Utilizes the LevelManager system for seamless level transitions and management.
   - **Educational Resource:** Serves as a practical example for developers to learn how to utilize various aspects of the Housecat game engine in a real-world scenario.
+ 
+    ![housecat-game](https://github.com/user-attachments/assets/f1873a00-2fef-4e16-93c5-0e60ea942c92)
+
 
 - **Housecat Manager / Registry:**
   - **Entity Lifecycle Management:** Calling `Housecat` simplifies the creation, modification, and destruction of entities within your game project.
@@ -197,6 +203,9 @@ Here is a list of the features that this project has to offer to game developers
   - **Flexible Scripting with Lua:** Leverages Lua to define game elements and behaviors dynamically through scripts. Developers can use Lua to define asset tables, set up game entities, and script complex interactions.
   - **Dynamic Behavior Modification:** Facilitates runtime changes to game logic and entity behavior without recompilation, supporting dynamic binding through the script system. This allows for on-the-fly adjustments and rapid iteration.
   - **API Access:** Provides Lua scripts with extensive access to the game engine's API, enabling direct manipulation of entities and components, offering more creative freedom and control over game mechanics.
+ 
+    ![housecat-scripting](https://github.com/user-attachments/assets/55b4656e-60cb-43f1-915a-1272beb11887)
+
 
 - **Modular Rendering System:**
   - **2D Graphics Support:** Built primarily for 2D game development, utilizing SDL2 for rendering sprites, textures, and animations efficiently.
